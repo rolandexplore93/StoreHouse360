@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using StoreHouse360.Presentation.DTO.Responses.Common;
+using StoreHouse360.Presentation.DTO.Common.Responses;
 
-namespace StoreHouse360.Presentation.Controllers
+namespace StoreHouse360.Controllers.Api
 {
     [ApiController]
     [Route("api/[controller]")]

@@ -1,20 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Users.CreateUser;
 using StoreHouse360.Application.Queries.Users;
-
-
-//using StoreHouse360.Application.Common.Mappings;
-//using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
-using StoreHouse360.DTO.Requests.Users;
-//using StoreHouse360.Infrastructure.Models;
-using StoreHouse360.Presentation.Controllers;
-using StoreHouse360.Presentation.DTO.Responses.Common;
-//using System.Reflection;
-
-namespace StoreHouse360.Controllers
+using StoreHouse360.DTO.Users;
+namespace StoreHouse360.Controllers.Api
 {
     public class UsersController : ApiControllerBase
     {
@@ -38,6 +30,7 @@ namespace StoreHouse360.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             var result = await Mediator.Send(new GetAllUsersQuery());

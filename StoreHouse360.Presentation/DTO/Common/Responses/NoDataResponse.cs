@@ -1,6 +1,4 @@
-﻿using StoreHouse360.Presentation.DTO.Responses.Common;
-
-namespace StoreHouse360.Presentation.DTO.Responses.Common
+﻿namespace StoreHouse360.Presentation.DTO.Common.Responses
 {
     public class NoDataResponse : BaseResponse<object>
     {

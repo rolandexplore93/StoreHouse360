@@ -11,5 +11,6 @@ namespace StoreHouse360.Infrastructure.Persistence.Database
         {
         }
         public DbSet<Category> Categories { get; set; }
+        //public DbSet<User> Users { get; set; }
     }
 }

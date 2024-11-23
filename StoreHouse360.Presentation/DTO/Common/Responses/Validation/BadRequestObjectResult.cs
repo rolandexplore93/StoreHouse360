@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc;
 
-namespace StoreHouse360.DTO.Responses.Validation
+namespace StoreHouse360.DTO.Common.Responses.Validation
 {
     public class BadRequestObjectResult : ObjectResult
     {

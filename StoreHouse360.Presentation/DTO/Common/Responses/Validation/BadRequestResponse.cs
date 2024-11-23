@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using StoreHouse360.Presentation.DTO.Responses.Common;
+using StoreHouse360.Presentation.DTO.Common.Responses;
 
-namespace StoreHouse360.DTO.Responses.Validation
+namespace StoreHouse360.DTO.Common.Responses.Validation
 {
     public class BadRequestResponse : NoDataResponse
     {

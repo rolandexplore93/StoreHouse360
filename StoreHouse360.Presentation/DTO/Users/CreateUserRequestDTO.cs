@@ -1,7 +1,7 @@
 ﻿using StoreHouse360.Application.Commands.Users.CreateUser;
 using StoreHouse360.Application.Common.Mappings;
 
-namespace StoreHouse360.DTO.Requests.Users
+namespace StoreHouse360.DTO.Users
 {
     public class CreateUserRequestDTO : IMapFrom<CreateUserCommand>
     {

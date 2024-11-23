@@ -1,6 +1,6 @@
+using StoreHouse360;
 using StoreHouse360.Application;
-using StoreHouse360.DTO.Responses.Validation;
-using StoreHouse360.Filters;
+using StoreHouse360.Authentication;
 using StoreHouse360.Infrastructure;
 using System.Reflection;
 
@@ -15,24 +15,15 @@ builder.Services.AddApplication()
         Assembly.GetAssembly(typeof(StoreHouse360.Infrastructure.DependencyInjection))!
     });
 
-builder.Services.AddControllers(options => { options.Filters.Add<ExceptionFilter>(); })
-    .ConfigureApiBehaviorOptions(options =>
-    {
-        options.InvalidModelStateResponseFactory = actionContext => new BadRequestObjectResult(actionContext.ModelState);
-    });
+builder.Services.AddAppAuthentication(builder.Configuration);
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddApplicationControllers()
+    .AddSwaggerDocumentation();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwaggerMiddlewares();
 
 app.UseHttpsRedirection();
 

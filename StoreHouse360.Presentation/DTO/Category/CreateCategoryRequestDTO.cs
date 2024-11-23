@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace StoreHouse360.DTO.Requests.Category
+namespace StoreHouse360.DTO.Category
 {
     public class CreateCategoryRequestDTO
     {

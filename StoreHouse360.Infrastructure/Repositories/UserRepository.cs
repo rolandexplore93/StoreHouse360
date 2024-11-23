@@ -25,7 +25,7 @@ namespace StoreHouse360.Infrastructure.Repositories
         public async Task<User> CreateAsync(User user)
         {
             var identityUser = _mapper.Map<User, ApplicationIdentityUser>(user);
-            var result = await _userManager.CreateAsync(identityUser);
+            var result = await _userManager.CreateAsync(identityUser, user.PasswordHash);
             if (result.Succeeded)
                 return _mapper.Map<ApplicationIdentityUser, User>(identityUser);
             throw new Exception(result.GetErrorsAsString());
