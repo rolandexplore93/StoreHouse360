@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 
@@ -8,11 +9,13 @@ namespace StoreHouse360.Controllers.Api
     [Route("api/[controller]")]
     public class ApiControllerBase : ControllerBase
     {
-        protected readonly IMediator Mediator;
+        protected IMediator Mediator;
+        protected IMapper _mapper;
 
-        public ApiControllerBase(IMediator mediator)
+        public ApiControllerBase(IMediator mediator, IMapper mapper)
         {
             Mediator = mediator;
+            _mapper = mapper;
         }
         [NonAction]
         public override OkObjectResult Ok(object? value)

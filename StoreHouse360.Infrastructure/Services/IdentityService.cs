@@ -2,8 +2,8 @@
 using StoreHouse360.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using StoreHouse360.Application.Exceptions;
-using StoreHouse360.Infrastructure.Models;
 using StoreHouse360.Application.Services.Identity;
+using StoreHouse360.Infrastructure.Persistence.Database.Models;
 
 namespace StoreHouse360.Infrastructure.Services
 {

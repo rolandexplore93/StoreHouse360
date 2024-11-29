@@ -1,8 +1,10 @@
-﻿namespace StoreHouse360.Infrastructure.Models
+﻿using StoreHouse360.Application.Common.Mappings;
+
+namespace StoreHouse360.Infrastructure.Models
 {
-    public class Category
+    public class Category : IMapFrom<Domain.Entities.Category>
     {
-        public int id { get; set; }
-        public string name { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

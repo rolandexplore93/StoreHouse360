@@ -6,20 +6,21 @@ using StoreHouse360.Application.Commands.Users.CreateUser;
 using StoreHouse360.Application.Queries.Users;
 using StoreHouse360.Domain.Entities;
 using StoreHouse360.DTO.Users;
+using StoreHouse360.Presentation.DTO.Common.Responses;
 namespace StoreHouse360.Controllers.Api
 {
     public class UsersController : ApiControllerBase
     {
         private ILogger<UsersController> _logger;
         private IMapper _mapper;
-        public UsersController(ILogger<UsersController> logger, IMapper mapper, IMediator mediator) : base(mediator)
+        public UsersController(ILogger<UsersController> logger, IMapper mapper, IMediator mediator) : base(mediator, mapper)
         {
             _logger = logger;
             _mapper = mapper;
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser(CreateUserRequestDTO requestDTO)
+        public async Task<ActionResult<BaseResponse<User>>> CreateUser(CreateUserRequestDTO requestDTO)
         {
             var command = _mapper.Map<CreateUserCommand>(requestDTO);
             var userId = await Mediator.Send(command);
@@ -31,7 +32,7 @@ namespace StoreHouse360.Controllers.Api
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<BaseResponse<IEnumerable<User>>>> GetUsers()
         {
             var result = await Mediator.Send(new GetAllUsersQuery());
             return Ok(result);

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 using StoreHouse360.Infrastructure.Extensions;
-using StoreHouse360.Infrastructure.Models;
+using StoreHouse360.Infrastructure.Persistence.Database.Models;
 
 namespace StoreHouse360.Infrastructure.Repositories
 {

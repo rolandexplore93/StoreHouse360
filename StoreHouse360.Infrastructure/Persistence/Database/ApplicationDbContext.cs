@@ -1,7 +1,7 @@
-﻿using StoreHouse360.Infrastructure.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using StoreHouse360.Infrastructure.Persistence.Database.Models;
 
 namespace StoreHouse360.Infrastructure.Persistence.Database
 {
@@ -10,7 +10,7 @@ namespace StoreHouse360.Infrastructure.Persistence.Database
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<CategoryDb> Categories { get; set; }
         //public DbSet<User> Users { get; set; }
     }
 }

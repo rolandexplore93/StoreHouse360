@@ -13,7 +13,7 @@ namespace StoreHouse360.Controllers.Api
         private readonly IMapper _mapper;
         private readonly IAuthenticationService _authenticationService;
 
-        public AuthController(IMediator mediator, IMapper mapper, IAuthenticationService authenticationService) : base(mediator)
+        public AuthController(IMediator mediator, IMapper mapper, IAuthenticationService authenticationService) : base(mediator, mapper)
         {
             _mapper = mapper;
             _authenticationService = authenticationService;
