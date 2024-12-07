@@ -2,7 +2,7 @@
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
-namespace StoreHouse360.Application.Commands.Users.CreateUser
+namespace StoreHouse360.Application.Commands.Users
 {
     public class CreateUserCommand : IRequest<int>
     {
@@ -20,8 +20,9 @@ namespace StoreHouse360.Application.Commands.Users.CreateUser
         }
         public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = new User () { UserName = request.Username, PasswordHash = request.Password };
+            var user = new User() { UserName = request.Username, PasswordHash = request.Password };
             var createdUser = await _userRepository.CreateAsync(user);
+            await _userRepository.SaveChanges();
             return createdUser.Id;
         }
     }

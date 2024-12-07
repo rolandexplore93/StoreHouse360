@@ -35,8 +35,4 @@
     <ProjectReference Include="..\StoreHouse360.Infrastructure\StoreHouse360.Infrastructure.csproj" />
   </ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Dto\Common" />
-	</ItemGroup>
-
 </Project>

@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using StoreHouse360.Application.Exceptions;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 using StoreHouse360.Infrastructure.Persistence.Database;
 using StoreHouse360.Infrastructure.Persistence.Database.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace StoreHouse360.Infrastructure.Repositories
@@ -56,16 +58,17 @@ namespace StoreHouse360.Infrastructure.Repositories
         }
 
 
-        public Task<TEntity> FindByIdAsync(TKey id)
+        public async Task<TEntity> FindByIdAsync(TKey id)
         {
-            var field = typeof(TEntity).GetField("Id");
-
-            if (field == null)
+            try
             {
-                throw new ValidationException(typeof(TModel) + " has no Id field");
+                var model = await dbSet.FirstAsync(model => model.Equals(id));
+                return MapModelToEntity(model);
             }
-
-            return dbSet.FirstAsync(model => field.GetValue(model)!.Equals(id)).ContinueWith(task => MapModelToEntity(task.Result));
+            catch (InvalidOperationException ex)
+            {
+                throw new NotFoundException();
+            }
         }
         protected TModel MapEntityToModel(TEntity entity)
         {
@@ -74,6 +77,19 @@ namespace StoreHouse360.Infrastructure.Repositories
         }
             
         protected TEntity MapModelToEntity(TModel model) => mapper.Map<TEntity>(model);
+
+        public async Task DeleteAsync(TKey id)
+        {
+            try
+            {
+                var model = await dbSet.FirstAsync(model => model.Equals(id));
+                dbSet.Remove(model);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new NotFoundException();
+            }
+        }
     }
 
 }

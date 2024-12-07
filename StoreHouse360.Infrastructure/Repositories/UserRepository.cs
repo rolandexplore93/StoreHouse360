@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using StoreHouse360.Application.Exceptions;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 using StoreHouse360.Infrastructure.Extensions;
@@ -20,7 +21,7 @@ namespace StoreHouse360.Infrastructure.Repositories
         }
         public Task SaveChanges()
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
         public async Task<User> CreateAsync(User user)
         {
@@ -35,9 +36,32 @@ namespace StoreHouse360.Infrastructure.Repositories
             return await _userManager.Users.ProjectTo<User>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
-        public Task<User> FindByIdAsync(int id)
+        public async Task<User> FindByIdAsync(int id)
         {
-            return _userManager.FindByIdAsync(id.ToString()).ContinueWith(task => _mapper.Map<User>(task.Result));
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null) throw new NotFoundException("user", id);
+            return _mapper.Map<User>(user);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null) throw new NotFoundException();
+            await _userManager.DeleteAsync(user);
+        }
+
+        public async Task<User> UpdateAsync(User user)
+        {
+            var model = await _userManager.FindByIdAsync(user.Id.ToString());
+            if (model == null) throw new NotFoundException("user", user.Id);
+
+            model.UserName = user.UserName;
+            var result = await _userManager.UpdateAsync(model);
+            if (!result.Succeeded)
+            {
+                throw new Exception(result.GetErrorsAsString());
+            }
+            return _mapper.Map<User>(model);
         }
     }
 }
