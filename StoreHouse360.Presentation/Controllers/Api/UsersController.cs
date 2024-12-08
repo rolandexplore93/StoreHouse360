@@ -30,7 +30,7 @@ namespace StoreHouse360.Controllers.Api
             var user = await Mediator.Send(new GetUserQuery { Id = userId });
 
             //return Ok(user);
-            return Ok(user.ToViewModel(_mapper));
+            return Ok(user.ToViewModel<UserVM>(_mapper));
         }
 
         [HttpGet]
@@ -39,14 +39,14 @@ namespace StoreHouse360.Controllers.Api
         {
             var result = await Mediator.Send(new GetAllUsersQuery());
             //return Ok(result);
-            return Ok(result.ToViewModels(_mapper));
+            return Ok(result.ToViewModels<UserVM>(_mapper));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<BaseResponse<UserVM>>> GetUser(int id)
         {
             var user = await Mediator.Send(new GetUserQuery { Id = id });
-            return Ok(user.ToViewModel(_mapper));
+            return Ok(user.ToViewModel<UserVM>(_mapper));
         }
 
         [HttpDelete("{id}")]
@@ -63,7 +63,7 @@ namespace StoreHouse360.Controllers.Api
             command.Id = id;
             await Mediator.Send(command);
             var user = await Mediator.Send(new GetUserQuery { Id = id });
-            return Ok(user.ToViewModel(_mapper));
+            return Ok(user.ToViewModel<UserVM>(_mapper));
         }
     }
 }

@@ -45,6 +45,7 @@ namespace StoreHouse360.Infrastructure
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
         }
 
         private static void AddServices(this IServiceCollection services)

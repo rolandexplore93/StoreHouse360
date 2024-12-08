@@ -1,7 +1,9 @@
 ﻿namespace StoreHouse360.Domain.Entities
 {
-    public class BaseEntity<TKey>
+    public class BaseEntity<TKey> : IEntity
     {
-        public TKey Id { get; set; }
+        public virtual TKey Id { get; set; }
     }
+
+    public interface IEntity { };
 }

@@ -23,6 +23,7 @@ namespace StoreHouse360.Application.Commands.Categories
                 Name = request.Name
             };
             var createdCategory = await _categoryRepository.CreateAsync(category);
+            await _categoryRepository.SaveChanges();
             return createdCategory.Id;
         }
     }

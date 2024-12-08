@@ -4,7 +4,7 @@ using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Infrastructure.Persistence.Database.Models
 {
-    public class ApplicationIdentityUser : IdentityUser<int>, IMapFrom<User>
+    public class ApplicationIdentityUser : IdentityUser<int>, IMapFrom<User>, IDatabaseModel
     {
     }
 }

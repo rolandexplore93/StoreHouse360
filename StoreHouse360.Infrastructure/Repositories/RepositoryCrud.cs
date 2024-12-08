@@ -13,7 +13,7 @@ namespace StoreHouse360.Infrastructure.Repositories
 {
     public abstract class RepositoryCrud<TEntity, TModel> : RepositoryCrudBase<ApplicationDbContext, TEntity, int, TModel>
     where TEntity : BaseEntity<int>
-    where TModel : class
+    where TModel : class, IDatabaseModel
     {
         public RepositoryCrud(ApplicationDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
@@ -23,7 +23,7 @@ namespace StoreHouse360.Infrastructure.Repositories
     public abstract class RepositoryCrudBase<TContext, TEntity, TKey, TModel> : RepositoryBase<TContext>, IRepositoryCrud<TEntity, TKey>
     where TContext : DbContext
     where TEntity : BaseEntity<TKey>
-    where TModel : class
+    where TModel : class, IDatabaseModel
     where TKey : IEquatable<TKey>
     {
         protected readonly IMapper mapper;
@@ -36,11 +36,10 @@ namespace StoreHouse360.Infrastructure.Repositories
         public async Task<TEntity> CreateAsync(TEntity entity)
         {
             var model = MapEntityToModel(entity);
-            await dbSet.AddAsync(model);
-            var result = await _dbContext.SaveChangesAsync();
-            var resultEntity = MapModelToEntity(model);
-            return resultEntity;
-            //return result.AsTask().ContinueWith(task => MapModelToEntity(task.Result.Entity));
+            var result = await dbSet.AddAsync(model);
+            await _dbContext.SaveChangesAsync();
+            var modelToEntity = MapModelToEntity(result.Entity);
+            return modelToEntity;
         }
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
@@ -57,16 +56,16 @@ namespace StoreHouse360.Infrastructure.Repositories
                 .ContinueWith(task => MapModelToEntity(task.Result));
         }
 
-
         public async Task<TEntity> FindByIdAsync(TKey id)
         {
             try
             {
-                var model = await dbSet.FirstAsync(model => model.Equals(id));
+                var model = await dbSet.FirstAsync(model => model.Id.Equals(id));
                 return MapModelToEntity(model);
             }
             catch (InvalidOperationException ex)
             {
+                Console.WriteLine(ex.StackTrace);
                 throw new NotFoundException();
             }
         }

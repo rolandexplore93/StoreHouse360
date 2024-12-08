@@ -17,6 +17,7 @@ namespace StoreHouse360.Controllers.Api
             Mediator = mediator;
             _mapper = mapper;
         }
+
         [NonAction]
         public override OkObjectResult Ok(object? value)
         {
