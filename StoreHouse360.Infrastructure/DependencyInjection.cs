@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Application.Services.Identity;
+using StoreHouse360.Application.Services.Settings;
+using StoreHouse360.Application.Settings;
 using StoreHouse360.Infrastructure.Persistence.Database;
 using StoreHouse360.Infrastructure.Persistence.Database.Models;
 using StoreHouse360.Infrastructure.Repositories;
@@ -24,6 +26,7 @@ namespace StoreHouse360.Infrastructure
             services.AddUserIdentityServer();
             services.AddRepositories();
             services.AddServices();
+
 
             return services;
         }
@@ -53,6 +56,12 @@ namespace StoreHouse360.Infrastructure
         private static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IIdentityService, IdentityService>();
+        }
+
+        private static void AddAppSettings(this IServiceCollection services)
+        {
+            services.AddScoped<IAppSettingsProvider, AppSettingsProvider>();
+            services.AddScoped<AppSettings>(setting => setting.GetService<IAppSettingsProvider>()!.Get());
         }
     }
 }

@@ -14,5 +14,6 @@ namespace StoreHouse360.Infrastructure.Persistence.Database
         public DbSet<ManufacturerDb> Manufacturers { get; set; }
         public DbSet<UnitDb> Units { get; set; }
         public DbSet<CurrencyDb> Currencies { get; set; }
+        public DbSet<AppSettingDb> Settings { get; set; }
     }
 }
