@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using StoreHouse360.Presentation.DTO.Responses.Common;
+using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.DTO
 {

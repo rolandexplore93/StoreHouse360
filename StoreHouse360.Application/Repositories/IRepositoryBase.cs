@@ -11,6 +11,10 @@ namespace StoreHouse360.Application.Repositories
     {
         Task<TEntity> CreateAsync(TEntity entity);
         Task<IEnumerable<TEntity>> GetAllAsync();
+
+        /// <exception cref="NotFoundException"></exception>
         Task<TEntity> FindByIdAsync(TKey id);
+        Task<TEntity> UpdateAsync(TEntity entity);
+        Task DeleteAsync(TKey id);
     }
 }

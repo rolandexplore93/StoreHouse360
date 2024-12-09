@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using StoreHouse360.Application.Exceptions;
-using StoreHouse360.Presentation.DTO.Responses.Common;
+using StoreHouse360.Presentation.DTO.Common.Responses;
 using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace StoreHouse360.Filters

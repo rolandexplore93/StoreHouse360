@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StoreHouse360.Application.Repositories;
-using StoreHouse360.Infrastructure.Models;
+using StoreHouse360.Application.Services.Identity;
 using StoreHouse360.Infrastructure.Persistence.Database;
+using StoreHouse360.Infrastructure.Persistence.Database.Models;
 using StoreHouse360.Infrastructure.Repositories;
 using StoreHouse360.Infrastructure.Services;
+using System.Reflection;
 
 namespace StoreHouse360.Infrastructure
 {
@@ -12,6 +14,8 @@ namespace StoreHouse360.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
             if (configuration.GetValue<bool>("UseInMemoryDatabase"))
                 services.AddDbContext<ApplicationDbContext>(options => { options.UseInMemoryDatabase("sh360_db"); });
             else
@@ -24,7 +28,7 @@ namespace StoreHouse360.Infrastructure
             return services;
         }
 
-        static void AddUserIdentityServer(this IServiceCollection services)
+        private static void AddUserIdentityServer(this IServiceCollection services)
         {
             services.AddDefaultIdentity<ApplicationIdentityUser>(options =>
             {
@@ -37,14 +41,16 @@ namespace StoreHouse360.Infrastructure
                 .AddDefaultTokenProviders();
         }
 
-        public static void AddRepositories (this IServiceCollection services)
+        private static void AddRepositories (this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
         }
 
-        static void AddServices(this IServiceCollection services)
+        private static void AddServices(this IServiceCollection services)
         {
-            services.AddScoped<IdentityService, IdentityService>();
+            services.AddScoped<IIdentityService, IdentityService>();
         }
     }
 }
