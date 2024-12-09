@@ -6,8 +6,6 @@ using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 using StoreHouse360.Infrastructure.Persistence.Database;
 using StoreHouse360.Infrastructure.Persistence.Database.Models;
-using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace StoreHouse360.Infrastructure.Repositories
 {
@@ -37,9 +35,9 @@ namespace StoreHouse360.Infrastructure.Repositories
         {
             var model = MapEntityToModel(entity);
             var result = await dbSet.AddAsync(model);
-            await _dbContext.SaveChangesAsync();
-            var modelToEntity = MapModelToEntity(result.Entity);
-            return modelToEntity;
+            //await _dbContext.SaveChangesAsync();
+            return MapModelToEntity(result.Entity);
+            //return modelToEntity;
         }
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
@@ -60,7 +58,7 @@ namespace StoreHouse360.Infrastructure.Repositories
         {
             try
             {
-                var model = await dbSet.FirstAsync(model => model.Id.Equals(id));
+                var model = await GetModelById(id);
                 return MapModelToEntity(model);
             }
             catch (InvalidOperationException ex)
@@ -68,6 +66,11 @@ namespace StoreHouse360.Infrastructure.Repositories
                 Console.WriteLine(ex.StackTrace);
                 throw new NotFoundException();
             }
+        }
+
+        private Task<TModel> GetModelById(TKey id)
+        {
+            return dbSet.FirstAsync(model => model.Id.Equals(id));
         }
         protected TModel MapEntityToModel(TEntity entity)
         {
@@ -81,14 +84,30 @@ namespace StoreHouse360.Infrastructure.Repositories
         {
             try
             {
-                var model = await dbSet.FirstAsync(model => model.Equals(id));
+                var model = await GetModelById(id);
                 dbSet.Remove(model);
             }
             catch (InvalidOperationException ex)
             {
+                Console.WriteLine(ex.StackTrace);
+                throw new NotFoundException();
+            }
+        }
+
+        public async Task<TEntity> UpdateAsync(TEntity entity)
+        {
+            try
+            {
+                var modelFromDatabase = await GetModelById(entity.Id);
+                //return MapModelToEntity(modelFromDatabase);
+                _dbContext.Entry(modelFromDatabase).CurrentValues.SetValues(entity);
+                return entity;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine(ex.StackTrace);
                 throw new NotFoundException();
             }
         }
     }
-
 }
