@@ -14,11 +14,9 @@ namespace StoreHouse360.Controllers.Api
     public class UsersController : ApiControllerBase
     {
         private ILogger<UsersController> _logger;
-        //private IMapper _mapper;
         public UsersController(ILogger<UsersController> logger, IMapper mapper, IMediator mediator) : base(mediator, mapper)
         {
             _logger = logger;
-            //_mapper = mapper;
         }
 
         [HttpPost]

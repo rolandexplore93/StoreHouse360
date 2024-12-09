@@ -12,5 +12,6 @@ namespace StoreHouse360.Infrastructure.Persistence.Database
         }
         public DbSet<CategoryDb> Categories { get; set; }
         public DbSet<ManufacturerDb> Manufacturers { get; set; }
+        public DbSet<UnitDb> Units { get; set; }
     }
 }
