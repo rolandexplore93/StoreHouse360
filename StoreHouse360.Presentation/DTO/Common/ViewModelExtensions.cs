@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using StoreHouse360.Domain.Entities;
-//using StoreHouse360.Dto.Users;
 
-namespace StoreHouse360.Dto.Common
+namespace StoreHouse360.DTO.Common
 {
     public static class ViewModelExtensions
     {

@@ -1,7 +1,7 @@
 ﻿using StoreHouse360.Application.Commands.Currencies;
 using StoreHouse360.Application.Common.Mappings;
 
-namespace StoreHouse360.Dto.Currencies
+namespace StoreHouse360.DTO.Currencies
 {
     public class CreateCurrencyRequestDTO : IMapFrom<CreateCurrencyCommand>
     {

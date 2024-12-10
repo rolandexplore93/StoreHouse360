@@ -23,6 +23,8 @@ builder.Services.AddApplicationControllers()
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
 app.UseSwaggerMiddlewares();
 
 app.UseHttpsRedirection();

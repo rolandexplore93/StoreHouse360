@@ -1,8 +1,8 @@
 ﻿using StoreHouse360.Application.Common.Mappings;
 using StoreHouse360.Domain.Entities;
-using StoreHouse360.Dto.Common;
+using StoreHouse360.DTO.Common;
 
-namespace StoreHouse360.Dto.Currencies
+namespace StoreHouse360.DTO.Currencies
 {
     public class CurrencyVM : IMapFrom<Currency>, IViewModel
     {

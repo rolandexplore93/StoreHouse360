@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Currencies;
 using StoreHouse360.Application.Queries.Currencies;
-using StoreHouse360.Dto.Common;
-using StoreHouse360.Dto.Currencies;
+using StoreHouse360.DTO.Common;
+using StoreHouse360.DTO.Currencies;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api

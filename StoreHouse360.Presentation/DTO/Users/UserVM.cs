@@ -1,9 +1,9 @@
 ﻿using StoreHouse360.Application.Common.Mappings;
 using StoreHouse360.Domain.Entities;
-using StoreHouse360.Dto.Common;
+using StoreHouse360.DTO.Common;
 using System.Text.Json.Serialization;
 
-namespace StoreHouse360.Dto.Users
+namespace StoreHouse360.DTO.Users
 {
     public class UserVM : IMapFrom<User>, IViewModel
     {

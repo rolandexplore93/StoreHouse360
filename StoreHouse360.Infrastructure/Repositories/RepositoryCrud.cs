@@ -41,7 +41,8 @@ namespace StoreHouse360.Infrastructure.Repositories
         }
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await dbSet.AsQueryable().ProjectTo<TEntity>(mapper.ConfigurationProvider).ToListAsync();
+            //return await dbSet.AsQueryable().ProjectTo<TEntity>(mapper.ConfigurationProvider).ToListAsync();
+            return await dbSet.ProjectTo<TEntity>(mapper.ConfigurationProvider).ToListAsync();
         }
 
         protected IEnumerable<TEntity> GetAllFiltered(Func<TModel, bool> filter)

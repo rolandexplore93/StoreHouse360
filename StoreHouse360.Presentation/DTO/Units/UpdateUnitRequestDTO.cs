@@ -2,7 +2,7 @@
 using StoreHouse360.Application.Common.Mappings;
 using System.ComponentModel.DataAnnotations;
 
-namespace StoreHouse360.Dto.Units
+namespace StoreHouse360.DTO.Units
 {
     public class UpdateUnitRequestDTO : IMapFrom<UpdateUnitCommand>
     {

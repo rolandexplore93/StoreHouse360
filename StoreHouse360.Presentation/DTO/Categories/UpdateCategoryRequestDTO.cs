@@ -2,7 +2,7 @@
 using StoreHouse360.Application.Common.Mappings;
 using System.ComponentModel.DataAnnotations;
 
-namespace StoreHouse360.Dto.Category
+namespace StoreHouse360.DTO.Categories
 {
     public class UpdateCategoryRequestDTO : IMapFrom<UpdateCategoryCommand>
     {

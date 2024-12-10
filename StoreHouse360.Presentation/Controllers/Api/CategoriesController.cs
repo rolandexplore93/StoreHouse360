@@ -2,11 +2,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Categories;
-using StoreHouse360.Application.Commands.Users;
 using StoreHouse360.Application.Queries.Categories;
-using StoreHouse360.Dto.Category;
-using StoreHouse360.Dto.Common;
-using StoreHouse360.DTO.Category;
+using StoreHouse360.DTO.Categories;
+using StoreHouse360.DTO.Common;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api

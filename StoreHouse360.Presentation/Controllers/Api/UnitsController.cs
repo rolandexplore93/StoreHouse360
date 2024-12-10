@@ -3,8 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Units;
 using StoreHouse360.Application.Queries.Units;
-using StoreHouse360.Dto.Common;
-using StoreHouse360.Dto.Units;
+using StoreHouse360.DTO.Common;
+using StoreHouse360.DTO.Units;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api
@@ -40,8 +40,7 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<BaseResponse<UnitVM>>> CreateUnit(UpdateUnitRequestDTO request,
-            int id)
+        public async Task<ActionResult<BaseResponse<UnitVM>>> UpdateUnit(UpdateUnitRequestDTO request, int id)
         {
             var command = _mapper.Map<UpdateUnitCommand>(request);
             command.Id = id;

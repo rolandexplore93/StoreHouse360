@@ -14,6 +14,7 @@ namespace StoreHouse360.Infrastructure
 {
     public static class DependencyInjection
     {
+        // Extension method to register infrastructure services in the DI container
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
@@ -26,7 +27,7 @@ namespace StoreHouse360.Infrastructure
             services.AddUserIdentityServer();
             services.AddRepositories();
             services.AddServices();
-
+            services.AddAppSettings();
 
             return services;
         }
@@ -51,6 +52,7 @@ namespace StoreHouse360.Infrastructure
             services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
             services.AddScoped<IUnitRepository, UnitRepository>();
             services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
 
         private static void AddServices(this IServiceCollection services)

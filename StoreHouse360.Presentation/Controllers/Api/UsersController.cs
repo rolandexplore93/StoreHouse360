@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Users;
 using StoreHouse360.Application.Queries.Users;
-using StoreHouse360.Domain.Entities;
-using StoreHouse360.Dto.Common;
-using StoreHouse360.Dto.Users;
+using StoreHouse360.DTO.Common;
 using StoreHouse360.DTO.Users;
 using StoreHouse360.Presentation.DTO.Common.Responses;
+
 namespace StoreHouse360.Controllers.Api
 {
     public class UsersController : ApiControllerBase

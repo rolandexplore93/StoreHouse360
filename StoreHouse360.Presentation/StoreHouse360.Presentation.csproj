@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Dto\Common\Responses\Authentication\**" />
-    <Content Remove="Dto\Common\Responses\Authentication\**" />
-    <EmbeddedResource Remove="Dto\Common\Responses\Authentication\**" />
-    <None Remove="Dto\Common\Responses\Authentication\**" />
+    <Compile Remove="DTO\Common\Responses\Authentication\**" />
+    <Content Remove="DTO\Common\Responses\Authentication\**" />
+    <EmbeddedResource Remove="DTO\Common\Responses\Authentication\**" />
+    <None Remove="DTO\Common\Responses\Authentication\**" />
   </ItemGroup>
 
   <ItemGroup>

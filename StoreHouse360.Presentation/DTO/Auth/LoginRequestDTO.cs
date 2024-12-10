@@ -2,7 +2,7 @@
 using StoreHouse360.Authentication.DTO;
 using System.ComponentModel.DataAnnotations;
 
-namespace StoreHouse360.Presentation.DTO.Auth
+namespace StoreHouse360.DTO.Auth
 {
     public class LoginRequestDTO : IMapFrom<JwtLoginRequest>
     {

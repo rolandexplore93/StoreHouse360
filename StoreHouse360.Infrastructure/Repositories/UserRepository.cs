@@ -43,6 +43,11 @@ namespace StoreHouse360.Infrastructure.Repositories
             return _mapper.Map<User>(user);
         }
 
+        public Task<User> FindIncludedByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task DeleteAsync(int id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());

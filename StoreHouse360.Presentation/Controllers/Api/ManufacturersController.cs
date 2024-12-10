@@ -3,8 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Manufacturers;
 using StoreHouse360.Application.Queries.Manufacturers;
-using StoreHouse360.Dto.Common;
-using StoreHouse360.Dto.Manufacturers;
+using StoreHouse360.DTO.Common;
+using StoreHouse360.DTO.Manufacturers;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api
