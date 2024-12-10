@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Application.Services.Identity;
 using StoreHouse360.Application.Services.Settings;
@@ -20,9 +21,13 @@ namespace StoreHouse360.Infrastructure
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             if (configuration.GetValue<bool>("UseInMemoryDatabase"))
+            {
                 services.AddDbContext<ApplicationDbContext>(options => { options.UseInMemoryDatabase("sh360_db"); });
+            }
             else
-                services.AddSqlServer<ApplicationDbContext>(configuration.GetConnectionString("DefaultConnection"));
+            {
+                services.AddSqlServer<ApplicationDbContext>(configuration.GetValue<bool>("UseLocalDatabaseServer") ? configuration.GetConnectionString("LocalConnection") : configuration.GetConnectionString("DefaultConnection"));
+            }
 
             services.AddUserIdentityServer();
             services.AddRepositories();
