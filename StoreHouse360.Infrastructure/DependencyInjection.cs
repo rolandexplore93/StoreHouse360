@@ -65,5 +65,17 @@ namespace StoreHouse360.Infrastructure
             services.AddScoped<IAppSettingsProvider, AppSettingsProvider>();
             services.AddScoped<AppSettings>(setting => setting.GetService<IAppSettingsProvider>()!.Get());
         }
+
+        public static void ApplyMigrationToDatabase(this WebApplication app)
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                using (var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
+                {
+                    dbContext.Database.EnsureCreated(); // Create database or tables if they do not exist
+                    dbContext.Database.Migrate(); // Apply pending migrations to the database and create the database if it does not exist   
+                }
+            }
+        }
     }
 }

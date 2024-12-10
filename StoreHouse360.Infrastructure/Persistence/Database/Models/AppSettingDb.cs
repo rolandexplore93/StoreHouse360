@@ -7,6 +7,7 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
     public class AppSettingDb
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Key { get; set; }
 
         public string Value { get; set; }

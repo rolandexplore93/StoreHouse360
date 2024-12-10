@@ -8,7 +8,8 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
     [Table("Units")]
     public class UnitDb : IMapFrom<Unit>, IDatabaseModel
     {
-        [Key] 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
         public int Value { get; set; }

@@ -9,6 +9,7 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
     public class ProductDb : IMapFrom<Product>, IDatabaseModel
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
         public int CategoryId { get; set; }

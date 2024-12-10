@@ -22,6 +22,8 @@ builder.Services.AddApplicationControllers()
 
 var app = builder.Build();
 
+app.ApplyMigrationToDatabase();
+
 // Configure the HTTP request pipeline.
 app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
