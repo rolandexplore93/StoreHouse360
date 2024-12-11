@@ -15,9 +15,10 @@ namespace StoreHouse360.Application.Queries.Products
             _productRepository = productRepository;
         }
 
-        public Task<IEnumerable<Product>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Product>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
-            return Task.FromResult(_productRepository.GetAllIncluded());
+            return await _productRepository.GetAllAsync(new GetAllOptions { IncludeRelations = true });
+            //return Task.FromResult(_productRepository.GetAllAsync(new GetAllOptions { IncludeRelations = true }));
         }
     }
 }

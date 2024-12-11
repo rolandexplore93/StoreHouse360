@@ -23,8 +23,8 @@ namespace StoreHouse360.Application.Commands.Units
                 Name = request.Name,
                 Value = request.Value
             };
-            var createdUnit = await _repository.CreateAsync(unit);
-            await _repository.SaveChanges();
+            var saveAction = await _repository.CreateAsync(unit);
+            var createdUnit = await saveAction();
             return createdUnit.Id;
         }
     }

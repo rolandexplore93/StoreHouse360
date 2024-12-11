@@ -23,8 +23,8 @@ namespace StoreHouse360.Application.Commands.Common
         public async Task<TKey> Handle(TRequest request, CancellationToken cancellationToken)
         {
             var entity = CreateEntity(request);
-            entity = await _repository.CreateAsync(entity);
-            await _repository.SaveChanges();
+            var saveAction = await _repository.CreateAsync(entity);
+            entity = await saveAction();
             return entity.Id;
         }
 

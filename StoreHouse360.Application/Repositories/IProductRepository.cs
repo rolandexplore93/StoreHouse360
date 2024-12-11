@@ -4,7 +4,7 @@ namespace StoreHouse360.Application.Repositories
 {
     public interface IProductRepository : IRepositoryCrud<Product, int>
     {
-        public Task<Product> FindIncludedByIdAsync(int id);
-        public IEnumerable<Product> GetAllIncluded();
+        //public Task<Product> FindIncludedByIdAsync(int id);
+        //public IEnumerable<Product> GetAllIncluded();
     }
 }

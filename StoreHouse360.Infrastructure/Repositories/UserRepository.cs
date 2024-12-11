@@ -23,20 +23,19 @@ namespace StoreHouse360.Infrastructure.Repositories
         {
             return Task.CompletedTask;
         }
-        public async Task<User> CreateAsync(User user)
+        public async Task<SaveAction<Task<User>>> CreateAsync(User user)
         {
             var identityUser = _mapper.Map<User, ApplicationIdentityUser>(user);
             var result = await _userManager.CreateAsync(identityUser, user.PasswordHash);
-            if (result.Succeeded)
-                return _mapper.Map<ApplicationIdentityUser, User>(identityUser);
+            if (result.Succeeded) return () => Task.FromResult(_mapper.Map<ApplicationIdentityUser, User>(identityUser));
             throw new Exception(result.GetErrorsAsString());
         }
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public async Task<IEnumerable<User>> GetAllAsync(GetAllOptions? options = default)
         {
             return await _userManager.Users.ProjectTo<User>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
-        public async Task<User> FindByIdAsync(int id)
+        public async Task<User> FindByIdAsync(int id, FindOptions? options = default)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user == null) throw new NotFoundException("user", id);

@@ -17,7 +17,8 @@ namespace StoreHouse360.Application.Queries.Products
         }
         public async Task<Product> Handle(GetProductQuery request, CancellationToken cancellationToken)
         {
-            var result = await _productRepository.FindIncludedByIdAsync(request.Id);
+            //var result = await _productRepository.FindIncludedByIdAsync(request.Id);
+            var result = await _productRepository.FindByIdAsync(request.Id, options: new FindOptions { IncludeRelations = true });
             return result;
         }
     }

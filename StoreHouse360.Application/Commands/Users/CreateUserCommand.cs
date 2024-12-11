@@ -21,8 +21,8 @@ namespace StoreHouse360.Application.Commands.Users
         public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             var user = new User() { UserName = request.Username, PasswordHash = request.Password };
-            var createdUser = await _userRepository.CreateAsync(user);
-            await _userRepository.SaveChanges();
+            var saveAction = await _userRepository.CreateAsync(user);
+            var createdUser = await saveAction();
             return createdUser.Id;
         }
     }

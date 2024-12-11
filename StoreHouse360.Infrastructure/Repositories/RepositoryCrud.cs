@@ -31,35 +31,35 @@ namespace StoreHouse360.Infrastructure.Repositories
             this.mapper = mapper;
             dbSet = dbContext.Set<TModel>();
         }
-        public async Task<TEntity> CreateAsync(TEntity entity)
+        public async Task<SaveAction<Task<TEntity>>> CreateAsync(TEntity entity)
         {
             var model = MapEntityToModel(entity);
             var result = await dbSet.AddAsync(model);
-            //await _dbContext.SaveChangesAsync();
-            return MapModelToEntity(result.Entity);
-            //return modelToEntity;
+
+            return async () =>
+            {
+                await SaveChanges();
+                return MapModelToEntity(result.Entity);
+
+            };
         }
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> GetAllAsync(GetAllOptions? options = default)
         {
-            //return await dbSet.AsQueryable().ProjectTo<TEntity>(mapper.ConfigurationProvider).ToListAsync();
-            return await dbSet.ProjectTo<TEntity>(mapper.ConfigurationProvider).ToListAsync();
+            IQueryable<TModel> databaseSet = options is { IncludeRelations: true } ? GetIncludedDatabaseSet() : dbSet;
+            return await databaseSet.ProjectTo<TEntity>(mapper.ConfigurationProvider).ToListAsync();
         }
 
-        protected IEnumerable<TEntity> GetAllFiltered(Func<TModel, bool> filter)
-        {
-            return dbSet.Where(model => filter(model)).ProjectTo<TEntity>(mapper.ConfigurationProvider);
-        }
         public Task<TEntity> GetFirstAsync(Func<TEntity, bool> filter)
         {
             return dbSet.FirstAsync(model => filter(MapModelToEntity(model)))
                 .ContinueWith(task => MapModelToEntity(task.Result));
         }
 
-        public async Task<TEntity> FindByIdAsync(TKey id)
+        public async Task<TEntity> FindByIdAsync(TKey id, FindOptions? options = default)
         {
             try
             {
-                var model = await GetModelById(id);
+                var model = await GetModelById(id, options);
                 return MapModelToEntity(model);
             }
             catch (InvalidOperationException ex)
@@ -69,10 +69,13 @@ namespace StoreHouse360.Infrastructure.Repositories
             }
         }
 
-        private Task<TModel> GetModelById(TKey id)
+        private Task<TModel> GetModelById(TKey id, FindOptions? options = default)
         {
-            return dbSet.FirstAsync(model => model.Id.Equals(id));
+            IQueryable<TModel> databaseSet = options is { IncludeRelations: true } ? GetIncludedDatabaseSet() : dbSet;
+            return databaseSet.FirstAsync(model => model.Id.Equals(id));
         }
+
+        protected virtual IQueryable<TModel> GetIncludedDatabaseSet() => dbSet.AsQueryable();
         protected TModel MapEntityToModel(TEntity entity)
         {
             var output = mapper.Map<TModel>(entity);

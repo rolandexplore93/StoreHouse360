@@ -10,7 +10,7 @@ using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api
 {  
-    [Authorize]
+    //[Authorize]
     public class CurrenciesController : ApiControllerBase
     {
         public CurrenciesController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
