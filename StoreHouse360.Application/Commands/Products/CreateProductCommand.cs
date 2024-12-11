@@ -15,13 +15,10 @@ namespace StoreHouse360.Application.Commands.Products
         public int CurrencyId { get; init; }
     }
 
-    public class CreateProductCommandHandler : CreateEntityCommand<CreateProductCommand, Product, int, IProductRepository>
+    public class CreateProductCommandHandler : CreateEntityCommandHandler<CreateProductCommand, Product, int, IProductRepository>
     {
-        private readonly IProductRepository productRepository;
-
         public CreateProductCommandHandler(IProductRepository productRepository) : base(productRepository)
         {
-            this.productRepository = productRepository;
         }
 
         protected override Product CreateEntity(CreateProductCommand request)

@@ -361,7 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/StoreHouse360/appsettings.json
+
 /StoreHouse360.Presentation/appsettings.json
-/StoreHouse360/appsettings.Development.json
 /StoreHouse360.Presentation/appsettings.Development.json
+/StoreHouse360.Presentation/appsettings.local.json

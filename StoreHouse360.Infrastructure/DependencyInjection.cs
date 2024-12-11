@@ -58,6 +58,8 @@ namespace StoreHouse360.Infrastructure
             services.AddScoped<IUnitRepository, UnitRepository>();
             services.AddScoped<ICurrencyRepository, CurrencyRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IWarehouseRepository, WarehouseRepository>();
+            services.AddScoped<IStoragePlaceRepository, StoragePlacesRepository>();
         }
 
         private static void AddServices(this IServiceCollection services)
@@ -77,8 +79,8 @@ namespace StoreHouse360.Infrastructure
             {
                 using (var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
                 {
-                    dbContext.Database.EnsureCreated(); // Create database or tables if they do not exist
                     dbContext.Database.Migrate(); // Apply pending migrations to the database and create the database if it does not exist   
+                    dbContext.Database.EnsureCreated(); // Create database or tables if they do not exist
                 }
             }
         }

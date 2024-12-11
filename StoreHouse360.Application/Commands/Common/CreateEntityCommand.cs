@@ -8,14 +8,14 @@ namespace StoreHouse360.Application.Commands.Common
     {
 
     }
-    public abstract class CreateEntityCommand<TRequest, TEntity, TKey, TRepository> : IRequestHandler<TRequest, TKey>
+    public abstract class CreateEntityCommandHandler<TRequest, TEntity, TKey, TRepository> : IRequestHandler<TRequest, TKey>
         where TRequest : ICreateEntityCommand<TKey>
         where TEntity : BaseEntity<TKey>
         where TRepository : IRepositoryCrud<TEntity, TKey>
     {
         protected readonly TRepository _repository;
 
-        public CreateEntityCommand(TRepository repository)
+        public CreateEntityCommandHandler(TRepository repository)
         {
             _repository = repository;
         }

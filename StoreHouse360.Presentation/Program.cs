@@ -7,6 +7,7 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Configuration.AddJsonFile("appsettings.local.json", true, true);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication()
     .AddApplicationAutomapper(new[]
@@ -17,8 +18,7 @@ builder.Services.AddApplication()
 
 builder.Services.AddAppAuthentication(builder.Configuration);
 
-builder.Services.AddApplicationControllers()
-    .AddSwaggerDocumentation();
+builder.Services.AddApplicationControllers().AddSwaggerDocumentation();
 
 var app = builder.Build();
 

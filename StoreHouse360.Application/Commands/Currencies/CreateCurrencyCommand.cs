@@ -11,7 +11,7 @@ namespace StoreHouse360.Application.Commands.Currencies
         public float Factor { get; set; }
     }
 
-    public class CreateCurrencyCommandHandler : CreateEntityCommand<CreateCurrencyCommand, Currency, int, ICurrencyRepository>
+    public class CreateCurrencyCommandHandler : CreateEntityCommandHandler<CreateCurrencyCommand, Currency, int, ICurrencyRepository>
     {
         public CreateCurrencyCommandHandler(ICurrencyRepository repository) : base(repository)
         {
