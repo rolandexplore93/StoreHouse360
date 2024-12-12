@@ -17,7 +17,7 @@ namespace StoreHouse360.Application.Queries.StoragePlaces
         }
         public async Task<IEnumerable<StoragePlace>> Handle(GetAllStoragePlacesQuery request, CancellationToken cancellationToken)
         {
-            return await _storagePlaceRepository.GetAllAsync(new GetAllOptions { IncludeRelations = true });
+            return await _storagePlaceRepository.GetAllAsync(new GetAllOptions<StoragePlace> { IncludeRelations = true, Filter = p => p.WarehouseId == request.WarehouseId });
         }
     }
 }

@@ -12,7 +12,8 @@ namespace StoreHouse360.DTO.Common
         }
         public static IEnumerable<TViewModel> ToViewModels<TViewModel>(this IEnumerable<IEntity> entities, IMapper mapper) where TViewModel : IViewModel
         {
-            return entities.Select(entity => entity.ToViewModel<TViewModel>(mapper));
+            //return entities.Select(entity => entity.ToViewModel<TViewModel>(mapper));
+            return mapper.Map<IEnumerable<IEntity>, IEnumerable<TViewModel>>(entities);
         }
     }
 }

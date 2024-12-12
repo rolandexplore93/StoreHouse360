@@ -43,10 +43,18 @@ namespace StoreHouse360.Infrastructure.Repositories
 
             };
         }
-        public async Task<IEnumerable<TEntity>> GetAllAsync(GetAllOptions? options = default)
+        public async Task<IEnumerable<TEntity>> GetAllAsync(GetAllOptions<TEntity>? options = default)
         {
             IQueryable<TModel> databaseSet = options is { IncludeRelations: true } ? GetIncludedDatabaseSet() : dbSet;
-            return await databaseSet.ProjectTo<TEntity>(mapper.ConfigurationProvider).ToListAsync();
+
+            IQueryable<TEntity> entitiesSet = databaseSet.ProjectTo<TEntity>(mapper.ConfigurationProvider);
+
+            if (options is { Filter : { } })
+            {
+                entitiesSet = entitiesSet.Where(options.Filter);
+            }
+
+            return entitiesSet;
         }
 
         public Task<TEntity> GetFirstAsync(Func<TEntity, bool> filter)
