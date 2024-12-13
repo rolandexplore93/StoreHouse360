@@ -13,6 +13,7 @@ namespace StoreHouse360.Application.Commands.Products
         public string Barcode { get; init; }
         public double Price { get; init; }
         public int CurrencyId { get; init; }
+        public int? MinimumLevel { get; set; }
     }
 
     public class CreateProductCommandHandler : CreateEntityCommandHandler<CreateProductCommand, Product, int, IProductRepository>

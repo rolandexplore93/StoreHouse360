@@ -14,5 +14,6 @@ namespace StoreHouse360.DTO.Products
         public string Barcode { get; set; }
         public double Price { get; set; }
         public int CurrencyId { get; set; }
+        public int? MinimumLevel { get; set; }
     }
 }
