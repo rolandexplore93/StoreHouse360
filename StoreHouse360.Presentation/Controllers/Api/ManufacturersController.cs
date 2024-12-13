@@ -5,6 +5,7 @@ using StoreHouse360.Application.Commands.Manufacturers;
 using StoreHouse360.Application.Queries.Manufacturers;
 using StoreHouse360.DTO.Common;
 using StoreHouse360.DTO.Manufacturers;
+using StoreHouse360.DTO.Pagination;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api
@@ -24,9 +25,9 @@ namespace StoreHouse360.Controllers.Api
             //return Ok(manufacturer.ToViewModel<ManufacturerVM>(_mapper));
         }
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<IEnumerable<ManufacturerVM>>>> GetManufacturers()
+        public async Task<ActionResult<BaseResponse<PaginationVM<ManufacturerVM>>>> GetManufacturers([FromQuery] PaginationRequestParams request)
         {
-            var manufacturers = await Mediator.Send(new GetAllManufacturersQuery());
+            var manufacturers = await Mediator.Send(request.AsQuery(new GetAllManufacturersQuery()));
             return Ok(manufacturers.ToViewModels<ManufacturerVM>(_mapper));
         }
 

@@ -6,6 +6,7 @@ using StoreHouse360.Application.Commands.Currencies;
 using StoreHouse360.Application.Queries.Currencies;
 using StoreHouse360.DTO.Common;
 using StoreHouse360.DTO.Currencies;
+using StoreHouse360.DTO.Pagination;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api
@@ -27,9 +28,9 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<IEnumerable<CurrencyVM>>>> GetAll()
+        public async Task<ActionResult<BaseResponse<PaginationVM<CurrencyVM>>>> GetAll([FromQuery] PaginationRequestParams request)
         {
-            var currencies = await Mediator.Send(new GetAllCurrenciesQuery());
+            var currencies = await Mediator.Send(request.AsQuery(new GetAllCurrenciesQuery()));
             return Ok(currencies.ToViewModels<CurrencyVM>(_mapper));
         }
 

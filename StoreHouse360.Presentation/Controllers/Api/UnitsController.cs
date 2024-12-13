@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Units;
 using StoreHouse360.Application.Queries.Units;
 using StoreHouse360.DTO.Common;
+using StoreHouse360.DTO.Pagination;
 using StoreHouse360.DTO.Units;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 
@@ -32,10 +33,10 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<IEnumerable<UnitVM>>>> GetUnits()
+        public async Task<ActionResult<BaseResponse<PaginationVM<UnitVM>>>> GetUnits([FromQuery] PaginationRequestParams request)
         {
             var query = new GetAllUnitsQuery();
-            var unitEntities = await Mediator.Send(query);
+            var unitEntities = await Mediator.Send(request.AsQuery(query));
             return Ok(unitEntities.ToViewModels<UnitVM>(_mapper));
         }
 

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Warehouses;
 using StoreHouse360.Application.Queries.Warehouses;
 using StoreHouse360.DTO.Common;
+using StoreHouse360.DTO.Pagination;
 using StoreHouse360.DTO.Warehouses;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 
@@ -26,9 +27,9 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<IEnumerable<WarehouseVM>>>> GetAll()
+        public async Task<ActionResult<BaseResponse<PaginationVM<WarehouseVM>>>> GetAll([FromQuery] PaginationRequestParams request)
         {
-            var warehouses = await Mediator.Send(new GetAllWarehousesQuery());
+            var warehouses = await Mediator.Send(request.AsQuery(new GetAllWarehousesQuery()));
             return Ok(warehouses.ToViewModels<WarehouseVM>(_mapper));
         }
         [HttpGet("{id}")]

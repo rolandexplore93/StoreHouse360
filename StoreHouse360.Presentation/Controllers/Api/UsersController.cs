@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Users;
 using StoreHouse360.Application.Queries.Users;
 using StoreHouse360.DTO.Common;
+using StoreHouse360.DTO.Pagination;
 using StoreHouse360.DTO.Users;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 
@@ -32,9 +33,9 @@ namespace StoreHouse360.Controllers.Api
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<BaseResponse<IEnumerable<UserVM>>>> GetUsers()
+        public async Task<ActionResult<BaseResponse<PaginationVM<UserVM>>>> GetUsers([FromQuery] PaginationRequestParams request)
         {
-            var result = await Mediator.Send(new GetAllUsersQuery());
+            var result = await Mediator.Send(request.AsQuery(new GetAllUsersQuery()));
             //return Ok(result);
             return Ok(result.ToViewModels<UserVM>(_mapper));
         }

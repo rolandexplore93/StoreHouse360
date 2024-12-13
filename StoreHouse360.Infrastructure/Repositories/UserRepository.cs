@@ -30,9 +30,9 @@ namespace StoreHouse360.Infrastructure.Repositories
             if (result.Succeeded) return () => Task.FromResult(_mapper.Map<ApplicationIdentityUser, User>(identityUser));
             throw new Exception(result.GetErrorsAsString());
         }
-        public async Task<IEnumerable<User>> GetAllAsync(GetAllOptions<User>? options = default)
+        public async Task<IQueryable<User>> GetAllAsync(GetAllOptions<User>? options = default)
         {
-            return await _userManager.Users.ProjectTo<User>(_mapper.ConfigurationProvider).ToListAsync();
+            return _userManager.Users.ProjectTo<User>(_mapper.ConfigurationProvider);
         }
 
         public async Task<User> FindByIdAsync(int id, FindOptions? options = default)

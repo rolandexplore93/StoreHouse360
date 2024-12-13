@@ -1,21 +1,23 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Queries.Common;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Queries.Currencies
 {
-    public class GetAllCurrenciesQuery : IRequest<IEnumerable<Currency>>
+    public class GetAllCurrenciesQuery : GetPaginatedQuery<Currency>
     {
 
     }
-    public class GetAllCurrenciesQueryHandler : IRequestHandler<GetAllCurrenciesQuery, IEnumerable<Currency>>
+    public class GetAllCurrenciesQueryHandler : PaginatedQueryHandler<GetAllCurrenciesQuery, Currency>
     {
         private readonly ICurrencyRepository _currencyRepository;
         public GetAllCurrenciesQueryHandler(ICurrencyRepository currencyRepository)
         {
             _currencyRepository = currencyRepository;
         }
-        public async Task<IEnumerable<Currency>> Handle(GetAllCurrenciesQuery request, CancellationToken cancellationToken)
+
+        protected override async Task<IQueryable<Currency>> GetQuery(GetAllCurrenciesQuery request, CancellationToken cancellationToken)
         {
             return await _currencyRepository.GetAllAsync();
         }

@@ -43,7 +43,7 @@ namespace StoreHouse360.Infrastructure.Repositories
 
             };
         }
-        public async Task<IEnumerable<TEntity>> GetAllAsync(GetAllOptions<TEntity>? options = default)
+        public async Task<IQueryable<TEntity>> GetAllAsync(GetAllOptions<TEntity>? options = default)
         {
             IQueryable<TModel> databaseSet = options is { IncludeRelations: true } ? GetIncludedDatabaseSet() : dbSet;
 
@@ -59,8 +59,7 @@ namespace StoreHouse360.Infrastructure.Repositories
 
         public Task<TEntity> GetFirstAsync(Func<TEntity, bool> filter)
         {
-            return dbSet.FirstAsync(model => filter(MapModelToEntity(model)))
-                .ContinueWith(task => MapModelToEntity(task.Result));
+            return dbSet.FirstAsync(model => filter(MapModelToEntity(model))).ContinueWith(task => MapModelToEntity(task.Result));
         }
 
         public async Task<TEntity> FindByIdAsync(TKey id, FindOptions? options = default)

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.StoragePlaces;
 using StoreHouse360.Application.Queries.StoragePlaces;
 using StoreHouse360.DTO.Common;
+using StoreHouse360.DTO.Pagination;
 using StoreHouse360.DTO.StoragePlaces;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 
@@ -31,9 +32,9 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<IEnumerable<StoragePlaceVM>>>> GetAllStoragePlaces(int warehouseId)
+        public async Task<ActionResult<BaseResponse<PaginationVM<StoragePlaceVM>>>> GetAllStoragePlaces(int warehouseId, [FromQuery] PaginationRequestParams request)
         {
-            var places = await Mediator.Send(new GetAllStoragePlacesQuery { WarehouseId = warehouseId });
+            var places = await Mediator.Send(request.AsQuery(new GetAllStoragePlacesQuery { WarehouseId = warehouseId }));
 
             return Ok(places.ToViewModels<StoragePlaceVM>(_mapper));
         }

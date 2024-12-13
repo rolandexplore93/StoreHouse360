@@ -1,13 +1,14 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Queries.Common;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Queries.Products
 {
-    public class GetAllProductsQuery : IRequest<IEnumerable<Product>>
+    public class GetAllProductsQuery : GetPaginatedQuery<Product>
     {
     }
-    public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IEnumerable<Product>>
+    public class GetAllProductsQueryHandler : PaginatedQueryHandler<GetAllProductsQuery, Product>
     {
         private readonly IProductRepository _productRepository;
         public GetAllProductsQueryHandler(IProductRepository productRepository)
@@ -15,7 +16,7 @@ namespace StoreHouse360.Application.Queries.Products
             _productRepository = productRepository;
         }
 
-        public async Task<IEnumerable<Product>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+        protected override async Task<IQueryable<Product>> GetQuery(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
             return await _productRepository.GetAllAsync(new GetAllOptions<Product> { IncludeRelations = true });
         }
