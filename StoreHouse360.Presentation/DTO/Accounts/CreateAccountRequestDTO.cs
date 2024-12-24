@@ -6,8 +6,8 @@ namespace StoreHouse360.DTO.Accounts
 {
     public class CreateAccountRequestDTO : IMapFrom<CreateAccountCommand>
     {
-        [Required] public string Code { get; set; }
         [Required] public string Name { get; set; }
+        [Required] public string Code { get; set; }
         [Required] public string Phone { get; set; }
         [Required] public string City { get; set; }
     }

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace StoreHouse360.Infrastructure.Persistence.Database.Models
 {
     [Table("Accounts")]
-    public class AccountDb : IMapFrom<Category>, IDatabaseModel
+    public class AccountDb : IMapFrom<Account>, IDatabaseModel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

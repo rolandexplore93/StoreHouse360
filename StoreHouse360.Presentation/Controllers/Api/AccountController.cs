@@ -22,8 +22,8 @@ namespace StoreHouse360.Controllers.Api
         public async Task<ActionResult<BaseResponse<AccountVM>>> CreateAccount(CreateAccountRequestDTO request)
         {
             var command = _mapper.Map<CreateAccountCommand>(request);
-            var unitId = await Mediator.Send(command);
-            return await GetAccount(unitId);
+            var accountId = await Mediator.Send(command);
+            return await GetAccount(accountId);
         }
 
         [HttpGet]

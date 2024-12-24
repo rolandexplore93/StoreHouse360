@@ -6,8 +6,8 @@ namespace StoreHouse360.Application.Commands.Accounts
 {
     public class CreateAccountCommand : ICreateEntityCommand<int>
     {
-        public string Code { get; set; }
         public string Name { get; set; }
+        public string Code { get; set; }
         public string Phone { get; set; }
         public string City { get; set; }
     }
@@ -17,12 +17,9 @@ namespace StoreHouse360.Application.Commands.Accounts
         public CreateAccountCommandHandler(IAccountRepository repository) : base(repository)
         {
         }
-        protected override Account CreateEntity(CreateAccountCommand request) => new()
+        protected override Account CreateEntity(CreateAccountCommand request)
         {
-            Name = request.Name,
-            Code = request.Code,
-            Phone = request.Phone,
-            City = request.City
-        };
+            return new Account { Name = request.Name, Code = request.Code, Phone = request.Phone, City = request.City };
+        }
     }
 }

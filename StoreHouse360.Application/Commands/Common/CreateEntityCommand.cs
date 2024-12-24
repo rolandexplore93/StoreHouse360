@@ -8,6 +8,7 @@ namespace StoreHouse360.Application.Commands.Common
     {
 
     }
+
     public abstract class CreateEntityCommandHandler<TRequest, TEntity, TKey, TRepository> : IRequestHandler<TRequest, TKey>
         where TRequest : ICreateEntityCommand<TKey>
         where TEntity : BaseEntity<TKey>
