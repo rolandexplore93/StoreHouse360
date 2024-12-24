@@ -33,6 +33,7 @@ namespace StoreHouse360.Application.Commands.Products
                 Barcode = request.Barcode,
                 Price = request.Price,
                 CurrencyId = request.CurrencyId,
+                MinimumLevel = request.MinimumLevel ?? 0
             };
         }
     }

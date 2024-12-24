@@ -2,12 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using StoreHouse360.Application.Repositories;
+using StoreHouse360.Application.Repositories.UnitOfWork;
 using StoreHouse360.Application.Services.Identity;
 using StoreHouse360.Application.Services.Settings;
 using StoreHouse360.Application.Settings;
 using StoreHouse360.Infrastructure.Persistence.Database;
 using StoreHouse360.Infrastructure.Persistence.Database.Models;
 using StoreHouse360.Infrastructure.Repositories;
+using StoreHouse360.Infrastructure.Repositories.UnitOfWork;
 using StoreHouse360.Infrastructure.Services;
 using System.Reflection;
 
@@ -61,6 +63,7 @@ namespace StoreHouse360.Infrastructure
             services.AddScoped<IWarehouseRepository, WarehouseRepository>();
             services.AddScoped<IStoragePlaceRepository, StoragePlacesRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
         private static void AddServices(this IServiceCollection services)

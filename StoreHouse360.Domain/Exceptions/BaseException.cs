@@ -1,4 +1,4 @@
-﻿namespace StoreHouse360.Application.Exceptions
+﻿namespace StoreHouse360.Domain.Exceptions
 {
     public class BaseException : Exception
     {

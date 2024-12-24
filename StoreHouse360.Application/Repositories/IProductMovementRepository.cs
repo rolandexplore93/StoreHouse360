@@ -9,7 +9,7 @@ namespace StoreHouse360.Application.Repositories
 
     public class AggregatedProductQuantity
     {
-        public int ProductId { get; set; }
+        public Product Product { get; set; }
         public int QuantitySum { get; set; }
     }
 }
