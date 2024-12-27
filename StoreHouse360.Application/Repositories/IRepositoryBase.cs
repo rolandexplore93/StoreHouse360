@@ -11,6 +11,7 @@ namespace StoreHouse360.Application.Repositories
     public interface IRepositoryCrud<TEntity, TKey> : IRepositoryBase where TEntity : BaseEntity<TKey>
     {
         Task<SaveAction<Task<TEntity>>> CreateAsync(TEntity entity);
+        Task<SaveAction<Task<IEnumerable<TEntity>>>> CreateAllAsync(IEnumerable<TEntity> entities);
         Task<IQueryable<TEntity>> GetAllAsync(GetAllOptions<TEntity>? options = default);
 
         /// <exception cref="NotFoundException"></exception>

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using StoreHouse360.Application.Exceptions;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
@@ -43,6 +44,25 @@ namespace StoreHouse360.Infrastructure.Repositories
 
             };
         }
+
+
+        public async Task<SaveAction<Task<IEnumerable<TEntity>>>> CreateAllAsync(IEnumerable<TEntity> entities)
+        {
+            var models = entities.Select(entity => MapEntityToModel(entity));
+            IList<EntityEntry<TModel>> results = new List<EntityEntry<TModel>>();
+
+            foreach (var model in models)
+            {
+                results.Add(await dbSet.AddAsync(model));
+            }
+
+            return async () =>
+            {
+                await SaveChanges();
+                return results.Select(result => MapModelToEntity(result.Entity));
+            };
+        }
+
         public async Task<IQueryable<TEntity>> GetAllAsync(GetAllOptions<TEntity>? options = default)
         {
             IQueryable<TModel> databaseSet = options is { IncludeRelations: true } ? GetIncludedDatabaseSet() : dbSet;
@@ -120,5 +140,6 @@ namespace StoreHouse360.Infrastructure.Repositories
                 throw new NotFoundException();
             }
         }
+
     }
 }
