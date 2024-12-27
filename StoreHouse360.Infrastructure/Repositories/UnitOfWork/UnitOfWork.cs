@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Application.Repositories.UnitOfWork;
 using StoreHouse360.Infrastructure.Persistence.Database;
@@ -8,6 +9,7 @@ namespace StoreHouse360.Infrastructure.Repositories.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DbContext _dbContext;
+        private readonly IDbContextTransaction _transaction;
         private readonly Lazy<AccountRepository> _accountRepository;
         private readonly Lazy<CategoryRepository> _categoryRepository;
         private readonly Lazy<CurrencyAmountRepository> _currencyAmountRepository;
@@ -27,6 +29,7 @@ namespace StoreHouse360.Infrastructure.Repositories.UnitOfWork
             Lazy<UnitRepository> unitRepository, Lazy<UserRepository> userRepository, Lazy<WarehouseRepository> warehouseRepository)
         {
             _dbContext = dbContext;
+            _transaction =  _dbContext.Database.BeginTransaction();
             _accountRepository = accountRepository;
             _categoryRepository = categoryRepository;
             _currencyAmountRepository = currencyAmountRepository;
@@ -52,9 +55,16 @@ namespace StoreHouse360.Infrastructure.Repositories.UnitOfWork
         public IUnitRepository UnitRepository => _unitRepository.Value;
         public IUserRepository UserRepository => _userRepository.Value;
         public IWarehouseRepository WarehouseRepository => _warehouseRepository.Value;
-        public void SaveChanges()
+
+        public void Commit()
         {
-            _dbContext.SaveChanges();
+            _transaction.Commit();
+        }
+
+        public void Dispose()
+        {
+            _transaction.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace StoreHouse360.Application.Repositories.UnitOfWork
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
         public IAccountRepository AccountRepository { get; }
         public ICategoryRepository CategoryRepository { get; }
@@ -14,6 +14,6 @@
         public IUnitRepository UnitRepository { get; }
         public IUserRepository UserRepository { get; }
         public IWarehouseRepository WarehouseRepository { get; }
-        public void SaveChanges();
+        public void Commit();
     }
 }
