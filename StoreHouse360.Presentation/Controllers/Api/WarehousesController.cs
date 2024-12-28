@@ -50,5 +50,11 @@ namespace StoreHouse360.Controllers.Api
             return Ok(warehouse.ToViewModel<WarehouseVM>(_mapper));
         }
 
+        [HttpDelete("{id}")]
+        public async Task Delete(int id)
+        {
+            await Mediator.Send(new DeleteWarehouseCommand() { key = id });
+        }
+
     }
 }

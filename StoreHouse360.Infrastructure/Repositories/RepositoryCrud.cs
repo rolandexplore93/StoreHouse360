@@ -7,6 +7,7 @@ using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 using StoreHouse360.Infrastructure.Persistence.Database;
 using StoreHouse360.Infrastructure.Persistence.Database.Models;
+using StoreHouse360.Infrastructure.Persistence.Database.Models.Common;
 
 namespace StoreHouse360.Infrastructure.Repositories
 {
@@ -48,7 +49,7 @@ namespace StoreHouse360.Infrastructure.Repositories
 
         public async Task<SaveAction<Task<IEnumerable<TEntity>>>> CreateAllAsync(IEnumerable<TEntity> entities)
         {
-            var models = entities.Select(entity => MapEntityToModel(entity));
+            var models = entities.Select(MapEntityToModel);
             IList<EntityEntry<TModel>> results = new List<EntityEntry<TModel>>();
 
             foreach (var model in models)
@@ -66,6 +67,8 @@ namespace StoreHouse360.Infrastructure.Repositories
         public async Task<IQueryable<TEntity>> GetAllAsync(GetAllOptions<TEntity>? options = default)
         {
             IQueryable<TModel> databaseSet = options is { IncludeRelations: true } ? GetIncludedDatabaseSet() : dbSet;
+
+            databaseSet = databaseSet.FilterSoftDeleteMethods();
 
             IQueryable<TEntity> entitiesSet = databaseSet.ProjectTo<TEntity>(mapper.ConfigurationProvider);
 
@@ -99,6 +102,7 @@ namespace StoreHouse360.Infrastructure.Repositories
         private Task<TModel> GetModelById(TKey id, FindOptions? options = default)
         {
             IQueryable<TModel> databaseSet = options is { IncludeRelations: true } ? GetIncludedDatabaseSet() : dbSet;
+            databaseSet = databaseSet.FilterSoftDeleteMethods();
             return databaseSet.FirstAsync(model => model.Id.Equals(id));
         }
 

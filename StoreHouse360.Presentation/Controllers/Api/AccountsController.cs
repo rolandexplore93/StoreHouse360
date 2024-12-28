@@ -22,8 +22,8 @@ namespace StoreHouse360.Controllers.Api
         public async Task<ActionResult<BaseResponse<AccountVM>>> CreateAccount(CreateAccountRequestDTO request)
         {
             var command = _mapper.Map<CreateAccountCommand>(request);
-            var accountId = await Mediator.Send(command);
-            return await GetAccount(accountId);
+            var id = await Mediator.Send(command);
+            return await GetAccount(id);
         }
 
         [HttpGet]
@@ -50,6 +50,12 @@ namespace StoreHouse360.Controllers.Api
             command.Id = id;
             var updatedAccountId = await Mediator.Send(command);
             return await GetAccount(updatedAccountId);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task DeleteAccount(int id)
+        {
+            await Mediator.Send(new DeleteAccountCommand { key = id });
         }
     }
 }

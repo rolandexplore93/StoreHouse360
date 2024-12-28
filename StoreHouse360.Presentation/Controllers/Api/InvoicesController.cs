@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Invoicing;
 using StoreHouse360.Application.Queries.Invoicing;
 using StoreHouse360.DTO.Common;
-using StoreHouse360.DTO.Currencies;
 using StoreHouse360.DTO.Invoices;
 using StoreHouse360.DTO.Pagination;
 using StoreHouse360.Presentation.DTO.Common.Responses;
@@ -12,6 +12,7 @@ using StatusCodes = StoreHouse360.Domain.Exceptions.StatusCodes;
 
 namespace StoreHouse360.Controllers.Api
 {
+    //[Authorize]
     public class InvoicesController : ApiControllerBase
     {
         public InvoicesController(IMediator mediator, IMapper mapper) : base(mediator, mapper)

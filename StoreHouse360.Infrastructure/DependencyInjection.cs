@@ -8,6 +8,7 @@ using StoreHouse360.Application.Services.Settings;
 using StoreHouse360.Application.Settings;
 using StoreHouse360.Infrastructure.Persistence.Database;
 using StoreHouse360.Infrastructure.Persistence.Database.Models;
+using StoreHouse360.Infrastructure.Persistence.Database.Triggers;
 using StoreHouse360.Infrastructure.Repositories;
 using StoreHouse360.Infrastructure.Repositories.UnitOfWork;
 using StoreHouse360.Infrastructure.Services;
@@ -28,7 +29,13 @@ namespace StoreHouse360.Infrastructure
             }
             else
             {
-                services.AddSqlServer<ApplicationDbContext>(configuration.GetValue<bool>("UseLocalDatabaseServer") ? configuration.GetConnectionString("LocalConnection") : configuration.GetConnectionString("DefaultConnection"));
+                services.AddSqlServer<ApplicationDbContext>(configuration.GetValue<bool>("UseLocalDatabaseServer")
+                    ? configuration.GetConnectionString("LocalConnection")
+                    : configuration.GetConnectionString("DefaultConnection"),
+                    optionsAction: options =>
+                    {
+                        options.UseTriggers(trigOptions => trigOptions.AddTrigger<SoftDeleteTrigger>());
+                    });
             }
 
             services.AddUserIdentityServer();

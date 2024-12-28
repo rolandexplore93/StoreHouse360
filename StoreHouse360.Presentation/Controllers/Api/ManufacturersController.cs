@@ -50,5 +50,11 @@ namespace StoreHouse360.Controllers.Api
             var resultId = await Mediator.Send(command);
             return await GetManufacturer(resultId);
         }
+
+        [HttpDelete("{id}")]
+        public async Task DeleteManufacturer(int id)
+        {
+            await Mediator.Send(new DeleteManufacturerCommand() { key = id });
+        }
     }
 }

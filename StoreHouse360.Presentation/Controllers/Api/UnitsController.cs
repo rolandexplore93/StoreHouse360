@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Units;
 using StoreHouse360.Application.Queries.Units;
@@ -10,6 +11,7 @@ using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api
 {
+    //[Authorize]
     public class UnitsController : ApiControllerBase
     {
         public UnitsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
@@ -47,6 +49,12 @@ namespace StoreHouse360.Controllers.Api
             command.Id = id;
             var updatedUnitId = await Mediator.Send(command);
             return await GetUnit(updatedUnitId);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task DeleteUnit(int id)
+        {
+            await Mediator.Send(new DeleteUnitCommand() { key = id });
         }
     }
 }

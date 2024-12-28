@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Products;
 using StoreHouse360.Application.Queries.Invoicing;
@@ -13,6 +14,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StoreHouse360.Controllers.Api
 {
+    //[Authorize]
     public class ProductsController : ApiControllerBase
     {
         public ProductsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
@@ -48,8 +50,8 @@ namespace StoreHouse360.Controllers.Api
         {
             var command = _mapper.Map<UpdateProductCommand>(request);
             command.Id = id;
-            var updatedProductId = await Mediator.Send(command);
-            return await GetProduct(updatedProductId);
+            var resultId = await Mediator.Send(command);
+            return await GetProduct(resultId);
         }
 
         [HttpGet("{id}/checkQuantity")]
@@ -61,13 +63,10 @@ namespace StoreHouse360.Controllers.Api
             });
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<BaseResponse<ProductJoinedVM>>> UpdateProduct(int id, UpdateProductRequestDTO request)
+        [HttpDelete("{id}")]
+        public async Task DeleteProduct(int id)
         {
-            var command = _mapper.Map<UpdateProductCommand>(request);
-            command.Id = id;
-            var resultId = await Mediator.Send(command);
-            return await GetProduct(resultId);
+            await Mediator.Send(new DeleteProductCommand() { key = id });
         }
     }
 }
