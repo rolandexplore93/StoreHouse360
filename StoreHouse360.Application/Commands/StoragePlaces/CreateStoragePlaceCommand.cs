@@ -7,9 +7,8 @@ namespace StoreHouse360.Application.Commands.StoragePlaces
     public class CreateStoragePlaceCommand : ICreateEntityCommand<int>
     {
         public string Name { get; set; }
-
+        public string? Description { get; set; }
         public int WarehouseId { get; set; }
-
         public int? ContainerId { get; set; }
     }
     public class CreateStoragePlaceCommandHandler : CreateEntityCommandHandler<CreateStoragePlaceCommand, StoragePlace, int, IStoragePlaceRepository>
@@ -23,7 +22,9 @@ namespace StoreHouse360.Application.Commands.StoragePlaces
             {
                 WarehouseId = request.WarehouseId,
                 ContainerId = request.ContainerId,
-                Name = request.Name
+                Name = request.Name,
+                Description = request.Description,
+                
             };
         }
     }

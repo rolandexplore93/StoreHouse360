@@ -16,6 +16,7 @@ namespace StoreHouse360.DTO.StoragePlaces
 
         [Required]
         public string Name { get; set; }
+        public string? Description { get; set; }
         public int? ContainerId { get; set; }
     }
 }

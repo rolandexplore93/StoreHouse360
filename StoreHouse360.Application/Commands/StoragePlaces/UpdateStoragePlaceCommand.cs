@@ -7,11 +7,9 @@ namespace StoreHouse360.Application.Commands.StoragePlaces
     public class UpdateStoragePlaceCommand : IUpdateEntityCommand<int>
     {
         public int Id { get; set; }
-
+        public string? Description { get; set; }
         public string Name { get; set; }
-
         public int WarehouseId { get; set; }
-
         public int? ContainerId { get; set; }
     }
     public class UpdateStoragePlaceCommandHandler : UpdateEntityCommandHandler<UpdateStoragePlaceCommand, StoragePlace, int, IStoragePlaceRepository>
@@ -26,7 +24,8 @@ namespace StoreHouse360.Application.Commands.StoragePlaces
                 Id = request.Id,
                 WarehouseId = request.WarehouseId,
                 ContainerId = request.ContainerId,
-                Name = request.Name
+                Name = request.Name,
+                Description = request.Description
             };
         }
     }

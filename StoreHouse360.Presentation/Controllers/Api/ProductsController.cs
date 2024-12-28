@@ -2,11 +2,14 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Products;
+using StoreHouse360.Application.Queries.Invoicing;
+using StoreHouse360.Application.Queries.Invoicing.DTO;
 using StoreHouse360.Application.Queries.Products;
 using StoreHouse360.DTO.Common;
 using StoreHouse360.DTO.Pagination;
 using StoreHouse360.DTO.Products;
 using StoreHouse360.Presentation.DTO.Common.Responses;
+using System.ComponentModel.DataAnnotations;
 
 namespace StoreHouse360.Controllers.Api
 {
@@ -47,6 +50,15 @@ namespace StoreHouse360.Controllers.Api
             command.Id = id;
             var updatedProductId = await Mediator.Send(command);
             return await GetProduct(updatedProductId);
+        }
+
+        [HttpGet("{id}/checkQuantity")]
+        public async Task CheckQuantity(int id, [FromQuery][Required] int quantity)
+        {
+            await Mediator.Send(new CheckProductQuantityQuery
+            {
+                ProductQuantities = new[] { new CheckProductQuantityDTO { ProductId = id, Quantity = quantity } }
+            });
         }
     }
 }

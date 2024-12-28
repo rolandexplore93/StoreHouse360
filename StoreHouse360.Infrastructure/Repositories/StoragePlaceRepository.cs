@@ -1,38 +1,22 @@
-﻿using StoreHouse360.Application.Repositories;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
+using StoreHouse360.Infrastructure.Persistence.Database;
+using StoreHouse360.Infrastructure.Persistence.Database.Models;
 
 namespace StoreHouse360.Infrastructure.Repositories
 {
-    public class StoragePlaceRepository : IStoragePlaceRepository
+    public class StoragePlaceRepository : RepositoryCrud<StoragePlace, StoragePlaceDb>, IStoragePlaceRepository
     {
-        public Task<SaveAction<Task<StoragePlace>>> CreateAsync(StoragePlace entity)
+        public StoragePlaceRepository(ApplicationDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
-            throw new NotImplementedException();
+            
         }
 
-        public Task DeleteAsync(int id)
+        protected override IQueryable<StoragePlaceDb> GetIncludedDatabaseSet()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<StoragePlace> FindByIdAsync(int id, FindOptions? options = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IQueryable<StoragePlace>> GetAllAsync(GetAllOptions<StoragePlace>? options = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SaveChanges()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<StoragePlace> UpdateAsync(StoragePlace entity)
-        {
-            throw new NotImplementedException();
+            return dbSet.Include(p => p.Warehouse);
         }
     }
 }

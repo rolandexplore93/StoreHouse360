@@ -12,9 +12,9 @@ using StoreHouse360.Presentation.DTO.Common.Responses;
 namespace StoreHouse360.Controllers.Api
 {
     //[Authorize]
-    public class AccountController : ApiControllerBase
+    public class AccountsController : ApiControllerBase
     {
-        public AccountController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+        public AccountsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
         }
 

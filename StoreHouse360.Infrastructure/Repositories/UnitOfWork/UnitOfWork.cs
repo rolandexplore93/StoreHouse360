@@ -61,6 +61,11 @@ namespace StoreHouse360.Infrastructure.Repositories.UnitOfWork
             _transaction.Commit();
         }
 
+        public Task CommitAsync()
+        {
+            return _transaction.CommitAsync();
+        }
+
         public void Dispose()
         {
             _transaction.Dispose();

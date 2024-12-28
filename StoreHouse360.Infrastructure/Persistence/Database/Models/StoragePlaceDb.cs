@@ -12,6 +12,7 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
+        public string? Description { get; set; }
         public int WarehouseId { get; set; }
         [ForeignKey("WarehouseId")]
         public WarehouseDb? Warehouse { get; set; }

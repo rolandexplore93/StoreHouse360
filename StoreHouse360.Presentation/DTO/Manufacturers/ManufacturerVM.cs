@@ -6,6 +6,7 @@ namespace StoreHouse360.DTO.Manufacturers
 {
     public class ManufacturerVM : IMapFrom<Manufacturer>, IViewModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string? Code { get; set; }
     }

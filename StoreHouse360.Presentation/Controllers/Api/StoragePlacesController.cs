@@ -32,9 +32,9 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<PaginationVM<StoragePlaceVM>>>> GetAllStoragePlaces(int warehouseId, [FromQuery] PaginationRequestParams request)
+        public async Task<ActionResult<BaseResponse<PaginationVM<StoragePlaceVM>>>> GetAllStoragePlaces(int warehouseId, [FromQuery] StoragePlaceRequestParams request)
         {
-            var places = await Mediator.Send(request.AsQuery(new GetAllStoragePlacesQuery { WarehouseId = warehouseId }));
+            var places = await Mediator.Send(request.AsQuery(new GetAllStoragePlacesQuery { WarehouseId = warehouseId, IsParent = request.IsParent, ContainerId = request.ContainerId }));
 
             return Ok(places.ToViewModels<StoragePlaceVM>(_mapper));
         }

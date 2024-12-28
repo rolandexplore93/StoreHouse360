@@ -8,6 +8,8 @@ namespace StoreHouse360.Application.Queries.StoragePlaces
     public class GetAllStoragePlacesQuery : GetPaginatedQuery<StoragePlace>
     {
         public int? WarehouseId { get; set; }
+        public int? ContainerId { get; set; }
+        public bool? IsParent { get; set; }
     }
     public class GetAllStoragePlacesQueryHandler : PaginatedQueryHandler<GetAllStoragePlacesQuery, StoragePlace>
     {
@@ -19,7 +21,11 @@ namespace StoreHouse360.Application.Queries.StoragePlaces
 
         protected override async Task<IQueryable<StoragePlace>> GetQuery(GetAllStoragePlacesQuery request, CancellationToken cancellationToken)
         {
-            return await _storagePlaceRepository.GetAllAsync(new GetAllOptions<StoragePlace> { IncludeRelations = true, Filter = p => p.WarehouseId == request.WarehouseId });
+            var query = await _storagePlaceRepository.GetAllAsync(new GetAllOptions<StoragePlace> { IncludeRelations = true });
+            if (request.WarehouseId != null) query = query.Where(sp => sp.WarehouseId == request.WarehouseId);
+            if (request.ContainerId != null) query = query.Where(sp => sp.ContainerId == request.ContainerId);
+            if (request.IsParent != null) query = query.Where(sp => (bool)request.IsParent ? sp.ContainerId == null : sp.ContainerId != null);
+            return query;
         }
     }
 }

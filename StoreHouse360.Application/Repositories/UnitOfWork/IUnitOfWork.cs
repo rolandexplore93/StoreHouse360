@@ -15,5 +15,6 @@
         public IUserRepository UserRepository { get; }
         public IWarehouseRepository WarehouseRepository { get; }
         public void Commit();
+        public Task CommitAsync();
     }
 }

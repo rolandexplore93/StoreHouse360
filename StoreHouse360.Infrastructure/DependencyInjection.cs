@@ -61,9 +61,12 @@ namespace StoreHouse360.Infrastructure
             services.AddScoped<ICurrencyRepository, CurrencyRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IWarehouseRepository, WarehouseRepository>();
-            services.AddScoped<IStoragePlaceRepository, StoragePlacesRepository>();
-            services.AddScoped<IAccountRepository, AccountRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IStoragePlaceRepository, StoragePlaceRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>(); 
+            services.AddScoped<ICurrencyAmountRepository, CurrencyAmountRepository>();
+            services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+            services.AddScoped<IProductMovementRepository, ProductMovementRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
 
         private static void AddServices(this IServiceCollection services)

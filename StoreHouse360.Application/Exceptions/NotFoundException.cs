@@ -12,8 +12,7 @@ namespace StoreHouse360.Application.Exceptions
         {
         }
 
-        public NotFoundException(string name, object key)
-        : this($"Entity \"{name}\" ({key}) was not found.")
+        public NotFoundException(string name, object key) : this($"Entity \"{name}\" ({key}) was not found.")
         {
         }
     }

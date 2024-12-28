@@ -67,5 +67,10 @@ namespace StoreHouse360.Infrastructure.Repositories
             }
             return _mapper.Map<User>(model);
         }
+
+        public Task<SaveAction<Task<IEnumerable<User>>>> CreateAllAsync(IEnumerable<User> entities)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

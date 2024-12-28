@@ -1,15 +1,10 @@
-﻿using StoreHouse360.Domain.Entities;
+﻿using StoreHouse360.Domain.Aggregations;
+using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Repositories
 {
     public interface IProductMovementRepository : IRepositoryCrud<ProductMovement, int>
     {
-        IQueryable<AggregatedProductQuantity> AggregatedProductQuantities(IList<int> productIds);
-    }
-
-    public class AggregatedProductQuantity
-    {
-        public Product Product { get; set; }
-        public int QuantitySum { get; set; }
+        IQueryable<AggregateProductQuantity> AggregateProductsQuantities(IList<int> productIds);
     }
 }

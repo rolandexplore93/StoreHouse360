@@ -9,6 +9,7 @@ namespace StoreHouse360.DTO.StoragePlaces
         //[FromRoute(Name = "warehouseId")]
         //public int WarehouseId { get; set; }
         public string Name { get; set; }
+        public string? Description { get; set; }
         public int? ContainerId { get; set; }
     }
 }

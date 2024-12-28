@@ -15,5 +15,6 @@
         public int CurrencyId { get; set; }
         public Currency Currency { get; set; }
         public int MinimumLevel { get; set; }
+        public bool HasMinimumLevel => MinimumLevel > 0;
     }
 }

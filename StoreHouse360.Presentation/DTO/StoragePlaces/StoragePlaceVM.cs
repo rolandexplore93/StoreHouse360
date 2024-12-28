@@ -8,8 +8,9 @@ namespace StoreHouse360.DTO.StoragePlaces
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string? Description { get; set; }
         public Warehouse? Warehouse { get; set; }
-        public StoragePlace? Container { get; set; }
+        public int? ContainerId { get; set; }
         public bool HasContainer { get; set; }
     }
 }

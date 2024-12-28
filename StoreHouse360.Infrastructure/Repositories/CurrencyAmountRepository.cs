@@ -1,38 +1,16 @@
-﻿using StoreHouse360.Application.Repositories;
+﻿using AutoMapper;
+using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
+using StoreHouse360.Infrastructure.Persistence.Database;
+using StoreHouse360.Infrastructure.Persistence.Database.Models;
 
 namespace StoreHouse360.Infrastructure.Repositories
 {
-    public class CurrencyAmountRepository : ICurrencyAmountRepository
+    public class CurrencyAmountRepository : RepositoryCrud<CurrencyAmount, CurrencyAmountDb>, ICurrencyAmountRepository
     {
-        public Task<SaveAction<Task<CurrencyAmount>>> CreateAsync(CurrencyAmount entity)
+        public CurrencyAmountRepository(ApplicationDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<CurrencyAmount> FindByIdAsync(int id, FindOptions? options = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IQueryable<CurrencyAmount>> GetAllAsync(GetAllOptions<CurrencyAmount>? options = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SaveChanges()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<CurrencyAmount> UpdateAsync(CurrencyAmount entity)
-        {
-            throw new NotImplementedException();
+            
         }
     }
 }
