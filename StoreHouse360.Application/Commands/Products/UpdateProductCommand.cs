@@ -14,6 +14,7 @@ namespace StoreHouse360.Application.Commands.Products
         public string Barcode { get; init; }
         public double Price { get; init; }
         public int CurrencyId { get; init; }
+        public int? MinimumLevel { get; init; }
     }
     public class UpdateProductCommandHandler : UpdateEntityCommandHandler<UpdateProductCommand, Product, int, IProductRepository>
     {
@@ -32,6 +33,7 @@ namespace StoreHouse360.Application.Commands.Products
                 Barcode = request.Barcode,
                 Price = request.Price,
                 CurrencyId = request.CurrencyId,
+                MinimumLevel = request.MinimumLevel ?? 0
             };
         }
     }

@@ -49,8 +49,8 @@ namespace StoreHouse360.Controllers.Api
         {
             var command = _mapper.Map<UpdateCategoryCommand>(request);
             command.Id = id;
-            var updatedCategoryId = await Mediator.Send(command);
-            return await GetCategory(updatedCategoryId);
+            var resultId = await Mediator.Send(command);
+            return await GetCategory(resultId);
         }
 
         [HttpDelete("{id}")]

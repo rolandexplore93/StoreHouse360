@@ -40,5 +40,14 @@ namespace StoreHouse360.Controllers.Api
             var currencies = await Mediator.Send(new GetCurrencyQuery { Id = id });
             return Ok(currencies.ToViewModel<CurrencyVM>(_mapper));
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<BaseResponse<CurrencyVM>>> UpdateCurrency(UpdateCurrencyRequestDTO request, int id)
+        {
+            var command = _mapper.Map<UpdateCurrencyCommand>(request);
+            command.Id = id;
+            var resultId = await Mediator.Send(command);
+            return await GetCurrency(resultId);
+        }
     }
 }

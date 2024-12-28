@@ -44,7 +44,7 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<BaseResponse<AccountVM>>> CreateAccount(UpdateAccountRequestDTO request, int id)
+        public async Task<ActionResult<BaseResponse<AccountVM>>> UpdateAccount(UpdateAccountRequestDTO request, int id)
         {
             var command = _mapper.Map<UpdateAccountCommand>(request);
             command.Id = id;

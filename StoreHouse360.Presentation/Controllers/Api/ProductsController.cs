@@ -60,5 +60,14 @@ namespace StoreHouse360.Controllers.Api
                 ProductQuantities = new[] { new CheckProductQuantityDTO { ProductId = id, Quantity = quantity } }
             });
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<BaseResponse<ProductJoinedVM>>> UpdateProduct(int id, UpdateProductRequestDTO request)
+        {
+            var command = _mapper.Map<UpdateProductCommand>(request);
+            command.Id = id;
+            var resultId = await Mediator.Send(command);
+            return await GetProduct(resultId);
+        }
     }
 }
