@@ -2,11 +2,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Categories;
-using StoreHouse360.Application.Commands.Users;
 using StoreHouse360.Application.Queries.Categories;
-using StoreHouse360.Dto.Category;
-using StoreHouse360.Dto.Common;
-using StoreHouse360.DTO.Category;
+using StoreHouse360.DTO.Categories;
+using StoreHouse360.DTO.Common;
+using StoreHouse360.DTO.Pagination;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api
@@ -38,9 +37,9 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<IEnumerable<CategoryVM>>>> GetCategories()
+        public async Task<ActionResult<BaseResponse<PaginationVM<CategoryVM>>>> GetCategories([FromQuery] PaginationRequestParams request)
         {
-            var query = new GetAllCategoriesQuery();
+            var query = request.AsQuery(new GetAllCategoriesQuery());
             var categoryEntities = await Mediator.Send(query);
             return Ok(categoryEntities.ToViewModels<CategoryVM>(_mapper));
         }
@@ -50,8 +49,8 @@ namespace StoreHouse360.Controllers.Api
         {
             var command = _mapper.Map<UpdateCategoryCommand>(request);
             command.Id = id;
-            var updatedCategoryId = await Mediator.Send(command);
-            return await GetCategory(updatedCategoryId);
+            var resultId = await Mediator.Send(command);
+            return await GetCategory(resultId);
         }
 
         [HttpDelete("{id}")]

@@ -14,15 +14,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.11" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\StoreHouse360.Application\StoreHouse360.Application.csproj" />
     <ProjectReference Include="..\StoreHouse360.Domain\StoreHouse360.Domain.csproj" />
   </ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Common" />
-	</ItemGroup>
 
 </Project>

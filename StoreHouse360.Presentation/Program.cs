@@ -7,8 +7,10 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddApplication()
+builder.Configuration.AddJsonFile("appsettings.local.json", true, true);
+
+builder.Services
+    .AddApplication()
     .AddApplicationAutomapper(new[]
     {
         Assembly.GetExecutingAssembly(),
@@ -17,12 +19,19 @@ builder.Services.AddApplication()
 
 builder.Services.AddAppAuthentication(builder.Configuration);
 
-builder.Services.AddApplicationControllers()
+builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services
+    .AddApplicationControllers()
     .AddSwaggerDocumentation();
 
 var app = builder.Build();
 
+app.ApplyMigrationToDatabase();
+
 // Configure the HTTP request pipeline.
+app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
 app.UseSwaggerMiddlewares();
 
 app.UseHttpsRedirection();

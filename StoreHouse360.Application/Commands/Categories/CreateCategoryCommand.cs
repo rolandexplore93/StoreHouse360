@@ -22,8 +22,9 @@ namespace StoreHouse360.Application.Commands.Categories
             {
                 Name = request.Name
             };
-            var createdCategory = await _categoryRepository.CreateAsync(category);
-            await _categoryRepository.SaveChanges();
+
+            var saveAction = await _categoryRepository.CreateAsync(category);
+            var createdCategory = await saveAction();
             return createdCategory.Id;
         }
     }

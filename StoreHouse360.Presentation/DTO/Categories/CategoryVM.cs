@@ -1,8 +1,8 @@
 ﻿using StoreHouse360.Application.Common.Mappings;
-using StoreHouse360.Dto.Common;
+using StoreHouse360.DTO.Common;
 using System.ComponentModel.DataAnnotations;
 
-namespace StoreHouse360.Dto.Category
+namespace StoreHouse360.DTO.Categories
 {
     public class CategoryVM : IMapFrom<Domain.Entities.Category>, IViewModel
     {

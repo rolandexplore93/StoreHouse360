@@ -1,4 +1,6 @@
-﻿namespace StoreHouse360.Application.Exceptions
+﻿using StoreHouse360.Domain.Exceptions;
+
+namespace StoreHouse360.Application.Exceptions
 {
     public class NotFoundException : BaseException
     {
@@ -10,8 +12,7 @@
         {
         }
 
-        public NotFoundException(string name, object key)
-        : this($"Entity \"{name}\" ({key}) was not found.")
+        public NotFoundException(string name, object key) : this($"Entity \"{name}\" ({key}) was not found.")
         {
         }
     }

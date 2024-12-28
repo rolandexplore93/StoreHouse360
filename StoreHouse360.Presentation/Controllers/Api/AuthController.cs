@@ -3,9 +3,9 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Authentication.DTO;
 using StoreHouse360.Authentication.Services;
-using StoreHouse360.Dto.Common;
-using StoreHouse360.Dto.Users;
-using StoreHouse360.Presentation.DTO.Auth;
+using StoreHouse360.DTO.Auth;
+using StoreHouse360.DTO.Common;
+using StoreHouse360.DTO.Users;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api

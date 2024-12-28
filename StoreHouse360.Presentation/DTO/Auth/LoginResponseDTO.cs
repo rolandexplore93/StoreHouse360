@@ -1,7 +1,6 @@
-﻿//using StoreHouse360.Domain.Entities;
-using StoreHouse360.Dto.Users;
+﻿using StoreHouse360.DTO.Users;
 
-namespace StoreHouse360.Presentation.DTO.Auth
+namespace StoreHouse360.DTO.Auth
 {
     public class LoginResponseDTO
     {

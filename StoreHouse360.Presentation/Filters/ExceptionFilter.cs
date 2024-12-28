@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using StoreHouse360.Application.Exceptions;
+using StoreHouse360.Domain.Exceptions;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 
@@ -17,6 +17,7 @@ namespace StoreHouse360.Filters
             _exceptionMap = new Dictionary<Type, Action<ExceptionContext>>
             {
                 // {typeof(NotFoundException), HandleNotFoundException}
+                {typeof(ProductMinimumLevelExceededException), HandleProductMinimumLevelExceededException}
             };
         }
 
@@ -57,6 +58,14 @@ namespace StoreHouse360.Filters
         {
             BaseException exception = (BaseException)context.Exception;
             var responseBody = new NoDataResponse(exception.Message);
+            context.Result = new ObjectResult(responseBody) { StatusCode = exception.Code };
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleProductMinimumLevelExceededException(ExceptionContext context)
+        {
+            var exception = context.Exception as ProductMinimumLevelExceededException;
+            var responseBody = new BaseResponse<IList<int>>(new ResponseMetaData { Message = exception!.Message }, exception.ProductsWithExceededMinimumLevel);
             context.Result = new ObjectResult(responseBody) { StatusCode = exception.Code };
             context.ExceptionHandled = true;
         }

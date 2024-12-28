@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using StoreHouse360.Application.Exceptions;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
@@ -31,34 +32,61 @@ namespace StoreHouse360.Infrastructure.Repositories
             this.mapper = mapper;
             dbSet = dbContext.Set<TModel>();
         }
-        public async Task<TEntity> CreateAsync(TEntity entity)
+        public async Task<SaveAction<Task<TEntity>>> CreateAsync(TEntity entity)
         {
             var model = MapEntityToModel(entity);
             var result = await dbSet.AddAsync(model);
-            //await _dbContext.SaveChangesAsync();
-            return MapModelToEntity(result.Entity);
-            //return modelToEntity;
-        }
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
-        {
-            return await dbSet.AsQueryable().ProjectTo<TEntity>(mapper.ConfigurationProvider).ToListAsync();
+
+            return async () =>
+            {
+                await SaveChanges();
+                return MapModelToEntity(result.Entity);
+
+            };
         }
 
-        protected IEnumerable<TEntity> GetAllFiltered(Func<TModel, bool> filter)
+
+        public async Task<SaveAction<Task<IEnumerable<TEntity>>>> CreateAllAsync(IEnumerable<TEntity> entities)
         {
-            return dbSet.Where(model => filter(model)).ProjectTo<TEntity>(mapper.ConfigurationProvider);
+            var models = entities.Select(entity => MapEntityToModel(entity));
+            IList<EntityEntry<TModel>> results = new List<EntityEntry<TModel>>();
+
+            foreach (var model in models)
+            {
+                results.Add(await dbSet.AddAsync(model));
+            }
+
+            return async () =>
+            {
+                await SaveChanges();
+                return results.Select(result => MapModelToEntity(result.Entity));
+            };
         }
+
+        public async Task<IQueryable<TEntity>> GetAllAsync(GetAllOptions<TEntity>? options = default)
+        {
+            IQueryable<TModel> databaseSet = options is { IncludeRelations: true } ? GetIncludedDatabaseSet() : dbSet;
+
+            IQueryable<TEntity> entitiesSet = databaseSet.ProjectTo<TEntity>(mapper.ConfigurationProvider);
+
+            if (options is { Filter : { } })
+            {
+                entitiesSet = entitiesSet.Where(options.Filter);
+            }
+
+            return entitiesSet;
+        }
+
         public Task<TEntity> GetFirstAsync(Func<TEntity, bool> filter)
         {
-            return dbSet.FirstAsync(model => filter(MapModelToEntity(model)))
-                .ContinueWith(task => MapModelToEntity(task.Result));
+            return dbSet.FirstAsync(model => filter(MapModelToEntity(model))).ContinueWith(task => MapModelToEntity(task.Result));
         }
 
-        public async Task<TEntity> FindByIdAsync(TKey id)
+        public async Task<TEntity> FindByIdAsync(TKey id, FindOptions? options = default)
         {
             try
             {
-                var model = await GetModelById(id);
+                var model = await GetModelById(id, options);
                 return MapModelToEntity(model);
             }
             catch (InvalidOperationException ex)
@@ -68,10 +96,13 @@ namespace StoreHouse360.Infrastructure.Repositories
             }
         }
 
-        private Task<TModel> GetModelById(TKey id)
+        private Task<TModel> GetModelById(TKey id, FindOptions? options = default)
         {
-            return dbSet.FirstAsync(model => model.Id.Equals(id));
+            IQueryable<TModel> databaseSet = options is { IncludeRelations: true } ? GetIncludedDatabaseSet() : dbSet;
+            return databaseSet.FirstAsync(model => model.Id.Equals(id));
         }
+
+        protected virtual IQueryable<TModel> GetIncludedDatabaseSet() => dbSet.AsQueryable();
         protected TModel MapEntityToModel(TEntity entity)
         {
             var output = mapper.Map<TModel>(entity);
@@ -109,5 +140,6 @@ namespace StoreHouse360.Infrastructure.Repositories
                 throw new NotFoundException();
             }
         }
+
     }
 }

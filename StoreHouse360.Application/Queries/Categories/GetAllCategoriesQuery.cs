@@ -1,13 +1,14 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Queries.Common;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Queries.Categories
 {
-    public class GetAllCategoriesQuery : IRequest<IEnumerable<Category>>
+    public class GetAllCategoriesQuery : GetPaginatedQuery<Category>
     {
     }
-    public class GetAllCategoriesQueryHandler : IRequestHandler<GetAllCategoriesQuery, IEnumerable<Category>>
+    public class GetAllCategoriesQueryHandler : PaginatedQueryHandler<GetAllCategoriesQuery, Category>
     {
         private readonly ICategoryRepository _categoryRepository;
 
@@ -15,7 +16,8 @@ namespace StoreHouse360.Application.Queries.Categories
         {
             _categoryRepository = repository;
         }
-        public async Task<IEnumerable<Category>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
+
+        protected override async Task<IQueryable<Category>> GetQuery(GetAllCategoriesQuery request, CancellationToken cancellationToken)
         {
             var categories = await _categoryRepository.GetAllAsync();
             return categories;
