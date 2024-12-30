@@ -25,8 +25,7 @@ namespace StoreHouse360.DTO.Common
                 Data = page.ToViewModels<TViewModel>(mapper),
                 CurrentPage = page.CurrentPage,
                 PagesCount = page.PagesCount,
-                PageSize = page.PageSize,
-                RowsCount = page.RowsCount
+                PageSize = page.PageSize
             };
         }
     }

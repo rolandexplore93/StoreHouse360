@@ -7,7 +7,7 @@ namespace StoreHouse360.Application.Common.Models
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }
         public int PagesCount { get; set; }
-        public int RowsCount { get; set; }
+        //public int RowsCount { get; set; }
     }
 
     public class PaginatedCollections<T> : IPaginatedCollections<T>
@@ -16,7 +16,7 @@ namespace StoreHouse360.Application.Common.Models
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }
         public int PagesCount { get; set; }
-        public int RowsCount { get; set; }
+        //public int RowsCount { get; set; }
 
 
         public IEnumerator<T> GetEnumerator()
@@ -31,11 +31,11 @@ namespace StoreHouse360.Application.Common.Models
 
         public static PaginatedCollections<TModel> Create<TModel>(IQueryable<TModel> query, int currentPage, int pageSize) where TModel : class
         {
-            var rowsCount = query.Count();
-            var pagesCount = (int)Math.Ceiling((double)rowsCount / pageSize);
+            var modelCount = query.Count();
+            var pagesCount = (int)Math.Ceiling((double)modelCount / pageSize);
             var skip = (currentPage - 1) * pageSize;
 
-            return new PaginatedCollections<TModel> { data = query.Skip(skip).Take(pageSize), CurrentPage = currentPage, PagesCount = pagesCount, PageSize = pageSize, RowsCount = rowsCount };
+            return new PaginatedCollections<TModel> { CurrentPage = currentPage, PagesCount = pagesCount, PageSize = pageSize };
         }
 
 
