@@ -7,6 +7,7 @@ namespace StoreHouse360.Application.Common.Models
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }
         public int PagesCount { get; set; }
+        //public int RowsCount { get; set; }
     }
 
     public class PaginatedCollections<T> : IPaginatedCollections<T>
@@ -15,6 +16,8 @@ namespace StoreHouse360.Application.Common.Models
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }
         public int PagesCount { get; set; }
+        //public int RowsCount { get; set; }
+
 
         public IEnumerator<T> GetEnumerator()
         {

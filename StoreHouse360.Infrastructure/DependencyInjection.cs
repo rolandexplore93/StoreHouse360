@@ -73,6 +73,7 @@ namespace StoreHouse360.Infrastructure
             services.AddScoped<ICurrencyAmountRepository, CurrencyAmountRepository>();
             services.AddScoped<IInvoiceRepository, InvoiceRepository>();
             services.AddScoped<IProductMovementRepository, ProductMovementRepository>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
 

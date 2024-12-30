@@ -22,11 +22,12 @@ namespace StoreHouse360.Infrastructure.Repositories.UnitOfWork
         private readonly Lazy<UnitRepository> _unitRepository;
         private readonly Lazy<UserRepository> _userRepository;
         private readonly Lazy<WarehouseRepository> _warehouseRepository;
+        private readonly Lazy<PaymentRepository> _paymentRepository;
 
         public UnitOfWork(ApplicationDbContext dbContext, Lazy<AccountRepository> accountRepository, Lazy<CategoryRepository> categoryRepository, Lazy<CurrencyAmountRepository> currencyAmountRepository, 
             Lazy<CurrencyRepository> currencyRepository, Lazy<InvoiceRepository> invoiceRepository, Lazy<ManufacturerRepository> manufacturerRepository, 
             Lazy<ProductMovementRepository> productMovementRepository, Lazy<ProductRepository> productRepository, Lazy<StoragePlaceRepository> storagePlaceRepository, 
-            Lazy<UnitRepository> unitRepository, Lazy<UserRepository> userRepository, Lazy<WarehouseRepository> warehouseRepository)
+            Lazy<UnitRepository> unitRepository, Lazy<UserRepository> userRepository, Lazy<WarehouseRepository> warehouseRepository, Lazy<PaymentRepository> paymentRepository)
         {
             _dbContext = dbContext;
             _transaction =  _dbContext.Database.BeginTransaction();
@@ -42,6 +43,7 @@ namespace StoreHouse360.Infrastructure.Repositories.UnitOfWork
             _unitRepository = unitRepository;
             _userRepository = userRepository;
             _warehouseRepository = warehouseRepository;
+            _paymentRepository = paymentRepository;
         }
         public IAccountRepository AccountRepository => _accountRepository.Value;
         public ICategoryRepository CategoryRepository => _categoryRepository.Value;
@@ -55,6 +57,7 @@ namespace StoreHouse360.Infrastructure.Repositories.UnitOfWork
         public IUnitRepository UnitRepository => _unitRepository.Value;
         public IUserRepository UserRepository => _userRepository.Value;
         public IWarehouseRepository WarehouseRepository => _warehouseRepository.Value;
+        public IPaymentRepository PaymentRepository => _paymentRepository.Value;
 
         public void Commit()
         {

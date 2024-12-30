@@ -4,5 +4,6 @@
     {
         public const int UnknownExceptionCode = 500;
         public const int ProductMinimumLevelExceededExceptionCode = 432;
+        public const int OverPaymentExceptionCode = 433;
     }
 }

@@ -22,5 +22,6 @@ namespace StoreHouse360.Infrastructure.Persistence.Database
         public DbSet<CurrencyAmountDb> CurrencyAmounts { get; set; }
         public DbSet<InvoiceDb> Invoices { get; set; }
         public DbSet<ProductMovementDb> ProductMovements { get; set; }
+        public DbSet<PaymentDb> Payments { get; set; }
     }
 }
