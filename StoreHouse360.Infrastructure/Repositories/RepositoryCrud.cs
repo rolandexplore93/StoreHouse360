@@ -68,14 +68,7 @@ namespace StoreHouse360.Infrastructure.Repositories
         {
             IQueryable<TModel> databaseSet = options is { IncludeRelations: true } ? GetIncludedDatabaseSet() : dbSet;
 
-            databaseSet = databaseSet.FilterSoftDeleteMethods();
-
             IQueryable<TEntity> entitiesSet = databaseSet.ProjectTo<TEntity>(mapper.ConfigurationProvider);
-
-            if (options is { Filter : { } })
-            {
-                entitiesSet = entitiesSet.Where(options.Filter);
-            }
 
             return entitiesSet;
         }
@@ -102,7 +95,6 @@ namespace StoreHouse360.Infrastructure.Repositories
         private Task<TModel> GetModelById(TKey id, FindOptions? options = default)
         {
             IQueryable<TModel> databaseSet = options is { IncludeRelations: true } ? GetIncludedDatabaseSet() : dbSet;
-            databaseSet = databaseSet.FilterSoftDeleteMethods();
             return databaseSet.FirstAsync(model => model.Id.Equals(id));
         }
 
