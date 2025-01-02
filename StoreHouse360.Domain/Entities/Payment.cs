@@ -9,8 +9,17 @@
         public double Amount { get; set; }
         public int CurrencyId { get; set; }
         public Currency? Currency { get; set; }
-        public IEnumerable<CurrencyAmount> CurrencyAmounts { get; set; }
+        public IEnumerable<CurrencyAmount>? CurrencyAmounts { get; set; }
         public DateTime? CreatedAt { get; set; }
+        public override bool Equals(object? obj)
+        {
+            return obj is Payment payment && payment.Id == Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
 
     }
 

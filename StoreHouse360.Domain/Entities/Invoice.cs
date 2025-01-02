@@ -17,6 +17,7 @@
         public DateTime CreatedAt { get; set; }
         public InvoiceStatus Status { get; set; }
         public InvoiceType Type { get; set; }
+        public bool IsClosed() => Status == InvoiceStatus.Closed;
     }
 
     public enum InvoiceStatus

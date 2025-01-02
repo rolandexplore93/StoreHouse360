@@ -4,6 +4,7 @@ using StoreHouse360.Application.Common.DTO;
 using StoreHouse360.Application.Queries.Payments;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Application.Repositories.UnitOfWork;
+using StoreHouse360.Domain.Aggregations;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Commands.Payments
@@ -17,7 +18,6 @@ namespace StoreHouse360.Application.Commands.Payments
         public double Amount { get; set; }
         public int CurrencyId { get; set; }
         public IEnumerable<CurrencyAmountDTO> CurrencyAmounts { get; set; }
-        public DateTime CreatedAt { get; set; }
     }
 
     public class CreatePaymentCommandHandler : IRequestHandler<CreatePaymentCommand, int>
@@ -32,11 +32,10 @@ namespace StoreHouse360.Application.Commands.Payments
 
         public async Task<int> Handle(CreatePaymentCommand request, CancellationToken cancellationToken)
         {
-            var checkInvoicePaymentQuery = new CheckInvoicePaymentQuery { InvoiceId = request.InvoiceId, Amount = request.Amount };
-            await _mediator.Send(checkInvoicePaymentQuery, cancellationToken);
             using var unitOfWork = _unitOfWork.Value;
 
-            Payment payment = new Payment
+            InvoicePayments invoicePayments = await unitOfWork.InvoicePaymentsRepository.FindByInvoiceId(request.InvoiceId);
+            invoicePayments.AddPayment( new Payment
             {
                 InvoiceId = request.InvoiceId,
                 Note = request.Note,
@@ -45,15 +44,18 @@ namespace StoreHouse360.Application.Commands.Payments
                 Amount = request.Amount,
                 CurrencyId = request.CurrencyId,
                 CreatedAt = DateTime.Now
-            };
+            });
 
-            var savePaymentAction = await unitOfWork.PaymentRepository.CreateAsync(payment);
-            var savedPayment = await savePaymentAction();
+            var saveAction = await unitOfWork.InvoicePaymentsRepository.CreatePayments(invoicePayments);
+            var savedInvoicePayments = await saveAction();
+
+            var addedPayments = savedInvoicePayments.Payments.Except(invoicePayments.Payments);
+            var addedPayment = addedPayments.First();
 
             var currencyAmounts = request.CurrencyAmounts
                 .Select(c => new CurrencyAmount
                 {
-                    ObjectId = savedPayment.Id,
+                    ObjectId = addedPayment.Id,
                     Key = CurrencyAmountKey.Payment,
                     Amount = c.Value,
                     CurrencyId = c.CurrencyId
@@ -62,7 +64,7 @@ namespace StoreHouse360.Application.Commands.Payments
             var saveCurrencyAmountsAction = await unitOfWork.CurrencyAmountRepository.CreateAllAsync(currencyAmounts);
             var result = await saveCurrencyAmountsAction();
             await unitOfWork.CommitAsync();
-            return payment.Id;
+            return addedPayment.Id;
         }
     }
 }

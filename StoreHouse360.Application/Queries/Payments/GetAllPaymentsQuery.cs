@@ -18,7 +18,7 @@ namespace StoreHouse360.Application.Queries.Payments
         protected override async Task<IQueryable<Payment>> GetQuery(GetAllPaymentsQuery request, CancellationToken cancellationToken)
         {
             var payments = await _paymentRepository.GetAllAsync(new GetAllOptions<Payment> { IncludeRelations = true });
-            var res = payments.Where(payment => payment.InvoiceId == request.InvoiceId);
+            var res = payments.Where(payment => payment.InvoiceId == request.InvoiceId || request.InvoiceId == default);
             return res;
         }
     }

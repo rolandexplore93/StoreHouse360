@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using StoreHouse360.Application.Repositories;
+using StoreHouse360.Application.Repositories.Aggregates;
 using StoreHouse360.Application.Repositories.UnitOfWork;
 using StoreHouse360.Application.Services.Identity;
 using StoreHouse360.Application.Services.Settings;
@@ -10,6 +11,7 @@ using StoreHouse360.Infrastructure.Persistence.Database;
 using StoreHouse360.Infrastructure.Persistence.Database.Models;
 using StoreHouse360.Infrastructure.Persistence.Database.Triggers;
 using StoreHouse360.Infrastructure.Repositories;
+using StoreHouse360.Infrastructure.Repositories.Aggregates;
 using StoreHouse360.Infrastructure.Repositories.UnitOfWork;
 using StoreHouse360.Infrastructure.Services;
 using System.Reflection;
@@ -74,6 +76,7 @@ namespace StoreHouse360.Infrastructure
             services.AddScoped<IInvoiceRepository, InvoiceRepository>();
             services.AddScoped<IProductMovementRepository, ProductMovementRepository>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
+            services.AddScoped<IInvoicePaymentsRepository, InvoicePaymentsRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
 

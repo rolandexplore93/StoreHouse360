@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StoreHouse360.Infrastructure.Persistence.Database.Models
 {
+    [Table("Payments")]
     public class PaymentDb : IMapFrom<Payment>, IDatabaseModel
     {
         [Key]
@@ -22,7 +23,7 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
         public CurrencyDb? Currency { get; set; }
 
         [ForeignKey("ObjectId")]
-        public IEnumerable<CurrencyAmount> CurrencyAmounts { get; set; }
+        public IEnumerable<CurrencyAmountDb> CurrencyAmounts { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }
