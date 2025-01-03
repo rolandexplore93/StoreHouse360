@@ -1,4 +1,6 @@
-﻿namespace StoreHouse360.Application.Repositories.UnitOfWork
+﻿using StoreHouse360.Application.Repositories.Aggregates;
+
+namespace StoreHouse360.Application.Repositories.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {
@@ -14,6 +16,8 @@
         public IUnitRepository UnitRepository { get; }
         public IUserRepository UserRepository { get; }
         public IWarehouseRepository WarehouseRepository { get; }
+        public IPaymentRepository PaymentRepository { get; }
+        public IInvoicePaymentsRepository InvoicePaymentsRepository { get; }
         public void Commit();
         public Task CommitAsync();
     }

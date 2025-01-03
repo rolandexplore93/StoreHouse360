@@ -1,12 +1,13 @@
 ﻿using StoreHouse360.Application.Common.Mappings;
 using StoreHouse360.Domain.Entities;
+using StoreHouse360.Infrastructure.Persistence.Database.Models.Common;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StoreHouse360.Infrastructure.Persistence.Database.Models
 {
     [Table("Accounts")]
-    public class AccountDb : IMapFrom<Account>, IDatabaseModel
+    public class AccountDb : IMapFrom<Account>, IDatabaseModel, ISoftDelete
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -15,5 +16,7 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
         public string Code { get; set; }
         public string Phone { get; set; }
         public string City { get; set; }
+        public bool IsDeleted { get; set; } = false;
+        public DateTime DeletedAt { get; set; }
     }
 }

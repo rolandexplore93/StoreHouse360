@@ -49,5 +49,11 @@ namespace StoreHouse360.Controllers.Api
             var resultId = await Mediator.Send(command);
             return await GetCurrency(resultId);
         }
+
+        [HttpDelete("{id}")]
+        public async Task DeleteCurrency(int id)
+        {
+            await Mediator.Send(new DeleteCurrencyCommand() { key = id });
+        }
     }
 }

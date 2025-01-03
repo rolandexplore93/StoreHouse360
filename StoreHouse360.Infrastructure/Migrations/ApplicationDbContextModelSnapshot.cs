@@ -175,6 +175,12 @@ namespace StoreHouse360.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -355,7 +361,7 @@ namespace StoreHouse360.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CurrencyId")
+                    b.Property<int?>("CurrencyId")
                         .HasColumnType("int");
 
                     b.Property<string>("Note")
@@ -402,6 +408,44 @@ namespace StoreHouse360.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Manufacturers");
+                });
+
+            modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.PaymentDb", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PaymentIoType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.ProductDb", b =>
@@ -632,6 +676,10 @@ namespace StoreHouse360.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("StoreHouse360.Infrastructure.Persistence.Database.Models.PaymentDb", null)
+                        .WithMany("CurrencyAmounts")
+                        .HasForeignKey("ObjectId");
+
                     b.HasOne("StoreHouse360.Infrastructure.Persistence.Database.Models.ProductMovementDb", null)
                         .WithMany("CurrencyAmounts")
                         .HasForeignKey("ObjectId");
@@ -649,9 +697,7 @@ namespace StoreHouse360.Infrastructure.Migrations
 
                     b.HasOne("StoreHouse360.Infrastructure.Persistence.Database.Models.CurrencyDb", "Currency")
                         .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CurrencyId");
 
                     b.HasOne("StoreHouse360.Infrastructure.Persistence.Database.Models.WarehouseDb", "Warehouse")
                         .WithMany()
@@ -664,6 +710,25 @@ namespace StoreHouse360.Infrastructure.Migrations
                     b.Navigation("Currency");
 
                     b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.PaymentDb", b =>
+                {
+                    b.HasOne("StoreHouse360.Infrastructure.Persistence.Database.Models.CurrencyDb", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StoreHouse360.Infrastructure.Persistence.Database.Models.InvoiceDb", "Invoice")
+                        .WithMany()
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Currency");
+
+                    b.Navigation("Invoice");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.ProductDb", b =>
@@ -748,6 +813,11 @@ namespace StoreHouse360.Infrastructure.Migrations
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.InvoiceDb", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.PaymentDb", b =>
+                {
+                    b.Navigation("CurrencyAmounts");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.ProductMovementDb", b =>

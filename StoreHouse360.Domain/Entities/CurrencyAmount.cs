@@ -11,6 +11,6 @@
 
     public enum CurrencyAmountKey
     {
-        Movement
+        Movement, Payment
     }
 }

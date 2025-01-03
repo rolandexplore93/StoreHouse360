@@ -8,8 +8,8 @@
         public int WarehouseId { get; set; }
         public Warehouse Warehouse { get; set; }
 
-        public int CurrencyId { get; set; }
-        public Currency Currency { get; set; }
+        public int? CurrencyId { get; set; }
+        public Currency? Currency { get; set; }
 
         public double TotalPrice { get; set; }
         public string? Note { get; set; }
@@ -17,6 +17,7 @@
         public DateTime CreatedAt { get; set; }
         public InvoiceStatus Status { get; set; }
         public InvoiceType Type { get; set; }
+        public bool IsClosed() => Status == InvoiceStatus.Closed;
     }
 
     public enum InvoiceStatus

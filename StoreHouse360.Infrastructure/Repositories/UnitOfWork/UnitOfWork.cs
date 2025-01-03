@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using StoreHouse360.Application.Repositories;
+using StoreHouse360.Application.Repositories.Aggregates;
 using StoreHouse360.Application.Repositories.UnitOfWork;
 using StoreHouse360.Infrastructure.Persistence.Database;
 
@@ -10,23 +11,25 @@ namespace StoreHouse360.Infrastructure.Repositories.UnitOfWork
     {
         private readonly DbContext _dbContext;
         private readonly IDbContextTransaction _transaction;
-        private readonly Lazy<AccountRepository> _accountRepository;
-        private readonly Lazy<CategoryRepository> _categoryRepository;
-        private readonly Lazy<CurrencyAmountRepository> _currencyAmountRepository;
-        private readonly Lazy<CurrencyRepository> _currencyRepository;
-        private readonly Lazy<InvoiceRepository> _invoiceRepository;
-        private readonly Lazy<ManufacturerRepository> _manufacturerRepository;
-        private readonly Lazy<ProductMovementRepository> _productMovementRepository;
-        private readonly Lazy<ProductRepository> _productRepository;
-        private readonly Lazy<StoragePlaceRepository> _storagePlaceRepository;
-        private readonly Lazy<UnitRepository> _unitRepository;
-        private readonly Lazy<UserRepository> _userRepository;
-        private readonly Lazy<WarehouseRepository> _warehouseRepository;
+        private readonly Lazy<IAccountRepository> _accountRepository;
+        private readonly Lazy<ICategoryRepository> _categoryRepository;
+        private readonly Lazy<ICurrencyAmountRepository> _currencyAmountRepository;
+        private readonly Lazy<ICurrencyRepository> _currencyRepository;
+        private readonly Lazy<IInvoiceRepository> _invoiceRepository;
+        private readonly Lazy<IManufacturerRepository> _manufacturerRepository;
+        private readonly Lazy<IProductMovementRepository> _productMovementRepository;
+        private readonly Lazy<IProductRepository> _productRepository;
+        private readonly Lazy<IStoragePlaceRepository> _storagePlaceRepository;
+        private readonly Lazy<IUnitRepository> _unitRepository;
+        private readonly Lazy<IUserRepository> _userRepository;
+        private readonly Lazy<IWarehouseRepository> _warehouseRepository;
+        private readonly Lazy<IPaymentRepository> _paymentRepository;
+        private readonly Lazy<IInvoicePaymentsRepository> _invoicePaymentsRepository;
 
-        public UnitOfWork(ApplicationDbContext dbContext, Lazy<AccountRepository> accountRepository, Lazy<CategoryRepository> categoryRepository, Lazy<CurrencyAmountRepository> currencyAmountRepository, 
-            Lazy<CurrencyRepository> currencyRepository, Lazy<InvoiceRepository> invoiceRepository, Lazy<ManufacturerRepository> manufacturerRepository, 
-            Lazy<ProductMovementRepository> productMovementRepository, Lazy<ProductRepository> productRepository, Lazy<StoragePlaceRepository> storagePlaceRepository, 
-            Lazy<UnitRepository> unitRepository, Lazy<UserRepository> userRepository, Lazy<WarehouseRepository> warehouseRepository)
+        public UnitOfWork(ApplicationDbContext dbContext, Lazy<IAccountRepository> accountRepository, Lazy<ICategoryRepository> categoryRepository, Lazy<ICurrencyAmountRepository> currencyAmountRepository, 
+            Lazy<ICurrencyRepository> currencyRepository, Lazy<IInvoiceRepository> invoiceRepository, Lazy<IManufacturerRepository> manufacturerRepository, Lazy<IProductMovementRepository> productMovementRepository, 
+            Lazy<IProductRepository> productRepository, Lazy<IStoragePlaceRepository> storagePlaceRepository, Lazy<IUnitRepository> unitRepository, Lazy<IUserRepository> userRepository, 
+            Lazy<IWarehouseRepository> warehouseRepository, Lazy<IPaymentRepository> paymentRepository, Lazy<IInvoicePaymentsRepository> invoicePaymentsRepository)
         {
             _dbContext = dbContext;
             _transaction =  _dbContext.Database.BeginTransaction();
@@ -42,6 +45,8 @@ namespace StoreHouse360.Infrastructure.Repositories.UnitOfWork
             _unitRepository = unitRepository;
             _userRepository = userRepository;
             _warehouseRepository = warehouseRepository;
+            _paymentRepository = paymentRepository;
+            _invoicePaymentsRepository = invoicePaymentsRepository;
         }
         public IAccountRepository AccountRepository => _accountRepository.Value;
         public ICategoryRepository CategoryRepository => _categoryRepository.Value;
@@ -55,6 +60,8 @@ namespace StoreHouse360.Infrastructure.Repositories.UnitOfWork
         public IUnitRepository UnitRepository => _unitRepository.Value;
         public IUserRepository UserRepository => _userRepository.Value;
         public IWarehouseRepository WarehouseRepository => _warehouseRepository.Value;
+        public IPaymentRepository PaymentRepository => _paymentRepository.Value;
+        public IInvoicePaymentsRepository InvoicePaymentsRepository => _invoicePaymentsRepository.Value;
 
         public void Commit()
         {

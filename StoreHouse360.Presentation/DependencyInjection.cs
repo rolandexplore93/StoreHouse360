@@ -1,6 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using StoreHouse360.DTO.Common.Responses.Validation;
 using StoreHouse360.Filters;
+using System.Text.Json.Serialization;
 
 namespace StoreHouse360
 {
@@ -10,6 +11,7 @@ namespace StoreHouse360
         {
             services
                 .AddControllers(options => { options.Filters.Add<ExceptionFilter>(); })
+                .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); })
                 .ConfigureApiBehaviorOptions(options =>
                 {
                     options.InvalidModelStateResponseFactory =

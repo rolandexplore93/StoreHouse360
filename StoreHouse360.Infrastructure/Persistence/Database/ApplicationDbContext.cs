@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using StoreHouse360.Infrastructure.Persistence.Database.Models;
+using StoreHouse360.Infrastructure.Persistence.Database.Models.Common;
 
 namespace StoreHouse360.Infrastructure.Persistence.Database
 {
@@ -22,5 +23,12 @@ namespace StoreHouse360.Infrastructure.Persistence.Database
         public DbSet<CurrencyAmountDb> CurrencyAmounts { get; set; }
         public DbSet<InvoiceDb> Invoices { get; set; }
         public DbSet<ProductMovementDb> ProductMovements { get; set; }
+        public DbSet<PaymentDb> Payments { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.ApplyGlobalFilters<ISoftDelete>(s => !s.IsDeleted);
+        }
     }
 }

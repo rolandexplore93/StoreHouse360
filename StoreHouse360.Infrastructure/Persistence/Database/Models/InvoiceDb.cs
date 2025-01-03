@@ -15,9 +15,9 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
         [ForeignKey("WarehouseId")]
         public WarehouseDb Warehouse { get; set; }
 
-        public int CurrencyId { get; set; }
+        public int? CurrencyId { get; set; }
         [ForeignKey("CurrencyId")]
-        public CurrencyDb Currency { get; set; }
+        public CurrencyDb? Currency { get; set; }
         public double TotalPrice { get; set; }
 
         [ForeignKey("InvoiceId")]
