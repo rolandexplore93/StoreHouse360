@@ -21,7 +21,7 @@ namespace StoreHouse360.Controllers.Api
         [NonAction]
         public override OkObjectResult Ok(object? value)
         {
-            return Ok(value, "Success");
+            return Ok(value, "message");
         }
 
         [NonAction]

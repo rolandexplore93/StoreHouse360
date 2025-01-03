@@ -40,7 +40,7 @@ namespace StoreHouse360.Controllers.Api
         {
             var query = new GetAccountQuery { Id = id };
             var accountEntity = await Mediator.Send(query);
-            return Ok(accountEntity.ToViewModel<AccountVM>(_mapper));
+            return Ok(accountEntity.ToViewModel<AccountVM>(_mapper), "mytest");
         }
 
         [HttpPut("{id}")]
