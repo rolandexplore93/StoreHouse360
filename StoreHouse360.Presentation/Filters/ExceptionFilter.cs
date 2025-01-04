@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using StoreHouse360.Domain.Exceptions;
 using StoreHouse360.Presentation.DTO.Common.Responses;
@@ -20,7 +21,8 @@ namespace StoreHouse360.Filters
             _exceptionMap = new Dictionary<Type, Action<ExceptionContext>>
             {
                 // {typeof(NotFoundException), HandleNotFoundException}
-                {typeof(ProductMinimumLevelExceededException), HandleProductMinimumLevelExceededException}
+                {typeof(ProductMinimumLevelExceededException), HandleProductMinimumLevelExceededException},
+                {typeof(ValidationException), HandleValidationException}
             };
         }
 
@@ -67,6 +69,14 @@ namespace StoreHouse360.Filters
             var exception = context.Exception as ProductMinimumLevelExceededException;
             var responseBody = new BaseResponse<IList<int>>(new ResponseMetaData { Message = exception!.Message }, exception.ProductsWithExceededMinimumLevel);
             context.Result = new ObjectResult(responseBody) { StatusCode = exception.Code };
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleValidationException(ExceptionContext context)
+        {
+            var exception = (ValidationException) context.Exception;
+            var responseBody = new NoDataResponse(string.Join("\n", exception.Errors.Select(e => e.ErrorMessage)));
+            context.Result = new ObjectResult(responseBody) { StatusCode = StatusCodes.Status400BadRequest };
             context.ExceptionHandled = true;
         }
     }
