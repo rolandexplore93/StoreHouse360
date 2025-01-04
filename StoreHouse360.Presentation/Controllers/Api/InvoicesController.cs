@@ -38,9 +38,9 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<IEnumerable<InvoiceVM>>>> GetAll([FromQuery] PaginationRequestParams request)
+        public async Task<ActionResult<BaseResponse<IEnumerable<InvoiceVM>>>> GetAll([FromQuery] InvoicesQueryParams requestQueryParams)
         {
-            var query = request.AsQuery<GetAllInvoicesQuery>();
+            var query = _mapper.Map<GetAllInvoicesQuery>(requestQueryParams);
             var invoices = await Mediator.Send(query);
             return Ok(invoices.ToViewModels<InvoiceVM>(_mapper));
         }
