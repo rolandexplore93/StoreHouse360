@@ -16,6 +16,7 @@ namespace StoreHouse360.Application.Repositories
 
         /// <exception cref="NotFoundException"></exception>
         Task<TEntity> FindByIdAsync(TKey id, FindOptions? options = default);
+        Task<bool> IsExistsById(TKey id);
         Task<TEntity> UpdateAsync(TEntity entity);
         Task DeleteAsync(TKey id);
     }

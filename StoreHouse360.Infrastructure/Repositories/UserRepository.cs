@@ -7,6 +7,7 @@ using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 using StoreHouse360.Infrastructure.Extensions;
 using StoreHouse360.Infrastructure.Persistence.Database.Models;
+using System.Collections.Generic;
 
 namespace StoreHouse360.Infrastructure.Repositories
 {
@@ -47,11 +48,9 @@ namespace StoreHouse360.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task DeleteAsync(int id)
+        public Task<bool> IsExistsById(int id)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
-            if (user == null) throw new NotFoundException();
-            await _userManager.DeleteAsync(user);
+            return _userManager.Users.AnyAsync(user => user.Id == id);
         }
 
         public async Task<User> UpdateAsync(User user)
@@ -66,6 +65,13 @@ namespace StoreHouse360.Infrastructure.Repositories
                 throw new Exception(result.GetErrorsAsString());
             }
             return _mapper.Map<User>(model);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null) throw new NotFoundException();
+            await _userManager.DeleteAsync(user);
         }
 
         public Task<SaveAction<Task<IEnumerable<User>>>> CreateAllAsync(IEnumerable<User> entities)

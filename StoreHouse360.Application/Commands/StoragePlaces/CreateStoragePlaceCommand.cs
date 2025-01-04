@@ -23,8 +23,7 @@ namespace StoreHouse360.Application.Commands.StoragePlaces
                 WarehouseId = request.WarehouseId,
                 ContainerId = request.ContainerId,
                 Name = request.Name,
-                Description = request.Description,
-                
+                Description = request.Description
             };
         }
     }
