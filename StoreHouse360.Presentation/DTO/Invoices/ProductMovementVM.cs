@@ -10,7 +10,7 @@ namespace StoreHouse360.DTO.Invoices
     {
         public int Id { get; set; }
         public int InvoiceId { get; set; }
-        public ProductVM? Product { get; set; }
+        public ProductJoinedVM? Product { get; set; }
         public int PlaceId { get; set; }
         public int Quantity { get; set; }
         public double UnitPrice { get; set; }
