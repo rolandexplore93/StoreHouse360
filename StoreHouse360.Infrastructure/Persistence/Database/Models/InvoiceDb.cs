@@ -19,10 +19,7 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
         [ForeignKey("CurrencyId")]
         public CurrencyDb? Currency { get; set; }
         public double TotalPrice { get; set; }
-
-        [ForeignKey("InvoiceId")]
         public IEnumerable<ProductMovementDb> Items { get; set; }
-
         public string? Note { get; set; }
 
         public DateTime CreatedAt { get; set; }

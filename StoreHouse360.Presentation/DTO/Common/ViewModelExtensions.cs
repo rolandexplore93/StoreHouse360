@@ -7,18 +7,18 @@ namespace StoreHouse360.DTO.Common
 {
     public static class ViewModelExtensions
     {
-        public static TViewModel ToViewModel<TViewModel>(this IEntity entity, IMapper mapper) where TViewModel : IViewModel
+        public static TViewModel ToViewModel<TViewModel>(this object entity, IMapper mapper) where TViewModel : IViewModel
         {
             var vm = mapper.Map<TViewModel>(entity);
             return vm;
         }
-        public static IEnumerable<TViewModel> ToViewModels<TViewModel>(this IEnumerable<IEntity> entities, IMapper mapper) where TViewModel : IViewModel
+        public static IEnumerable<TViewModel> ToViewModels<TViewModel>(this IEnumerable<object> entities, IMapper mapper) where TViewModel : IViewModel
         {
             //return entities.Select(entity => entity.ToViewModel<TViewModel>(mapper));
-            return mapper.Map<IEnumerable<IEntity>, IEnumerable<TViewModel>>(entities);
+            return mapper.Map<IEnumerable<object>, IEnumerable<TViewModel>>(entities);
         }
 
-        public static PaginationVM<TViewModel> ToViewModel<TViewModel>(this IPaginatedCollections<IEntity> page, IMapper mapper) where TViewModel : IViewModel
+        public static PaginationVM<TViewModel> ToViewModel<TViewModel>(this IPaginatedCollections<object> page, IMapper mapper) where TViewModel : IViewModel
         {
             return new PaginationVM<TViewModel>
             {

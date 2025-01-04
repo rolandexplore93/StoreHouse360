@@ -3,9 +3,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Warehouses;
+using StoreHouse360.Application.Common.DTO;
 using StoreHouse360.Application.Queries.Warehouses;
 using StoreHouse360.DTO.Common;
 using StoreHouse360.DTO.Pagination;
+using StoreHouse360.DTO.ProductQuantity;
 using StoreHouse360.DTO.Warehouses;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 
@@ -32,6 +34,7 @@ namespace StoreHouse360.Controllers.Api
             var warehouses = await Mediator.Send(request.AsQuery(new GetAllWarehousesQuery()));
             return Ok(warehouses.ToViewModels<WarehouseVM>(_mapper));
         }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<BaseResponse<WarehouseVM>>> Get(int id)
         {
@@ -54,6 +57,14 @@ namespace StoreHouse360.Controllers.Api
         public async Task Delete(int id)
         {
             await Mediator.Send(new DeleteWarehouseCommand() { key = id });
+        }
+
+        [HttpGet("inventory")]
+        public async Task<ActionResult<BaseResponse<PaginationVM<ProductQuantityVM>>>> InventoryWarehouse([FromQuery] PaginationRequestParams paginationParams, [FromQuery] ProductMovementFiltersDTO filtersDTO)
+        {
+            var query = paginationParams.AsQuery(new InventoryWarehouseQuery { Filters = filtersDTO });
+            var productQuantities = await Mediator.Send(query);
+            return Ok(productQuantities.ToViewModel<ProductQuantityVM>(_mapper));
         }
 
     }

@@ -9,11 +9,14 @@ namespace StoreHouse360.Filters
     public class ExceptionFilter : ExceptionFilterAttribute
     {
         private readonly IHostEnvironment _hostEnvironment;
+        private readonly ILogger<ExceptionFilter> _logger;
         private readonly Dictionary<Type, Action<ExceptionContext>> _exceptionMap;
 
-        public ExceptionFilter(IHostEnvironment hostEnvironment)
+        public ExceptionFilter(IHostEnvironment hostEnvironment, ILogger<ExceptionFilter> logger)
         {
             _hostEnvironment = hostEnvironment;
+            _logger = logger;
+
             _exceptionMap = new Dictionary<Type, Action<ExceptionContext>>
             {
                 // {typeof(NotFoundException), HandleNotFoundException}
@@ -40,15 +43,12 @@ namespace StoreHouse360.Filters
         }
         private void HandleUnknownException(ExceptionContext context)
         {
-            string message;
             if (_hostEnvironment.IsDevelopment() || _hostEnvironment.IsStaging())
             {
-                message = $"{context.Exception.Message} {context.Exception.StackTrace}";
+                _logger.LogError(context.Exception, null);
             }
-            else
-            {
-                message = $"Something went wrong, an unknown error occured, please try again later.";
-            }
+
+            string message = $"Something went wrong, an unknown error occured, please try again later.";
             var responseBody = new NoDataResponse(message);
             context.Result = new ObjectResult(responseBody) { StatusCode = StatusCodes.Status500InternalServerError };
             context.ExceptionHandled = true;
