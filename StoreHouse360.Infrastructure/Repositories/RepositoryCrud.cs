@@ -8,6 +8,7 @@ using StoreHouse360.Domain.Entities;
 using StoreHouse360.Infrastructure.Persistence.Database;
 using StoreHouse360.Infrastructure.Persistence.Database.Models;
 using StoreHouse360.Infrastructure.Persistence.Database.Models.Common;
+using System.Collections.Generic;
 
 namespace StoreHouse360.Infrastructure.Repositories
 {
@@ -88,7 +89,7 @@ namespace StoreHouse360.Infrastructure.Repositories
             catch (InvalidOperationException ex)
             {
                 Console.WriteLine(ex.StackTrace);
-                throw new NotFoundException();
+                throw new NotFoundException(id.ToString() ?? "", typeof(TEntity).Name);
             }
         }
 
@@ -107,19 +108,11 @@ namespace StoreHouse360.Infrastructure.Repositories
             
         protected TEntity MapModelToEntity(TModel model) => mapper.Map<TEntity>(model);
 
-        public async Task DeleteAsync(TKey id)
+        public Task<bool> IsExistsById(TKey id)
         {
-            try
-            {
-                var model = await GetModelById(id);
-                dbSet.Remove(model);
-            }
-            catch (InvalidOperationException ex)
-            {
-                Console.WriteLine(ex.StackTrace);
-                throw new NotFoundException();
-            }
+            return dbSet.AnyAsync(model => model.Id.Equals(id));
         }
+
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
@@ -137,5 +130,18 @@ namespace StoreHouse360.Infrastructure.Repositories
             }
         }
 
+        public async Task DeleteAsync(TKey id)
+        {
+            try
+            {
+                var model = await GetModelById(id);
+                dbSet.Remove(model);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                throw new NotFoundException();
+            }
+        }
     }
 }

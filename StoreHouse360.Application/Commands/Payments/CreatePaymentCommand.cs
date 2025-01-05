@@ -46,7 +46,7 @@ namespace StoreHouse360.Application.Commands.Payments
                 CreatedAt = DateTime.Now
             });
 
-            var saveAction = await unitOfWork.InvoicePaymentsRepository.CreatePayments(invoicePayments);
+            var saveAction = await unitOfWork.InvoicePaymentsRepository.Save(invoicePayments);
             var savedInvoicePayments = await saveAction();
 
             var addedPayments = savedInvoicePayments.Payments.Except(invoicePayments.Payments);

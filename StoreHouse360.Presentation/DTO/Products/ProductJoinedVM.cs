@@ -6,6 +6,7 @@ namespace StoreHouse360.DTO.Products
 {
     public class ProductJoinedVM : IViewModel, IMapFrom<Product>
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public Category Category { get; set; }
         public Manufacturer Manufacturer { get; set; }
@@ -13,5 +14,6 @@ namespace StoreHouse360.DTO.Products
         public string Barcode { get; set; }
         public double Price { get; set; }
         public Currency Currency { get; set; }
+        public int MinimumLevel { get; set; }
     }
 }

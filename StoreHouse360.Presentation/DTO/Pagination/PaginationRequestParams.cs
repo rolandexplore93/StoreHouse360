@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Queries.Common;
 
 namespace StoreHouse360.DTO.Pagination
@@ -21,6 +22,11 @@ namespace StoreHouse360.DTO.Pagination
             query.Page = requestParams.Page;
             query.PageSize = requestParams.PageSize;
             return query;
+        }
+
+        public static T AsQuery<T>(this PaginationRequestParams requestParams, IMapper mapper) where T : IGetPaginatedQuery
+        {
+            return mapper.Map<T>(requestParams);
         }
     }
 }

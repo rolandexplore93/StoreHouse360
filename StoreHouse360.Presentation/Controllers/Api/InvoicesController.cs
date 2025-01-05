@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Invoicing;
 using StoreHouse360.Application.Queries.Invoicing;
+using StoreHouse360.Domain.Entities;
 using StoreHouse360.DTO.Common;
 using StoreHouse360.DTO.Invoices;
 using StoreHouse360.DTO.Pagination;
@@ -38,9 +39,9 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<IEnumerable<InvoiceVM>>>> GetAll([FromQuery] PaginationRequestParams request)
+        public async Task<ActionResult<BaseResponse<IEnumerable<InvoiceVM>>>> GetAll([FromQuery] InvoicesQueryParams request)
         {
-            var query = request.AsQuery<GetAllInvoicesQuery>();
+            var query = request.AsQuery<GetAllInvoicesQuery>(_mapper);
             var invoices = await Mediator.Send(query);
             return Ok(invoices.ToViewModels<InvoiceVM>(_mapper));
         }

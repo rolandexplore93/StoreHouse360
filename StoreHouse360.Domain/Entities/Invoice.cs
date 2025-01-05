@@ -1,9 +1,11 @@
-﻿namespace StoreHouse360.Domain.Entities
+﻿using StoreHouse360.Domain.Exceptions;
+
+namespace StoreHouse360.Domain.Entities
 {
     public class Invoice : BaseEntity<int>
     {
-        public int AccountId { get; set; }
-        public Account Account { get; set; }
+        public int? AccountId { get; set; }
+        public Account? Account { get; set; }
 
         public int WarehouseId { get; set; }
         public Warehouse Warehouse { get; set; }
@@ -18,6 +20,14 @@
         public InvoiceStatus Status { get; set; }
         public InvoiceType Type { get; set; }
         public bool IsClosed() => Status == InvoiceStatus.Closed;
+        public void Close()
+        {
+            if (Status == InvoiceStatus.Closed)
+            {
+                throw new InvoiceClosedException();
+            }
+            Status = InvoiceStatus.Closed;
+        }
     }
 
     public enum InvoiceStatus

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using StoreHouse360.Domain.Exceptions;
 using StoreHouse360.Presentation.DTO.Common.Responses;
@@ -9,15 +10,19 @@ namespace StoreHouse360.Filters
     public class ExceptionFilter : ExceptionFilterAttribute
     {
         private readonly IHostEnvironment _hostEnvironment;
+        private readonly ILogger<ExceptionFilter> _logger;
         private readonly Dictionary<Type, Action<ExceptionContext>> _exceptionMap;
 
-        public ExceptionFilter(IHostEnvironment hostEnvironment)
+        public ExceptionFilter(IHostEnvironment hostEnvironment, ILogger<ExceptionFilter> logger)
         {
             _hostEnvironment = hostEnvironment;
+            _logger = logger;
+
             _exceptionMap = new Dictionary<Type, Action<ExceptionContext>>
             {
                 // {typeof(NotFoundException), HandleNotFoundException}
-                {typeof(ProductMinimumLevelExceededException), HandleProductMinimumLevelExceededException}
+                {typeof(ProductMinimumLevelExceededException), HandleProductMinimumLevelExceededException},
+                {typeof(ValidationException), HandleValidationException}
             };
         }
 
@@ -40,15 +45,12 @@ namespace StoreHouse360.Filters
         }
         private void HandleUnknownException(ExceptionContext context)
         {
-            string message;
             if (_hostEnvironment.IsDevelopment() || _hostEnvironment.IsStaging())
             {
-                message = $"{context.Exception.Message} {context.Exception.StackTrace}";
+                _logger.LogError(context.Exception, null);
             }
-            else
-            {
-                message = $"Something went wrong, an unknown error occured, please try again later.";
-            }
+
+            string message = $"Something went wrong, an unknown error occured, please try again later.";
             var responseBody = new NoDataResponse(message);
             context.Result = new ObjectResult(responseBody) { StatusCode = StatusCodes.Status500InternalServerError };
             context.ExceptionHandled = true;
@@ -67,6 +69,14 @@ namespace StoreHouse360.Filters
             var exception = context.Exception as ProductMinimumLevelExceededException;
             var responseBody = new BaseResponse<IList<int>>(new ResponseMetaData { Message = exception!.Message }, exception.ProductsWithExceededMinimumLevel);
             context.Result = new ObjectResult(responseBody) { StatusCode = exception.Code };
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleValidationException(ExceptionContext context)
+        {
+            var exception = (ValidationException) context.Exception;
+            var responseBody = new NoDataResponse(string.Join("\n", exception.Errors.Select(e => e.ErrorMessage)));
+            context.Result = new ObjectResult(responseBody) { StatusCode = StatusCodes.Status400BadRequest };
             context.ExceptionHandled = true;
         }
     }

@@ -17,11 +17,8 @@ namespace StoreHouse360.Application.Queries.Invoicing
         }
         protected override async Task<IQueryable<ProductMovement>> GetQuery(GetProductMovementsQuery request, CancellationToken cancellationToken)
         {
-            return await _productMovementRepository.GetAllAsync(new GetAllOptions<ProductMovement>
-            {
-                IncludeRelations = true,
-                Filter = movement => request.InvoiceId == null || movement.InvoiceId.Equals(request.InvoiceId)
-            });
+            var productMovements = await _productMovementRepository.GetAllAsync(new GetAllOptions<ProductMovement> { IncludeRelations = true });
+            return productMovements.Where(movement => request.InvoiceId == null || movement.InvoiceId.Equals(request.InvoiceId));
         }
     }
 }

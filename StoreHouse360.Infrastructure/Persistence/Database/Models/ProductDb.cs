@@ -14,18 +14,18 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
         public string Name { get; set; }
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
-        public CategoryDb Category { get; set; }
+        public CategoryDb? Category { get; set; }
         public int ManufacturerId { get; set; }
         [ForeignKey("ManufacturerId")]
-        public ManufacturerDb Manufacturer { get; set; }
+        public ManufacturerDb? Manufacturer { get; set; }
         public int UnitId { get; set; }
         [ForeignKey("UnitId")]
-        public UnitDb Unit { get; set; }
+        public UnitDb? Unit { get; set; }
         public string Barcode { get; set; }
         public double Price { get; set; }
         public int CurrencyId { get; set; }
         [ForeignKey("CurrencyId")]
-        public CurrencyDb Currency { get; set; }
+        public CurrencyDb? Currency { get; set; }
         public int MinimumLevel { get; set; } = default;
     }
 }
