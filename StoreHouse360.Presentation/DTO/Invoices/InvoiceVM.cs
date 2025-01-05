@@ -10,7 +10,7 @@ namespace StoreHouse360.DTO.Invoices
     public class InvoiceVM : IViewModel, IMapFrom<Invoice>
     {
         public int Id { get; set; }
-        public AccountVM AccountId { get; set; } = default!;
+        public AccountVM? AccountId { get; set; } = default!;
         public WarehouseVM WarehouseId { get; set; } = default!;
         public CurrencyVM? CurrencyId { get; set; }
         public double TotalPrice { get; set; }

@@ -89,7 +89,7 @@ namespace StoreHouse360.Infrastructure.Repositories
             catch (InvalidOperationException ex)
             {
                 Console.WriteLine(ex.StackTrace);
-                throw new NotFoundException();
+                throw new NotFoundException(id.ToString() ?? "", typeof(TEntity).Name);
             }
         }
 

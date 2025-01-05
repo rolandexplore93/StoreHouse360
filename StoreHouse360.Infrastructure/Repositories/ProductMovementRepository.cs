@@ -142,7 +142,7 @@ namespace StoreHouse360.Infrastructure.Repositories
         public int Id { get; set; }
         public int? ProductId { get; set; }
         public ProductDb? Product { get; set; }
-        public int AccountId { get; set; }
+        public int? AccountId { get; set; }
         public int WarehouseId { get; set; }
         public int? StoragePlaceId { get; set; }
         public int Quantity { get; set; }

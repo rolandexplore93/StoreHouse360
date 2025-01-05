@@ -1,6 +1,7 @@
 ﻿using StoreHouse360.Application.Repositories;
 using StoreHouse360.Application.Repositories.Aggregates;
 using StoreHouse360.Domain.Aggregations;
+using StoreHouse360.Domain.Entities;
 using StoreHouse360.Infrastructure.Persistence.Database;
 
 namespace StoreHouse360.Infrastructure.Repositories.Aggregates
@@ -24,13 +25,16 @@ namespace StoreHouse360.Infrastructure.Repositories.Aggregates
             return new InvoicePayments { Invoice = invoice, Payments = payments };
         }
 
-        public async Task<SaveAction<Task<InvoicePayments>>> CreatePayments(InvoicePayments invoicePayments)
+        public async Task<SaveAction<Task<InvoicePayments>>> Save(InvoicePayments invoicePayments)
         {
             var saveAction = await _paymentRepository.CreateAllAsync(invoicePayments.PendingPayments);
             return async () =>
             {
                 var savedPayments = await saveAction();
-                return new InvoicePayments { Invoice = invoicePayments.Invoice, Payments = invoicePayments.Payments.Concat(savedPayments) };
+
+                Invoice updatedInvoice = await _invoiceRepository.UpdateAsync(invoicePayments.Invoice);
+
+                return new InvoicePayments { Invoice = updatedInvoice, Payments = invoicePayments.Payments.Concat(savedPayments) };
             };
         }
 

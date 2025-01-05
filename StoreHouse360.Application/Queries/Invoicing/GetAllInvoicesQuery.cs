@@ -6,8 +6,9 @@ namespace StoreHouse360.Application.Queries.Invoicing
 {
     public class GetAllInvoicesQuery : GetPaginatedQuery<Invoice>
     {
-        public int AccountId { get; set; } = default;
-        public int WarehouseId { get; set; } = default;
+        public int? AccountId { get; set; } = default;
+        public int? WarehouseId { get; set; } = default;
+        public InvoiceType? Type { get; set; }
     }
     public class GetAllInvoicesQueryHandler : PaginatedQueryHandler<GetAllInvoicesQuery, Invoice>
     {
@@ -18,11 +19,18 @@ namespace StoreHouse360.Application.Queries.Invoicing
         }
         protected override async Task<IQueryable<Invoice>> GetQuery(GetAllInvoicesQuery request, CancellationToken cancellationToken)
         {
-            var invoices = await _invoiceRepository.GetAllAsync(new GetAllOptions<Invoice> { IncludeRelations = true });
-            var filterInvoices = invoices
-                                    .Where(invoice => invoice.WarehouseId == request.WarehouseId || request.WarehouseId == default)
-                                    .Where(invoice => invoice.AccountId == request.AccountId || request.AccountId == default);
-            return filterInvoices;
+            return _applyFilters(await _invoiceRepository.GetAllAsync(new GetAllOptions<Invoice> { IncludeRelations = true }), request);
+        }
+
+        private IQueryable<Invoice> _applyFilters(IQueryable<Invoice> query, GetAllInvoicesQuery request)
+        {
+            if (request.Type is not null)
+                query = query.Where(invoice => invoice.Type == request.Type);
+            if (request.WarehouseId is not null)
+                query = query.Where(invoice => invoice.WarehouseId == request.WarehouseId);
+            if (request.AccountId is not null)
+                query = query.Where(invoice => invoice.AccountId == request.AccountId);
+            return query;
         }
     }
 }
