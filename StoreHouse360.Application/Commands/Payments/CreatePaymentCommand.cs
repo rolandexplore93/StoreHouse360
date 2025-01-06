@@ -1,8 +1,5 @@
 ﻿using MediatR;
-using StoreHouse360.Application.Commands.Common;
 using StoreHouse360.Application.Common.DTO;
-using StoreHouse360.Application.Queries.Payments;
-using StoreHouse360.Application.Repositories;
 using StoreHouse360.Application.Repositories.UnitOfWork;
 using StoreHouse360.Domain.Aggregations;
 using StoreHouse360.Domain.Entities;
@@ -23,18 +20,16 @@ namespace StoreHouse360.Application.Commands.Payments
     public class CreatePaymentCommandHandler : IRequestHandler<CreatePaymentCommand, int>
     {
         private readonly Lazy<IUnitOfWork> _unitOfWork;
-        private readonly IMediator _mediator;
-        public CreatePaymentCommandHandler(Lazy<IUnitOfWork> unitOfWork, IMediator mediator)
+        public CreatePaymentCommandHandler(Lazy<IUnitOfWork> unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mediator = mediator;
         }
 
         public async Task<int> Handle(CreatePaymentCommand request, CancellationToken cancellationToken)
         {
             using var unitOfWork = _unitOfWork.Value;
 
-            InvoicePayments invoicePayments = await unitOfWork.InvoicePaymentsRepository.FindByInvoiceId(request.InvoiceId);
+            var invoicePayments = await unitOfWork.InvoicePaymentsRepository.FindByInvoiceId(request.InvoiceId);
             invoicePayments.AddPayment( new Payment
             {
                 InvoiceId = request.InvoiceId,
@@ -43,7 +38,14 @@ namespace StoreHouse360.Application.Commands.Payments
                 PaymentIoType = request.PaymentIoType,
                 Amount = request.Amount,
                 CurrencyId = request.CurrencyId,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now,
+                CurrencyAmounts = request.CurrencyAmounts.Select(c =>
+                    new CurrencyAmount
+                    {
+                        Key = CurrencyAmountKey.Payment,
+                        Amount = c.Value,
+                        CurrencyId = c.CurrencyId
+                    })
             });
 
             var saveAction = await unitOfWork.InvoicePaymentsRepository.Save(invoicePayments);

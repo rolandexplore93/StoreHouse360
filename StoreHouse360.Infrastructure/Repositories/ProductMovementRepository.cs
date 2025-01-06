@@ -65,7 +65,7 @@ namespace StoreHouse360.Infrastructure.Repositories
         protected override IQueryable<ProductMovementDb> GetIncludedDatabaseSet()
         {
             return dbSet
-                .Include(item => item.CurrencyAmounts!.Where(c => c.Key.Equals(CurrencyAmountKey.Movement)))
+                .Include(item => item.CurrencyAmounts)!
                 .ThenInclude(currencyAmount => currencyAmount.Currency)
                 .Include(item => item.Product)
                 .Include(item => item.Currency);

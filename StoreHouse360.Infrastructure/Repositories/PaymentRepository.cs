@@ -18,7 +18,9 @@ namespace StoreHouse360.Infrastructure.Repositories
         {
             return dbSet
                 .Include(payment => payment.Currency)
-                .IncludeFilter(payment => payment.CurrencyAmounts.Where(p => p.Key == CurrencyAmountKey.Payment));
+                .Include(payment => payment.CurrencyAmounts)!
+                .ThenInclude(c => c.Currency);
+                //.IncludeFilter(payment => payment.CurrencyAmounts.Where(p => p.Key == CurrencyAmountKey.Payment));
         }
     }
 }
