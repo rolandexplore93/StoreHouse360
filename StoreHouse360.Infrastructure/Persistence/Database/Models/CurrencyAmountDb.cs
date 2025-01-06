@@ -11,13 +11,8 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
-        public int? ObjectId { get; set; }
-
         public CurrencyAmountKey Key { get; set; }
-
         public double Amount { get; set; }
-
         public int CurrencyId { get; set; }
         public CurrencyDb Currency { get; set; }
     }

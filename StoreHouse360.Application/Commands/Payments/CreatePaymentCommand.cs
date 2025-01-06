@@ -55,7 +55,7 @@ namespace StoreHouse360.Application.Commands.Payments
             var currencyAmounts = request.CurrencyAmounts
                 .Select(c => new CurrencyAmount
                 {
-                    ObjectId = addedPayment.Id,
+                    //ObjectId = addedPayment.Id,
                     Key = CurrencyAmountKey.Payment,
                     Amount = c.Value,
                     CurrencyId = c.CurrencyId

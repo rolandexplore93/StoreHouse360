@@ -21,8 +21,6 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
         public int CurrencyId { get; set; }
         [ForeignKey("CurrencyId")]
         public CurrencyDb? Currency { get; set; }
-
-        [ForeignKey("ObjectId")]
         public IEnumerable<CurrencyAmountDb> CurrencyAmounts { get; set; }
         public DateTime CreatedAt { get; set; }
     }

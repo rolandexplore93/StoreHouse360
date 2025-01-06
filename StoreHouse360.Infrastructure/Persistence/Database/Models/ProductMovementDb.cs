@@ -33,8 +33,6 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
 
         [ForeignKey("CurrencyId")]
         public CurrencyDb? Currency { get; set; }
-
-        [ForeignKey("ObjectId")]
         public IEnumerable<CurrencyAmountDb>? CurrencyAmounts { get; set; }
         public ProductMovementType Type { get; set; }
 
