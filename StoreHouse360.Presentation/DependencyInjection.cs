@@ -53,10 +53,14 @@ namespace StoreHouse360
 
         public static void UseSwaggerMiddlewares(this WebApplication app)
         {
-            if (app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Environment.IsProduction())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "StoreHouse360 API v1");
+                    c.RoutePrefix = "swagger";
+                });
             }
         }
     }
