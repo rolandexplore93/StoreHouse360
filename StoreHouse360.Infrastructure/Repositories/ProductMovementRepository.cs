@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using StoreHouse360.Application.Common.DTO;
+using StoreHouse360.Application.Common.QueryFilters;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Aggregations;
 using StoreHouse360.Domain.Entities;
@@ -27,6 +28,8 @@ namespace StoreHouse360.Infrastructure.Repositories
                     Id = movement.Id,
                     ProductId = movement.Product!.Id,
                     Product = movement.Product,
+                    CategoryId = movement.Product.CategoryId,
+                    ManufacturerId = movement.Product.ManufacturerId,
                     Quantity = movement.Quantity,
                     Type = movement.Type,
                     AccountId = movement.Invoice.AccountId,
@@ -37,8 +40,9 @@ namespace StoreHouse360.Infrastructure.Repositories
 
             if (filters != null)
             {
-                select = new AggregateQuantitiesFilterHandler(filters).ApplyFilters(select);
+                select = select.WhereFilters(filters);
             }
+
             var query = select
                 .GroupBy(movement => new
                 {
@@ -72,81 +76,18 @@ namespace StoreHouse360.Infrastructure.Repositories
         }
     }
 
-    internal class AggregateQuantitiesFilterHandler
-    {
-        private readonly ProductMovementFiltersDTO _filters;
-        public AggregateQuantitiesFilterHandler(ProductMovementFiltersDTO filters)
-        {
-            _filters = filters;
-        }
-        public IQueryable<AggregateProductMovement> ApplyFilters(IQueryable<AggregateProductMovement> query)
-        {
-            var filterMethods = GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance)
-                .Where(m => m.Name.StartsWith("_filter"));
-
-            return filterMethods.Aggregate(query,
-                (current, filterMethod) =>
-                    (IQueryable<AggregateProductMovement>?)filterMethod.Invoke(this, new object[] { current })!);
-        }
-        private IQueryable<AggregateProductMovement> _filterProductIds(IQueryable<AggregateProductMovement> query)
-        {
-            return _filters.ProductIds is null
-                ? query
-                : query.Where(movement => movement.ProductId != null && _filters.ProductIds!.Contains((int)movement.ProductId));
-        }
-        private IQueryable<AggregateProductMovement> _filterCategory(IQueryable<AggregateProductMovement> query)
-        {
-            return _filters.CategoryId is null
-                ? query
-                : query.Where(movement => movement.Product!.CategoryId == _filters.CategoryId);
-        }
-        private IQueryable<AggregateProductMovement> _filterAccount(IQueryable<AggregateProductMovement> query)
-        {
-            return _filters.AccountId is null
-                ? query
-                : query.Where(movement => movement.AccountId == _filters.AccountId);
-        }
-        private IQueryable<AggregateProductMovement> _filterStartDate(IQueryable<AggregateProductMovement> query)
-        {
-            return _filters.StartDate is null
-                ? query
-                : query.Where(movement => movement.CreatedAt >= _filters.StartDate);
-        }
-        private IQueryable<AggregateProductMovement> _filterEndDate(IQueryable<AggregateProductMovement> query)
-        {
-            return _filters.EndDate is null
-                ? query
-                : query.Where(movement => movement.CreatedAt <= _filters.EndDate);
-        }
-        private IQueryable<AggregateProductMovement> _filterWarehouse(IQueryable<AggregateProductMovement> query)
-        {
-            return _filters.WarehouseId is null
-                ? query
-                : query.Where(movement => movement.WarehouseId == _filters.WarehouseId);
-        }
-        private IQueryable<AggregateProductMovement> _filterManufacturer(IQueryable<AggregateProductMovement> query)
-        {
-            return _filters.ManufacturerId is null
-                ? query
-                : query.Where(movement => movement.Product!.ManufacturerId == _filters.ManufacturerId);
-        }
-        private IQueryable<AggregateProductMovement> _filterStoragePlace(IQueryable<AggregateProductMovement> query)
-        {
-            return _filters.PlaceId is null
-                ? query
-                : query.Where(movement => movement.StoragePlaceId == _filters.PlaceId);
-        }
-    }
     public record AggregateProductMovement
     {
         public int Id { get; set; }
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
         public ProductDb? Product { get; set; }
+        public int? CategoryId { get; set; }
+        public int? ManufacturerId { get; set; }
         public int? AccountId { get; set; }
-        public int WarehouseId { get; set; }
+        public int? WarehouseId { get; set; }
         public int? StoragePlaceId { get; set; }
         public int Quantity { get; set; }
         public ProductMovementType Type { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
 }
