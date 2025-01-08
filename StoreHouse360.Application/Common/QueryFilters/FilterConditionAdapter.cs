@@ -35,8 +35,7 @@ namespace StoreHouse360.Application.Common.QueryFilters
 
         private Expression _concatExpressions(Expression left, Expression right)
         {
-            var queryFilterConcatAttribute =
-                (QueryFiltersConcatAttribute?)_filter.GetType().GetCustomAttribute(typeof(QueryFiltersConcatAttribute));
+            var queryFilterConcatAttribute = (QueryFiltersConcatAttribute?)_filter.GetType().GetCustomAttribute(typeof(QueryFiltersConcatAttribute));
 
             if (queryFilterConcatAttribute is null || queryFilterConcatAttribute.ConcatType == QueryFilterConcatType.Or)
                 return Expression.OrElse(left, right);
@@ -52,12 +51,15 @@ namespace StoreHouse360.Application.Common.QueryFilters
             {
                 fieldName = queryFilterAttribute.FieldName;
             }
+
             var modelProperty = typeof(TModel).GetProperty(fieldName);
             if (modelProperty is null)
                 return null;
+
             var value = property.GetValue(_filter);
             if (queryFilterAttribute.IgnoreNullValue && value is null)
                 return null;
+
             var modelExpressionProperty = Expression.Property(_parameter, fieldName); // model.PropertyName
             var method = _findMatchedCompareTypeMethod(queryFilterAttribute.CompareType);
             return (Expression)method.Invoke(
@@ -82,11 +84,9 @@ namespace StoreHouse360.Application.Common.QueryFilters
 
         public Expression EqualExpression(Expression left, Expression right) => Expression.Equal(left, right);
         public Expression GreaterThanExpression(Expression left, Expression right) => Expression.GreaterThan(left, right);
-        public Expression GreaterThanOrEqualExpression(Expression left, Expression right) =>
-            Expression.GreaterThanOrEqual(left, right);
+        public Expression GreaterThanOrEqualExpression(Expression left, Expression right) => Expression.GreaterThanOrEqual(left, right);
         public Expression LessThanExpression(Expression left, Expression right) => Expression.LessThan(left, right);
-        public Expression LessThanOrEqualExpression(Expression left, Expression right) =>
-            Expression.LessThanOrEqual(left, right);
+        public Expression LessThanOrEqualExpression(Expression left, Expression right) =>  Expression.LessThanOrEqual(left, right);
         public Expression StringContainsExpression(Expression left, Expression right)
         {
             var method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
