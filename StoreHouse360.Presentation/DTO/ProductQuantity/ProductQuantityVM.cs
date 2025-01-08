@@ -7,7 +7,7 @@ namespace StoreHouse360.DTO.ProductQuantity
 {
     public class ProductQuantityVM : IViewModel, IMapFrom<AggregateProductQuantity>
     {
-        public ProductVM? Product { get; set; }
+        public ProductJoinedVM? Product { get; set; }
         public int InputQuantities { get; set; }
         public int OutputQuantities { get; set; }
         public int QuantitySum { get; set; }
