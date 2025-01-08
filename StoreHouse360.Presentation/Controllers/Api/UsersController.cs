@@ -33,10 +33,9 @@ namespace StoreHouse360.Controllers.Api
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<BaseResponse<PaginationVM<UserVM>>>> GetUsers([FromQuery] PaginationRequestParams request)
+        public async Task<ActionResult<BaseResponse<PaginationVM<UserVM>>>> GetUsers([FromQuery] UsersQueryParams request)
         {
-            var result = await Mediator.Send(request.AsQuery(new GetAllUsersQuery()));
-            //return Ok(result);
+            var result = await Mediator.Send(request.AsQuery<GetAllUsersQuery>(_mapper));
             return Ok(result.ToViewModels<UserVM>(_mapper));
         }
 

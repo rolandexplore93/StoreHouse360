@@ -6,7 +6,7 @@ namespace StoreHouse360.Application.Common.DTO
     public class ProductMovementFiltersDTO
     {
         [QueryFilter(QueryFilterCompareType.InArray, FieldName = "ProductId")]
-        public IList<int> ProductIds { get; set; }
+        public IList<int>? ProductIds { get; set; }
 
         [QueryFilter(QueryFilterCompareType.Equal)]
         public int? CategoryId { get; set; }

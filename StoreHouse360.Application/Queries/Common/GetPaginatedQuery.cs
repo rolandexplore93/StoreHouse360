@@ -29,7 +29,7 @@ namespace StoreHouse360.Application.Queries.Common
 
         protected abstract Task<IQueryable<TEntity>> GetQuery(TRequest request, CancellationToken cancellationToken);
 
-        protected IQueryable<TEntity> ApplyFilters(IQueryable<TEntity> query, TRequest request)
+        protected virtual IQueryable<TEntity> ApplyFilters(IQueryable<TEntity> query, TRequest request)
         {
             return query.WhereFilters(request);
         }

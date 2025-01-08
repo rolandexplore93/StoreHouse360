@@ -29,9 +29,9 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<PaginationVM<ManufacturerVM>>>> GetManufacturers([FromQuery] PaginationRequestParams request)
+        public async Task<ActionResult<BaseResponse<PaginationVM<ManufacturerVM>>>> GetManufacturers([FromQuery] ManufacturersQueryParams request)
         {
-            var manufacturers = await Mediator.Send(request.AsQuery(new GetAllManufacturersQuery()));
+            var manufacturers = await Mediator.Send(request.AsQuery<GetAllManufacturersQuery>(_mapper));
             return Ok(manufacturers.ToViewModels<ManufacturerVM>(_mapper));
         }
 

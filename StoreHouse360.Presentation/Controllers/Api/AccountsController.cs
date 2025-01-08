@@ -27,10 +27,9 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<PaginationVM<AccountVM>>>> GetAccounts([FromQuery] PaginationRequestParams request)
+        public async Task<ActionResult<BaseResponse<PaginationVM<AccountVM>>>> GetAccounts([FromQuery] AccountsQueryParams request)
         {
-            //var query = new GetAllAccountsQuery();
-            var query = request.AsQuery(new GetAllAccountsQuery());
+            var query = request.AsQuery<GetAllAccountsQuery>(_mapper);
             var accountEntities = await Mediator.Send(query);
             return Ok(accountEntities.ToViewModels<AccountVM>(_mapper));
         }

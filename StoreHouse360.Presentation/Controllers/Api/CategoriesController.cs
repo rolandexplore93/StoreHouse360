@@ -39,9 +39,9 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<PaginationVM<CategoryVM>>>> GetCategories([FromQuery] PaginationRequestParams request)
+        public async Task<ActionResult<BaseResponse<PaginationVM<CategoryVM>>>> GetCategories([FromQuery] CategoriesQueryParams request)
         {
-            var query = request.AsQuery(new GetAllCategoriesQuery());
+            var query = request.AsQuery<GetAllCategoriesQuery>(_mapper);
             var categoryEntities = await Mediator.Send(query);
             return Ok(categoryEntities.ToViewModels<CategoryVM>(_mapper));
         }
