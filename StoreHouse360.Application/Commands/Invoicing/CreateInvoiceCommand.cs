@@ -47,16 +47,13 @@ namespace StoreHouse360.Application.Commands.Invoicing
                 CurrencyId = request.CurrencyId,
                 Note = request.Note,
                 CreatedAt = DateTime.Now,
-                Type = request.Type,
-                Status = InvoiceStatus.Opened
+                Type = request.Type
             };
 
-            var invoiceItems = request.Items.Select(dto => _buildItem(dto, request.Type));
-
-            foreach (var item in invoiceItems)
-            {
-                invoice.AddItem(item);
-            }
+            request.Items
+                .Select(dto => _buildItem(dto, request.Type))
+                .ToList()
+                .ForEach(movement => invoice.AddItem(movement));
 
             using var unitOfWork = _unitOfWork.Value;
 

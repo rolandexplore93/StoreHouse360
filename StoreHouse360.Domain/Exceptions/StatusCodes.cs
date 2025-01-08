@@ -7,5 +7,6 @@
         public const int OverPaymentExceptionCode = 433;
         public const int IncompatiblePaymentIoTypeExceptionCode = 434;
         public const int InvoiceClosedException = 435;
+        public const int InvoiceOpenedException = 435;
     }
 }
