@@ -29,9 +29,10 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<PaginationVM<WarehouseVM>>>> GetAll([FromQuery] PaginationRequestParams request)
+        public async Task<ActionResult<BaseResponse<PaginationVM<WarehouseVM>>>> GetAll([FromQuery] WarehousesQueryParams request)
         {
-            var warehouses = await Mediator.Send(request.AsQuery(new GetAllWarehousesQuery()));
+            //var warehouses = await Mediator.Send(request.AsQuery(new GetAllWarehousesQuery()));
+            var warehouses = await Mediator.Send(request.AsQuery<GetAllWarehousesQuery>(_mapper));
             return Ok(warehouses.ToViewModels<WarehouseVM>(_mapper));
         }
 

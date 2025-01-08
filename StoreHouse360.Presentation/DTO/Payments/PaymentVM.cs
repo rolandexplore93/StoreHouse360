@@ -6,6 +6,7 @@ namespace StoreHouse360.DTO.Payments
 {
     public class PaymentVM : IViewModel, IMapFrom<Payment>
     {
+        public int Id { get; set; }
         public int InvoiceId { get; set; }
         public string? Note { get; set; }
         public PaymentType PaymentType { get; set; }

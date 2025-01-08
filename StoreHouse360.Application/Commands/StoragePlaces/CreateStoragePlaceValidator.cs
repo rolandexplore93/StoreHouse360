@@ -3,11 +3,11 @@ using StoreHouse360.Application.Repositories;
 
 namespace StoreHouse360.Application.Commands.StoragePlaces
 {
-    public class CreateStoragePlaceValidation : AbstractValidator<CreateStoragePlaceCommand>
+    public class CreateStoragePlaceValidator : AbstractValidator<CreateStoragePlaceCommand>
     {
         private readonly IWarehouseRepository _warehouseRepository;
 
-        public CreateStoragePlaceValidation(IWarehouseRepository warehouseRepository)
+        public CreateStoragePlaceValidator(IWarehouseRepository warehouseRepository)
         {
             _warehouseRepository = warehouseRepository;
             RuleFor(command => command.WarehouseId).MustAsync(_warehouseExists).WithMessage("Warehouse id is not found");

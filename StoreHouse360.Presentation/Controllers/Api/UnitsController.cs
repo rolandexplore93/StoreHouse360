@@ -35,9 +35,9 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<PaginationVM<UnitVM>>>> GetUnits([FromQuery] PaginationRequestParams request)
+        public async Task<ActionResult<BaseResponse<PaginationVM<UnitVM>>>> GetUnits([FromQuery] UnitsQueryParams request)
         {
-            var query = new GetAllUnitsQuery();
+            var query = request.AsQuery<GetAllUnitsQuery>(_mapper);
             var unitEntities = await Mediator.Send(request.AsQuery(query));
             return Ok(unitEntities.ToViewModels<UnitVM>(_mapper));
         }

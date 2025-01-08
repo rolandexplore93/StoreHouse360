@@ -8,6 +8,7 @@ using StoreHouse360.Application.Queries.Invoicing.DTO;
 using StoreHouse360.Application.Queries.Products;
 using StoreHouse360.DTO.Common;
 using StoreHouse360.DTO.Pagination;
+using StoreHouse360.DTO.ProductQuantity;
 using StoreHouse360.DTO.Products;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 using System.ComponentModel.DataAnnotations;
@@ -23,9 +24,9 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<PaginationVM<ProductJoinedVM>>>> GetAllProducts([FromQuery] PaginationRequestParams request)
+        public async Task<ActionResult<BaseResponse<PaginationVM<ProductJoinedVM>>>> GetAllProducts([FromQuery] ProductsQueryParams request)
         {
-            var productEntities = await Mediator.Send(request.AsQuery(new GetAllProductsQuery()));
+            var productEntities = await Mediator.Send(request.AsQuery<GetAllProductsQuery>(_mapper));
             return Ok(productEntities.ToViewModels<ProductJoinedVM>(_mapper));
         }
 

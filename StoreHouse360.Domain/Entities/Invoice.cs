@@ -17,8 +17,24 @@ namespace StoreHouse360.Domain.Entities
         public string? Note { get; set; }
 
         public DateTime CreatedAt { get; set; }
-        public InvoiceStatus Status { get; set; }
+        public InvoiceStatus Status { get; set; } = InvoiceStatus.Closed; // Invoice remains closed until a product is added
         public InvoiceType Type { get; set; }
+
+        public IList<ProductMovement> Items { get; set; } = new List<ProductMovement>();
+
+        public void AddItem(ProductMovement item)
+        {
+            TotalPrice += item.TotalPrice;
+
+            if (AddedProductOpensInvoice())
+            {
+                Open();
+            }
+
+            Items.Add(item);
+        }
+        private bool AddedProductOpensInvoice() => TotalPrice != 0 && Status == InvoiceStatus.Closed;
+        public bool ProductExists(int productId) => Items.Any(i => i.ProductId == productId);
         public bool IsClosed() => Status == InvoiceStatus.Closed;
         public void Close()
         {
@@ -28,6 +44,16 @@ namespace StoreHouse360.Domain.Entities
             }
             Status = InvoiceStatus.Closed;
         }
+
+        public void Open()
+        {
+            if (Status == InvoiceStatus.Opened)
+            {
+                throw new InvoiceOpenedException();
+            }
+            Status = InvoiceStatus.Opened;
+        }
+
     }
 
     public enum InvoiceStatus

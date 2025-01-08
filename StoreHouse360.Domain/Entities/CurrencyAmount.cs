@@ -2,7 +2,6 @@
 {
     public class CurrencyAmount : BaseEntity<int>
     {
-        public int ObjectId { get; set; }
         public CurrencyAmountKey Key { get; set; }
         public double Amount { get; set; }
         public int CurrencyId { get; set; }

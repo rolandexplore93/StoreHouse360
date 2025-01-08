@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using StoreHouse360.Application.Common.Models;
+using StoreHouse360.Application.Common.QueryFilters;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Queries.Common
@@ -22,9 +23,15 @@ namespace StoreHouse360.Application.Queries.Common
         public async Task<IPaginatedCollections<TEntity>> Handle(TRequest request, CancellationToken cancellationToken)
         {
             var query = await GetQuery(request, cancellationToken);
+            query = ApplyFilters(query, request);
             return query.AsPaginatedQuery(request.Page, request.PageSize);
         }
 
         protected abstract Task<IQueryable<TEntity>> GetQuery(TRequest request, CancellationToken cancellationToken);
+
+        protected virtual IQueryable<TEntity> ApplyFilters(IQueryable<TEntity> query, TRequest request)
+        {
+            return query.WhereFilters(request);
+        }
     }
 }

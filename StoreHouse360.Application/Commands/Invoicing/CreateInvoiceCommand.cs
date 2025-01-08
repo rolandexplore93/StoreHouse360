@@ -34,73 +34,58 @@ namespace StoreHouse360.Application.Commands.Invoicing
             {
                 var checkProductQuantityQuery = new CheckProductQuantityQuery
                 {
-                    ProductQuantities = request.Items.Select( item => new CheckProductQuantityDTO { ProductId = item.ProductId, Quantity = item.Quantity })
+                    ProductQuantities = request.Items.Select(item => new CheckProductQuantityDTO { ProductId = item.ProductId, Quantity = item.Quantity })
                 };
 
                 await _mediator.Send(checkProductQuantityQuery, cancellationToken);
             }
 
+            var invoice = new Invoice
+            {
+                AccountId = request.AccountId,
+                WarehouseId = request.WarehouseId,
+                CurrencyId = request.CurrencyId,
+                Note = request.Note,
+                CreatedAt = DateTime.Now,
+                Type = request.Type
+            };
+
+            request.Items
+                .Select(dto => _buildItem(dto, request.Type))
+                .ToList()
+                .ForEach(movement => invoice.AddItem(movement));
+
             using var unitOfWork = _unitOfWork.Value;
-                Invoice invoice = new Invoice
+
+            var saveInvoiceAction = await unitOfWork.InvoiceRepository.CreateAsync(invoice);
+            invoice = await saveInvoiceAction.Invoke();
+
+            await unitOfWork.CommitAsync();
+            return invoice.Id;
+        }
+
+        private static ProductMovement _buildItem(InvoiceItemDTO dto, InvoiceType invoiceType)
+        {
+            return new ProductMovement
+            {
+                ProductId = dto.ProductId,
+                PlaceId = dto.PlaceId,
+                Quantity = dto.Quantity,
+                UnitPrice = dto.UnitPrice,
+                CurrencyId = dto.CurrencyId,
+                Note = dto.Note,
+                Type = ProductMovement.TypeFromInvoice(invoiceType),
+                CreatedAt = DateTime.Now,
+                CurrencyAmounts = dto.CurrencyAmounts?.Select(currencyAmountDto => new CurrencyAmount
                 {
-                    AccountId = request.AccountId,
-                    WarehouseId = request.WarehouseId,
-                    CurrencyId = request.CurrencyId,
-                    TotalPrice = request.Items.Sum(item => item.UnitPrice * item.Quantity),
-                    Note = request.Note,
-                    CreatedAt = DateTime.Now,
-                    Type = request.Type,
-                    Status = InvoiceStatus.Opened
-                };
+                    Amount = currencyAmountDto.Value,
+                    CurrencyId = currencyAmountDto.CurrencyId,
+                    Key = CurrencyAmountKey.Movement
+                })
+            };
 
-                var saveInvoiceAction = await unitOfWork.InvoiceRepository.CreateAsync(invoice);
-                var savedInvoiceEntity = await saveInvoiceAction.Invoke();
 
-                var productMovements = request.Items.Select(
-                    dto => new ProductMovement
-                    {
-                        InvoiceId = savedInvoiceEntity.Id,
-                        ProductId = dto.ProductId,
-                        PlaceId = dto.PlaceId,
-                        Quantity = dto.Quantity,
-                        UnitPrice = dto.UnitPrice,
-                        TotalPrice = dto.UnitPrice * dto.Quantity,
-                        CurrencyId = dto.CurrencyId,
-                        Note = dto.Note,
-                        Type = ProductMovement.TypeFromInvoice(request.Type),
-                        CreatedAt = DateTime.Now
-                    }
-                );
+        }
 
-                var saveMovementsAction = await unitOfWork.ProductMovementRepository.CreateAllAsync(productMovements);
-                var savedProductMovementEntities = await saveMovementsAction.Invoke();
-
-                var currencyAmounts = new List<CurrencyAmount>();
-
-                savedProductMovementEntities.ToList()
-                    .Zip(request.Items)
-                    .ToList()
-                    .ForEach(entry =>
-                    {
-                        var (savedProductMovementEntity, requestInvoiceItem) = entry;
-                        var currencyAmountsForEachInvoiceItem = requestInvoiceItem.CurrencyAmounts
-                            .Select(
-                                dto => new CurrencyAmount
-                                {
-                                    ObjectId = savedProductMovementEntity.Id,
-                                    Key = CurrencyAmountKey.Movement,
-                                    Amount = dto.Value,
-                                    CurrencyId = dto.CurrencyId
-                                }
-                            );
-                        currencyAmounts.AddRange(currencyAmountsForEachInvoiceItem);
-                    });
-                var saveCurrencyAmountsAction = await unitOfWork.CurrencyAmountRepository.CreateAllAsync(currencyAmounts);
-                var savedCurrencyAmountEntities = await saveCurrencyAmountsAction.Invoke();
-                return savedInvoiceEntity.Id;
-            }
-
-        
     }
-
 }

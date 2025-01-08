@@ -33,22 +33,33 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpPost("in/")]
-        public async Task<ActionResult<BaseResponse<PaymentVM>>> CreateIn(CreatePaymentRequestDTO request)
+        public Task<ActionResult<BaseResponse<PaymentVM>>> CreateIn(CreatePaymentRequestDTO request)
         {
-            CreatePaymentCommand createPaymentCommand = _mapper.Map<CreatePaymentCommand>(request);
-            createPaymentCommand.PaymentType = PaymentType.Normal;
-            createPaymentCommand.PaymentIoType = PaymentIoType.In;
-            var paymentId = await Mediator.Send(createPaymentCommand);
-            var payment = await Mediator.Send(new GetPaymentQuery { Id = paymentId });
-            return Ok(payment.ToViewModel<PaymentVM>(_mapper));
+            return CreatePayment(request, PaymentType.Normal, PaymentIoType.In);
+        }
+
+        [HttpPost("in/discount/")]
+        public Task<ActionResult<BaseResponse<PaymentVM>>> CreateDiscountIn(CreatePaymentRequestDTO request)
+        {
+            return CreatePayment(request, PaymentType.Discount, PaymentIoType.In);
         }
 
         [HttpPost("out/")]
-        public async Task<ActionResult<BaseResponse<PaymentVM>>> CreateOut(CreatePaymentRequestDTO request)
+        public Task<ActionResult<BaseResponse<PaymentVM>>> CreateOut(CreatePaymentRequestDTO request)
+        {
+            return CreatePayment(request, PaymentType.Normal, PaymentIoType.Out);
+        }
+
+        [HttpPost("out/discount/")]
+        public Task<ActionResult<BaseResponse<PaymentVM>>> CreateDiscountOut(CreatePaymentRequestDTO request)
+        {
+            return CreatePayment(request, PaymentType.Discount, PaymentIoType.Out);
+        }
+        private async Task<ActionResult<BaseResponse<PaymentVM>>> CreatePayment(CreatePaymentRequestDTO request, PaymentType paymentType, PaymentIoType paymentIoType)
         {
             CreatePaymentCommand createPaymentCommand = _mapper.Map<CreatePaymentCommand>(request);
-            createPaymentCommand.PaymentType = PaymentType.Normal;
-            createPaymentCommand.PaymentIoType = PaymentIoType.Out;
+            createPaymentCommand.PaymentType = paymentType;
+            createPaymentCommand.PaymentIoType = paymentIoType;
             var paymentId = await Mediator.Send(createPaymentCommand);
             var payment = await Mediator.Send(new GetPaymentQuery { Id = paymentId });
             return Ok(payment.ToViewModel<PaymentVM>(_mapper));

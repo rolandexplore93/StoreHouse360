@@ -28,9 +28,9 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<PaginationVM<CurrencyVM>>>> GetAll([FromQuery] PaginationRequestParams request)
+        public async Task<ActionResult<BaseResponse<PaginationVM<CurrencyVM>>>> GetAll([FromQuery] CurrenciesQueryParams request)
         {
-            var currencies = await Mediator.Send(request.AsQuery(new GetAllCurrenciesQuery()));
+            var currencies = await Mediator.Send(request.AsQuery<GetAllCurrenciesQuery>(_mapper));
             return Ok(currencies.ToViewModels<CurrencyVM>(_mapper));
         }
 

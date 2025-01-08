@@ -25,7 +25,8 @@
 
     public enum PaymentType
     {
-          Normal  
+        Normal,
+        Discount
     }
 
     public enum PaymentIoType

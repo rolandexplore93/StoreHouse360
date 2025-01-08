@@ -14,17 +14,21 @@
 
         public double UnitPrice { get; set; }
 
-        public double TotalPrice { get; set; }
+        public double TotalPrice => UnitPrice * Quantity;
 
         public int CurrencyId { get; set; }
         public Currency Currency { get; set; }
 
-        public IEnumerable<CurrencyAmount> CurrencyAmounts { get; set; }
+        public IEnumerable<CurrencyAmount>? CurrencyAmounts { get; set; }
         public ProductMovementType Type { get; set; }
 
         public string? Note { get; set; }
 
         public DateTime CreatedAt { get; set; }
+        public void IncreaseQuantity(int quantity)
+        {
+            Quantity += quantity;
+        }
 
         public static ProductMovementType TypeFromInvoice(InvoiceType invoiceType)
         {

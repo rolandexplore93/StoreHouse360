@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StoreHouse360.Infrastructure.Persistence.Database;
 
@@ -11,9 +12,11 @@ using StoreHouse360.Infrastructure.Persistence.Database;
 namespace StoreHouse360.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250106083131_AddPendingMigration")]
+    partial class AddPendingMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -311,19 +314,14 @@ namespace StoreHouse360.Infrastructure.Migrations
                     b.Property<int>("Key")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PaymentDbId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProductMovementDbId")
+                    b.Property<int?>("ObjectId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CurrencyId");
 
-                    b.HasIndex("PaymentDbId");
-
-                    b.HasIndex("ProductMovementDbId");
+                    b.HasIndex("ObjectId");
 
                     b.ToTable("CurrencyAmounts");
                 });
@@ -683,11 +681,11 @@ namespace StoreHouse360.Infrastructure.Migrations
 
                     b.HasOne("StoreHouse360.Infrastructure.Persistence.Database.Models.PaymentDb", null)
                         .WithMany("CurrencyAmounts")
-                        .HasForeignKey("PaymentDbId");
+                        .HasForeignKey("ObjectId");
 
                     b.HasOne("StoreHouse360.Infrastructure.Persistence.Database.Models.ProductMovementDb", null)
                         .WithMany("CurrencyAmounts")
-                        .HasForeignKey("ProductMovementDbId");
+                        .HasForeignKey("ObjectId");
 
                     b.Navigation("Currency");
                 });

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Common.QueryFilters;
 using StoreHouse360.Application.Queries.Common;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
@@ -7,6 +8,8 @@ namespace StoreHouse360.Application.Queries.Manufacturers
 {
     public class GetAllManufacturersQuery : GetPaginatedQuery<Manufacturer>
     {
+        [QueryFilter(QueryFilterCompareType.StringContains)]
+        public string? Name { get; set; }
     }
 
     public class GetAllManufacturersQueryHandler : PaginatedQueryHandler<GetAllManufacturersQuery, Manufacturer>

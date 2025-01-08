@@ -5,24 +5,18 @@
 namespace StoreHouse360.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class ModifyCategoriesFieldTypeName : Migration
+    public partial class MakeCurrencyAmountsField_Nullable_in_PaymentDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "CatId",
-                table: "Categories",
-                newName: "Id");
+
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Id",
-                table: "Categories",
-                newName: "CatId");
+
         }
     }
 }
