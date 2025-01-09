@@ -20,5 +20,6 @@ namespace StoreHouse360.DTO.Invoices
         [Required]
         [MinLength(1)]
         public IEnumerable<InvoiceItemDTO> Items { get; set; }
+        public bool IgnoreMinLevelWarnings { get; set; } = false;
     }
 }
