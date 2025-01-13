@@ -1,6 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using StoreHouse360.DTO.Common.Responses.Validation;
 using StoreHouse360.Filters;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Text.Json.Serialization;
 
 namespace StoreHouse360
@@ -44,7 +45,7 @@ namespace StoreHouse360
                             Id = "Bearer"
                         }
                     },
-                    new string[] {}
+                    new string[] { }
                 }
             });
             });
@@ -58,6 +59,7 @@ namespace StoreHouse360
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
+                    c.DocExpansion(DocExpansion.None);
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "StoreHouse360 API v1");
                     c.RoutePrefix = "swagger";
                 });
