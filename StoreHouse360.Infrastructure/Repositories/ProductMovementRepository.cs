@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using StoreHouse360.Application.Common.DTO;
 using StoreHouse360.Application.Common.QueryFilters;
@@ -43,7 +44,7 @@ namespace StoreHouse360.Infrastructure.Repositories
                 select = select.WhereFilters(filters);
             }
 
-            var query = select
+            var aggregatesQuery = select
                 .GroupBy(movement => new
                 {
                     movement.ProductId,
@@ -62,8 +63,22 @@ namespace StoreHouse360.Infrastructure.Repositories
                     QuantityOutput = movementsGrouping.Where(movement => movement.Type == ProductMovementType.Out).Sum(movement => movement.Quantity),
                 });
 
-            return query;
+            var aggregates = aggregatesQuery.ToList();
 
+            var productIds = aggregates.Select(aggregate => aggregate.Product!.Id);
+
+            var products = _dbContext.Products.AsQueryable()
+            .Include(p => p.Category)
+            .Include(p => p.Currency)
+            .Include(p => p.Manufacturer)
+            .Include(p => p.Unit)
+            .Where(product => productIds.Any(id => product.Id == id))
+            .ProjectTo<Product>(mapper.ConfigurationProvider)
+            .ToList();
+            var aggregatesWithFullProduct = aggregates
+                .Zip(products)
+                .Select(entry => entry.First.AddProduct(entry.Second));
+            return aggregatesWithFullProduct.AsQueryable();
         }
 
         protected override IQueryable<ProductMovementDb> GetIncludedDatabaseSet()

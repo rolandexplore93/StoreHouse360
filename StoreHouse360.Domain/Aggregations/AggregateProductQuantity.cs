@@ -9,5 +9,11 @@ namespace StoreHouse360.Domain.Aggregations
         public int QuantityOutput { get; set; }
         public int QuantitySum => QuantityInput - QuantityOutput;
         public bool ExceedsMinimumLevel(int requestedQuantity) => Product!.HasMinimumLevel && (QuantitySum - requestedQuantity < Product.MinimumLevel);
+        public bool ExceedsZeroLevel(int requestedQuantity) => QuantitySum - requestedQuantity < 0;
+        public AggregateProductQuantity AddProduct(Product product)
+        {
+            Product = product;
+            return this;
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace StoreHouse360.Application.Commands.Invoicing
         public string? Note { get; set; }
         public InvoiceType Type { get; set; }
         public IEnumerable<InvoiceItemDTO> Items { get; set; }
+        public bool IgnoreMinLevelWarnings { get; set; }
     }
 
     public class CreateInvoiceCommandHandler : IRequestHandler<CreateInvoiceCommand, int>
@@ -34,7 +35,9 @@ namespace StoreHouse360.Application.Commands.Invoicing
             {
                 var checkProductQuantityQuery = new CheckProductQuantityQuery
                 {
-                    ProductQuantities = request.Items.Select(item => new CheckProductQuantityDTO { ProductId = item.ProductId, Quantity = item.Quantity })
+                    ProductQuantities = request.Items.Select(item => new CheckProductQuantityDTO { ProductId = item.ProductId, Quantity = item.Quantity }),
+                    IgnoreMinLevelWarnings = request.IgnoreMinLevelWarnings
+
                 };
 
                 await _mediator.Send(checkProductQuantityQuery, cancellationToken);

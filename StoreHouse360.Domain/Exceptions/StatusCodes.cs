@@ -8,5 +8,6 @@
         public const int IncompatiblePaymentIoTypeExceptionCode = 434;
         public const int InvoiceClosedException = 435;
         public const int InvoiceOpenedException = 435;
+        public const int ZeroLevelExceededExceptionCode = 436;
     }
 }
