@@ -24,6 +24,7 @@ namespace StoreHouse360.Infrastructure.Persistence.Database
         public DbSet<InvoiceDb> Invoices { get; set; }
         public DbSet<ProductMovementDb> ProductMovements { get; set; }
         public DbSet<PaymentDb> Payments { get; set; }
+        public DbSet<NotificationDb> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
