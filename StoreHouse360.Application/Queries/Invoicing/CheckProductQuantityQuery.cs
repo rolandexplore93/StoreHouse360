@@ -10,7 +10,7 @@ namespace StoreHouse360.Application.Queries.Invoicing
     public class CheckProductQuantityQuery : IRequest<Unit>
     {
         public IEnumerable<CheckProductQuantityDTO> ProductQuantities { get; init; } = null!;
-        public bool IgnoreMinLevelWarnings { get; set; }
+        public bool IgnoreMinLevelWarnings { get; set; } = true;
     }
 
     /// <summary>
