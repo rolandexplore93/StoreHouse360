@@ -9,6 +9,5 @@ namespace StoreHouse360.DTO.Notifications
     {
         public IEnumerable<int> ObjectIds { get; set; } = new List<int>();
         public NotificationType? NotificationType { get; set; } = default;
-        public bool IsValid { get; set; } = false;
     }
 }

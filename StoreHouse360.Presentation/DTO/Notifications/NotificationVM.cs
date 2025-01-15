@@ -6,8 +6,8 @@ namespace StoreHouse360.DTO.Notifications
 {
     public class NotificationVM : IMapFrom<Notification>, IViewModel
     {
+        public int Id { get; set; }
         public int ObjectId { get; set; }
         public NotificationType NotificationType { get; set; }
-        public bool IsValid { get; set; }
     }
 }
