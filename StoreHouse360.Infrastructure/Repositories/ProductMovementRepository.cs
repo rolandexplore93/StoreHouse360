@@ -8,6 +8,7 @@ using StoreHouse360.Domain.Aggregations;
 using StoreHouse360.Domain.Entities;
 using StoreHouse360.Infrastructure.Persistence.Database;
 using StoreHouse360.Infrastructure.Persistence.Database.Models;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace StoreHouse360.Infrastructure.Repositories
@@ -67,6 +68,43 @@ namespace StoreHouse360.Infrastructure.Repositories
                 .Zip(products)
                 .Select(entry => entry.First.AddProduct(entry.Second));
             return aggregatesWithFullProduct.AsQueryable();
+        }
+
+        public IQueryable<AggregateStoragePlaceQuantity> AggregateStoragePlacesQuantities(int productId, int warehouseId, int storagePlaceId)
+        {
+            var list = dbSet
+                .Include(movement => movement.Product)
+                .Include(movement => movement.Place)
+                .ThenInclude(storagePlace => storagePlace!.Warehouse)
+                .Where(movement => movement.ProductId == productId || productId == default)
+                .Where(movement => movement.Place!.Warehouse!.Id == warehouseId || storagePlaceId == default)
+                .Where(movement => movement.Place!.Id == storagePlaceId || storagePlaceId == default)
+                .ToList(); //TODO what's up with this? if you remove it, properties won't be included??
+            return list
+                .GroupBy(
+                    movement => movement.PlaceId.GetValueOrDefault(),
+                    movement => new
+                    {
+                        Product = movement.Product,
+                        Quantity = movement.Type == ProductMovementType.In ? movement.Quantity : -movement.Quantity,
+                        StoragePlace = movement.Place
+                    },
+                    (placeId, obj) => new
+                    {
+                        Product = obj.First().Product,
+                        Quantity = obj.Sum(o => o.Quantity),
+                        StoragePlace = obj.First().StoragePlace
+                    }
+                )
+                .ToList()
+                .Select(obj =>
+                    new AggregateStoragePlaceQuantity(
+                        mapper.Map<Product>(obj.Product),
+                        obj.Quantity,
+                        mapper.Map<StoragePlace>(obj.StoragePlace)
+                    )
+                )
+                .AsQueryable();
         }
 
         protected override IQueryable<ProductMovementDb> GetIncludedDatabaseSet()
