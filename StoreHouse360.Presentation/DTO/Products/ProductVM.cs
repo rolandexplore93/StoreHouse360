@@ -10,6 +10,7 @@ namespace StoreHouse360.DTO.Products
         public string Name { get; set; }
         public int CategoryId { get; set; }
         public int ManufacturerId { get; set; }
+        public int CountryOriginId { get; set; }
         public int UnitId { get; set; }
         public string Barcode { get; set; }
         public double Price { get; set; }

@@ -10,6 +10,7 @@ namespace StoreHouse360.Application.Commands.Products
         public string Name { get; init; }
         public int CategoryId { get; init; }
         public int ManufacturerId { get; init; }
+        public int CountryOriginId { get; init; }
         public int UnitId { get; init; }
         public string Barcode { get; init; }
         public double Price { get; init; }
@@ -29,6 +30,7 @@ namespace StoreHouse360.Application.Commands.Products
                 Name = request.Name,
                 CategoryId = request.CategoryId,
                 ManufacturerId = request.ManufacturerId,
+                CountryOriginId = request.CountryOriginId,
                 UnitId = request.UnitId,
                 Barcode = request.Barcode,
                 Price = request.Price,

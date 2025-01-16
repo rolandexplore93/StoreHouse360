@@ -4,7 +4,7 @@ using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Commands.Categories
 {
-    public class UpdateCategoryCommand : IRequest<int>
+    public partial class UpdateCategoryCommand : IRequest<int>
     {
         public int Id { get; set; }
         public string Name { get; init; }
