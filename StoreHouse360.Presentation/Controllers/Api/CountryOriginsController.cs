@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.CountryOrigins;
 using StoreHouse360.Application.Queries.Categories;
 using StoreHouse360.Application.Queries.CountryOrigins;
-using StoreHouse360.DTO.Categories;
 using StoreHouse360.DTO.Common;
 using StoreHouse360.DTO.CountryOrigins;
 using StoreHouse360.DTO.Pagination;
@@ -37,7 +36,7 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponse<PaginationVM<CountryOriginVM>>>> GetCategories([FromQuery] CategoriesQueryParams request)
+        public async Task<ActionResult<BaseResponse<PaginationVM<CountryOriginVM>>>> GetCountryOrigins([FromQuery] CountryOriginsQueryParams request)
         {
             var query = request.AsQuery<GetAllCategoriesQuery>(_mapper);
             var countryOriginEntities = await Mediator.Send(query);

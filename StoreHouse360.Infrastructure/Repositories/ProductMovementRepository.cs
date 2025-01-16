@@ -22,13 +22,11 @@ namespace StoreHouse360.Infrastructure.Repositories
         public IQueryable<AggregateProductQuantity> AggregateProductsQuantities(ProductMovementFiltersDTO? filters = default)
         {
             var select = dbSet
-                .Include(movement => movement.Product)
                 .Include(movement => movement.Invoice)
                 .Select(movement => new AggregateProductMovement
                 {
                     Id = movement.Id,
                     ProductId = movement.Product!.Id,
-                    Product = movement.Product,
                     CategoryId = movement.Product.CategoryId,
                     ManufacturerId = movement.Product.ManufacturerId,
                     Quantity = movement.Quantity,
@@ -45,27 +43,17 @@ namespace StoreHouse360.Infrastructure.Repositories
             }
 
             var aggregatesQuery = select
-                .GroupBy(movement => new
-                {
-                    movement.ProductId,
-                    ProductName = movement.Product!.Name,
-                    ProductCode = movement.Product.Barcode,
-                })
+                .GroupBy(movement => movement.ProductId)
                 .Select(movementsGrouping => new AggregateProductQuantity
                 {
-                    Product = new Product
-                    {
-                        Id = (int)movementsGrouping.Key.ProductId!,
-                        Name = movementsGrouping.Key.ProductName,
-                        Barcode = movementsGrouping.Key.ProductCode,
-                    },
+                    ProductId = movementsGrouping.Key,
                     QuantityInput = movementsGrouping.Where(movement => movement.Type == ProductMovementType.In).Sum(movement => movement.Quantity),
                     QuantityOutput = movementsGrouping.Where(movement => movement.Type == ProductMovementType.Out).Sum(movement => movement.Quantity),
                 });
 
             var aggregates = aggregatesQuery.ToList();
 
-            var productIds = aggregates.Select(aggregate => aggregate.Product!.Id);
+            var productIds = aggregates.Select(aggregate => aggregate.ProductId);
 
             var products = _dbContext.Products.AsQueryable()
             .Include(p => p.Category)

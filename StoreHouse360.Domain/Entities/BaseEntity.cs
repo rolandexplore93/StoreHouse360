@@ -7,7 +7,7 @@
 
     public class BaseEntity<TKey> : IEntity
     {
-        public virtual TKey Id { get; set; }
+        public TKey Id { get; set; }
     }
 
 }

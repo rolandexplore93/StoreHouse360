@@ -15,7 +15,47 @@
         public double Price { get; set; }
         public int CurrencyId { get; set; }
         public Currency? Currency { get; set; }
-        public int MinimumLevel { get; set; }
+
+        private int _minimumLevel;
+        public int MinimumLevel { 
+            get => _minimumLevel; 
+            set
+            {
+                int oldMinimumValue = _minimumLevel;
+                _minimumLevel = value;
+            }
+        }
+
+        public Product(int id, string name, int categoryId, int manufacturerId, int countryOriginId, int unitId, string barcode, double price, int currencyId, int minimumLevel)
+        {
+            Id = id;
+            Name = name;
+            CategoryId = categoryId;
+            ManufacturerId = manufacturerId;
+            CountryOriginId = countryOriginId;
+            UnitId = unitId;
+            Barcode = barcode;
+            Price = price;
+            CurrencyId = currencyId;
+            MinimumLevel = minimumLevel;
+        }
+        public Product(int id, string name, int categoryId, Category? category, int manufacturerId, Manufacturer? manufacturer, int countryOriginId, CountryOrigin? countryOrigin, int unitId, Unit? unit, string barcode, double price, int currencyId, Currency? currency)
+        {
+            Id = id;
+            Name = name;
+            CategoryId = categoryId;
+            Category = category;
+            ManufacturerId = manufacturerId;
+            Manufacturer = manufacturer;
+            CountryOriginId = countryOriginId;
+            CountryOrigin = countryOrigin;
+            UnitId = unitId;
+            Unit = unit;
+            Barcode = barcode;
+            Price = price;
+            CurrencyId = currencyId;
+            Currency = currency;
+        }
         public bool HasMinimumLevel => MinimumLevel > 0;
     }
 }

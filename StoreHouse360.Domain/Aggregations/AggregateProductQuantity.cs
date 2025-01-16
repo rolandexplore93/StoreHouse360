@@ -4,6 +4,7 @@ namespace StoreHouse360.Domain.Aggregations
 {
     public class AggregateProductQuantity : AggregateRoot
     {
+        public int ProductId { get; set; }
         public Product? Product { get; set; }
         public int QuantityInput { get; set; }
         public int QuantityOutput { get; set; }

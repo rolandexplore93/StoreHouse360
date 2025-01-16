@@ -24,19 +24,19 @@ namespace StoreHouse360.Application.Commands.Products
         }
         protected override Product GetEntityToUpdate(UpdateProductCommand request)
         {
-            return new Product
-            {
-                Id = request.Id,
-                Name = request.Name,
-                CategoryId = request.CategoryId,
-                ManufacturerId = request.ManufacturerId,
-                CountryOriginId = request.CountryOriginId,
-                UnitId = request.UnitId,
-                Barcode = request.Barcode,
-                Price = request.Price,
-                CurrencyId = request.CurrencyId,
-                MinimumLevel = request.MinimumLevel ?? 0
-            };
+            return new Product(
+                id: default,
+                name: request.Name,
+                categoryId: request.CategoryId,
+                manufacturerId: request.ManufacturerId,
+                countryOriginId: request.CountryOriginId,
+                unitId: request.UnitId,
+                barcode: request.Barcode,
+                price: request.Price,
+                currencyId: request.CurrencyId,
+                minimumLevel: request.MinimumLevel ?? 0
+
+             );
         }
     }
 }
