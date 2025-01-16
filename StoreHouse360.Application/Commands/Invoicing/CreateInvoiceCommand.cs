@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using StoreHouse360.Application.Commands.Invoicing.DTO;
+using StoreHouse360.Application.EventNotifications.Invoices;
 using StoreHouse360.Application.Queries.Invoicing;
 using StoreHouse360.Application.Queries.Invoicing.DTO;
 using StoreHouse360.Application.Repositories.UnitOfWork;
@@ -58,12 +59,16 @@ namespace StoreHouse360.Application.Commands.Invoicing
                 .ToList()
                 .ForEach(movement => invoice.AddItem(movement));
 
-            using var unitOfWork = _unitOfWork.Value;
+            using (var unitOfWork = _unitOfWork.Value)
+            {
+                var saveInvoiceAction = await unitOfWork.InvoiceRepository.CreateAsync(invoice);
+                invoice = await saveInvoiceAction.Invoke();
 
-            var saveInvoiceAction = await unitOfWork.InvoiceRepository.CreateAsync(invoice);
-            invoice = await saveInvoiceAction.Invoke();
+                await unitOfWork.CommitAsync();
+            };
 
-            await unitOfWork.CommitAsync();
+            await _mediator.Publish(new InvoiceCreatedNotification(invoice), cancellationToken);
+
             return invoice.Id;
         }
 

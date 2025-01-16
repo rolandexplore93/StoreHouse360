@@ -6,6 +6,7 @@ using StoreHouse360.Application.Commands.StoragePlaces;
 using StoreHouse360.Application.Queries.StoragePlaces;
 using StoreHouse360.DTO.Common;
 using StoreHouse360.DTO.Pagination;
+using StoreHouse360.DTO.StoragePlaceQuantity;
 using StoreHouse360.DTO.StoragePlaces;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 
@@ -62,6 +63,14 @@ namespace StoreHouse360.Controllers.Api
         public async Task Delete(int id)
         {
             await Mediator.Send(new DeleteStoragePlaceCommand() { key = id });
+        }
+
+        [HttpGet("inventory")]
+        public async Task<ActionResult<BaseResponse<PaginationVM<StoragePlaceQuantityVM>>>> Inventory([FromQuery] PaginationRequestParams paginationParams, [FromQuery] int productId, [FromQuery] int storagePlaceId, int warehouseId)
+        {
+            var query = paginationParams.AsQuery(new InventoryStoragePlaceQuery(productId, storagePlaceId, warehouseId));
+            var storagePlaceQuantities = await Mediator.Send(query);
+            return Ok(storagePlaceQuantities.ToViewModel<StoragePlaceQuantityVM>(_mapper));
         }
     }
 }

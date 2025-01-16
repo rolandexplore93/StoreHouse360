@@ -27,6 +27,9 @@ namespace StoreHouse360.Application.Common.DTO
         public int? ManufacturerId { get; set; }
 
         [QueryFilter(QueryFilterCompareType.Equal)]
+        public int? CountryOriginId { get; set; }
+
+        [QueryFilter(QueryFilterCompareType.Equal)]
         public int? StoragePlaceId { get; set; }
     }
 }
