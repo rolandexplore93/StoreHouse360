@@ -18,6 +18,9 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
         public int ManufacturerId { get; set; }
         [ForeignKey("ManufacturerId")]
         public ManufacturerDb? Manufacturer { get; set; }
+        public int CountryOriginId { get; set; } = default;
+        [ForeignKey("CountryOriginId")]
+        public CountryOriginDb? CountryOrigin { get; set; } = default!;
         public int UnitId { get; set; }
         [ForeignKey("UnitId")]
         public UnitDb? Unit { get; set; }
