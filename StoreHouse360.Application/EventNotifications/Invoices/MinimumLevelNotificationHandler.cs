@@ -27,7 +27,7 @@ namespace StoreHouse360.Application.EventNotifications.Invoices
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.ToString());
+                Debug.Fail(e.ToString());
             }
         }
 
