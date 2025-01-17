@@ -59,7 +59,9 @@ namespace StoreHouse360.Controllers.Api
             var command = _mapper.Map<UpdateProductCommand>(request);
             command.Id = id;
             var resultId = await Mediator.Send(command);
-            return await GetProduct(resultId);
+            var query = new GetProductQuery { Id = id };
+            var productEntity = await Mediator.Send(query);
+            return Ok(productEntity.ToViewModel<ProductJoinedVM>(_mapper));
         }
 
         [HttpGet("{id}/checkQuantity")]
