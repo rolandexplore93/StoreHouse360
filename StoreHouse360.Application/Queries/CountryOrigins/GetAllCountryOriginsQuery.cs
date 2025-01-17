@@ -1,4 +1,5 @@
-﻿using StoreHouse360.Application.Queries.Common;
+﻿using StoreHouse360.Application.Common.QueryFilters;
+using StoreHouse360.Application.Queries.Common;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
@@ -6,6 +7,8 @@ namespace StoreHouse360.Application.Queries.CountryOrigins
 {
     public class GetAllCountryOriginsQuery : GetPaginatedQuery<CountryOrigin>
     {
+        [QueryFilter(QueryFilterCompareType.StringContains)]
+        public string? Name { get; set; }
     }
     public class GetAllCountryOriginsQueryHandler : PaginatedQueryHandler<GetAllCountryOriginsQuery, CountryOrigin>
     {

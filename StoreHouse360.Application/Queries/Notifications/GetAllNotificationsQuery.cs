@@ -25,7 +25,9 @@ namespace StoreHouse360.Application.Queries.Notifications
             var query = notifications
                 .Where(notification => request.ObjectIds.Any(objId => notification.ObjectId == objId) || !request.ObjectIds.Any())
                 .Where(notification => notification.NotificationType == request.NotificationType || request.NotificationType == default)
-                .Where(notification => notification.IsValid == request.IsValid || !request.IsValid.GetValueOrDefault(true));
+                .Where(notification => notification.IsValid == request.IsValid || !request.IsValid.GetValueOrDefault(true))
+                .OrderByDescending(notification => notification.Id)
+                .AsQueryable();
             return query;
         }
     }
