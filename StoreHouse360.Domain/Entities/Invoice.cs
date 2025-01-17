@@ -17,10 +17,26 @@ namespace StoreHouse360.Domain.Entities
         public string? Note { get; set; }
 
         public DateTime CreatedAt { get; set; }
-        public InvoiceStatus Status { get; set; } = InvoiceStatus.Closed; // Invoice remains closed until a product is added
+
+        // Invoice is closed until a product is added
+        public InvoiceStatus Status { get; set; }
         public InvoiceType Type { get; set; }
 
-        public IList<ProductMovement> Items { get; set; } = new List<ProductMovement>();
+        public IList<ProductMovement> Items { get; set; }
+
+        public Invoice(int? accountId, int warehouseId, int? currencyId, string? note, DateTime createdAt, InvoiceType type, IList<ProductMovement> items)
+        {
+            AccountId = accountId;
+            WarehouseId = warehouseId;
+            CurrencyId = currencyId;
+            TotalPrice = 0;
+            Note = note;
+            CreatedAt = createdAt;
+            Status = InvoiceStatus.Closed;
+            Type = type;
+            Items = new List<ProductMovement>();
+            items.ToList().ForEach(item => AddItem(item));
+        }
 
         public void AddItem(ProductMovement item)
         {
