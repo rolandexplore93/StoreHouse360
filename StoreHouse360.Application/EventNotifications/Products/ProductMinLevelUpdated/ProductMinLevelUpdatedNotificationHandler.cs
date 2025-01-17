@@ -9,7 +9,7 @@ using StoreHouse360.Domain.Entities;
 using StoreHouse360.Domain.Events;
 using System.Diagnostics;
 
-namespace StoreHouse360.Application.EventNotifications.Products
+namespace StoreHouse360.Application.EventNotifications.Products.ProductMinLevelUpdated
 {
     public class ProductMinLevelUpdatedNotificationHandler : INotificationHandler<DomainNotification<ProductMinimumLevelUpdated>>
     {
@@ -52,9 +52,9 @@ namespace StoreHouse360.Application.EventNotifications.Products
                     return;
                 }
                 var createdNotificationDtos = new List<NotificationDTO>
-            {
-                new(@event.ProductId, NotificationType.MinLevelExceeded)
-            };
+                {
+                    new(@event.ProductId, NotificationType.MinLevelExceeded)
+                };
                 await _mediator.Send(new CreateNotificationsCommand(createdNotificationDtos));
             }
         }

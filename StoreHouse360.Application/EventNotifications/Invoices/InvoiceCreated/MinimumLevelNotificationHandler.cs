@@ -6,7 +6,7 @@ using StoreHouse360.Application.Queries.Notifications;
 using StoreHouse360.Domain.Entities;
 using System.Diagnostics;
 
-namespace StoreHouse360.Application.EventNotifications.Invoices
+namespace StoreHouse360.Application.EventNotifications.Invoices.InvoiceCreated
 {
     public class MinimumLevelNotificationHandler : INotificationHandler<InvoiceCreatedNotification>
     {
