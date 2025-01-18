@@ -10,11 +10,13 @@ using StoreHouse360.Application.Services.Settings;
 using StoreHouse360.Application.Settings;
 using StoreHouse360.Infrastructure.Persistence.Database;
 using StoreHouse360.Infrastructure.Persistence.Database.Models;
+using StoreHouse360.Infrastructure.Persistence.Database.SeedData;
 using StoreHouse360.Infrastructure.Persistence.Database.Triggers;
 using StoreHouse360.Infrastructure.Repositories;
 using StoreHouse360.Infrastructure.Repositories.Aggregates;
 using StoreHouse360.Infrastructure.Repositories.UnitOfWork;
 using StoreHouse360.Infrastructure.Services;
+using System.Configuration;
 using System.Reflection;
 
 namespace StoreHouse360.Infrastructure
@@ -96,6 +98,7 @@ namespace StoreHouse360.Infrastructure
 
         private static void AddAppSettings(this IServiceCollection services)
         {
+            services.AddScoped<ISeedToDatabase, SeedToDatabase>();
             services.AddScoped<IAppSettingsProvider, AppSettingsProvider>();
             services.AddScoped<AppSettings>(setting => setting.GetService<IAppSettingsProvider>()!.Get());
         }
@@ -104,10 +107,15 @@ namespace StoreHouse360.Infrastructure
         {
             using (var scope = app.Services.CreateScope())
             {
-                using (var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
+                var services = scope.ServiceProvider;
+                var dbSeeder = services.GetRequiredService<ISeedToDatabase>();
+                var settingsProvider = services.GetRequiredService<IAppSettingsProvider>();
+
+                using (var dbContext = services.GetRequiredService<ApplicationDbContext>())
                 {
                     dbContext.Database.Migrate(); // Apply pending migrations to the database and create the database if it does not exist   
                     dbContext.Database.EnsureCreated(); // Create database or tables if they do not exist
+                    dbContext.ProcessDataSeeding(dbSeeder, settingsProvider); // seed data into db
                 }
             }
         }

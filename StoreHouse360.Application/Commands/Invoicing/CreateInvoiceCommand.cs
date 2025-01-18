@@ -68,8 +68,6 @@ namespace StoreHouse360.Application.Commands.Invoicing
                 await unitOfWork.CommitAsync();
             };
 
-            await _mediator.Publish(new InvoiceCreatedNotification(invoice), cancellationToken);
-
             return invoice.Id;
         }
 

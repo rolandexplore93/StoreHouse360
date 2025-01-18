@@ -33,18 +33,34 @@ namespace StoreHouse360.Infrastructure.Services
             var propertyValues = typeof(AppSettings).GetProperties();
             foreach (var property in propertyValues)
             {
-                // Check if the setting already exists in the db
-                var settingAlreadyCreated = _context.Settings.Any(setting => setting.Key.Equals(property));
-
-                // Maps the property name and value to a new 'AppSettingDb' object.
-                AppSettingDb settingDb = new AppSettingDb
+                if (property.GetValue(settings)!.Equals(default))
                 {
-                    Key = property.Name,
-                    Value = property.GetValue(settings)!.ToString()!
-                };
+                    return;
+                }
 
-                // Marks the entity as 'Modified' if it exists, or 'Added' if it doesn’t exist.
-                _context.Entry(settingDb).State = settingAlreadyCreated ? EntityState.Modified : EntityState.Added;
+                // Get existing property based on property.Name property
+                var settingAlreadyCreated = _context.Settings.FirstOrDefault(setting => setting.Key.Equals(property.Name));
+
+                if (settingAlreadyCreated != null)
+                {
+                    if (settingAlreadyCreated.Value.Equals(property.GetValue(settings)!.ToString()!))
+                    {
+                        continue;
+                    }
+
+                    settingAlreadyCreated.Value = property.GetValue(settings)!.ToString()!;
+                }
+                else
+                {
+                    // Maps property name and value to a new 'AppSettingDb' object.
+                    AppSettingDb settingDb = new AppSettingDb
+                    {
+                        Key = property.Name,
+                        Value = property.GetValue(settings)!.ToString()!
+                    };
+
+                    _context.Add(settingDb);
+                }
                 _context.SaveChanges();
             }
         }
