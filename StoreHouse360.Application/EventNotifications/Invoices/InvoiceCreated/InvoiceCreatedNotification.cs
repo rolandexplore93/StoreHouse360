@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using StoreHouse360.Domain.Entities;
 
-namespace StoreHouse360.Application.EventNotifications.Invoices
+namespace StoreHouse360.Application.EventNotifications.Invoices.InvoiceCreated
 {
     public class InvoiceCreatedNotification : INotification
     {

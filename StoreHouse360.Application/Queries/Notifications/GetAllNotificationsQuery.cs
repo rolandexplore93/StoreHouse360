@@ -8,7 +8,7 @@ namespace StoreHouse360.Application.Queries.Notifications
     {
         public IEnumerable<int> ObjectIds { get; set; } = new List<int>();
         public NotificationType? NotificationType { get; set; } = default;
-        public bool IsValid { get; set; } = true;
+        public bool? IsValid { get; set; }
     }
 
     public class GetAllNotificationsQueryHandler : PaginatedQueryHandler<GetAllNotificationsQuery, Notification>
@@ -25,8 +25,9 @@ namespace StoreHouse360.Application.Queries.Notifications
             var query = notifications
                 .Where(notification => request.ObjectIds.Any(objId => notification.ObjectId == objId) || !request.ObjectIds.Any())
                 .Where(notification => notification.NotificationType == request.NotificationType || request.NotificationType == default)
-                .Where(notification => notification.IsValid == request.IsValid || !request.IsValid);
-
+                .Where(notification => notification.IsValid == request.IsValid || !request.IsValid.GetValueOrDefault(true))
+                .OrderByDescending(notification => notification.Id)
+                .AsQueryable();
             return query;
         }
     }

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using StoreHouse360.Application.Commands.Invoicing.DTO;
-using StoreHouse360.Application.EventNotifications.Invoices;
+using StoreHouse360.Application.EventNotifications.Invoices.InvoiceCreated;
 using StoreHouse360.Application.Queries.Invoicing;
 using StoreHouse360.Application.Queries.Invoicing.DTO;
 using StoreHouse360.Application.Repositories.UnitOfWork;
@@ -44,15 +44,16 @@ namespace StoreHouse360.Application.Commands.Invoicing
                 await _mediator.Send(checkProductQuantityQuery, cancellationToken);
             }
 
-            var invoice = new Invoice
-            {
-                AccountId = request.AccountId,
-                WarehouseId = request.WarehouseId,
-                CurrencyId = request.CurrencyId,
-                Note = request.Note,
-                CreatedAt = DateTime.Now,
-                Type = request.Type
-            };
+
+            var invoice = new Invoice(
+                accountId: request.AccountId,
+                warehouseId: request.WarehouseId,
+                currencyId: request.CurrencyId,
+                note: request.Note,
+                createdAt: DateTime.Now,
+                type: request.Type,
+                items: request.Items.Select(dto => _buildItem(dto, request.Type)).ToList()
+            );
 
             request.Items
                 .Select(dto => _buildItem(dto, request.Type))

@@ -77,7 +77,7 @@ namespace StoreHouse360.Infrastructure.Repositories
                 .Include(movement => movement.Place)
                 .ThenInclude(storagePlace => storagePlace!.Warehouse)
                 .Where(movement => movement.ProductId == productId || productId == default)
-                .Where(movement => movement.Place!.Warehouse!.Id == warehouseId || storagePlaceId == default)
+                .Where(movement => movement.Place!.Warehouse!.Id == warehouseId || warehouseId == default)
                 .Where(movement => movement.Place!.Id == storagePlaceId || storagePlaceId == default)
                 .ToList(); //TODO what's up with this? if you remove it, properties won't be included??
             return list

@@ -6,7 +6,6 @@ namespace StoreHouse360.Application.Repositories
     {
         IQueryable<Product> GetAllWithNewMinLevelWarnings(int invoiceId);
         IQueryable<Product> GetAllWithNewMinLevelResolved(int invoiceId);
-        //public Task<Product> FindIncludedByIdAsync(int id);
-        //public IEnumerable<Product> GetAllIncluded();
+        IQueryable<Product> GetAllInStoragePlace(int storagePlaceId, bool includeStoragePlaceChildren = false);
     }
 }

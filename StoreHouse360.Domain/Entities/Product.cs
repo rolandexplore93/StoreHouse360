@@ -1,6 +1,8 @@
-﻿namespace StoreHouse360.Domain.Entities
+﻿using StoreHouse360.Domain.Events;
+
+namespace StoreHouse360.Domain.Entities
 {
-    public class Product : BaseEntity<int>
+    public class Product : BaseEntity<int>, IHasDomainEvents
     {
         public string Name { get; set; }
         public int CategoryId { get; set; }
@@ -15,16 +17,16 @@
         public double Price { get; set; }
         public int CurrencyId { get; set; }
         public Currency? Currency { get; set; }
+        public int MinimumLevel { get; set; }
+        public void UpdateMinimumLevel (int value)
+        {
+            if (MinimumLevel == value) return;
 
-        private int _minimumLevel;
-        public int MinimumLevel { 
-            get => _minimumLevel; 
-            set
-            {
-                int oldMinimumValue = _minimumLevel;
-                _minimumLevel = value;
-            }
+            int OldValue = MinimumLevel;
+            MinimumLevel = value;
+            Events.Add(new ProductMinimumLevelUpdated(Id, OldValue, MinimumLevel));
         }
+
 
         public Product(int id, string name, int categoryId, int manufacturerId, int countryOriginId, int unitId, string barcode, double price, int currencyId, int minimumLevel)
         {
@@ -39,7 +41,8 @@
             CurrencyId = currencyId;
             MinimumLevel = minimumLevel;
         }
-        public Product(int id, string name, int categoryId, Category? category, int manufacturerId, Manufacturer? manufacturer, int countryOriginId, CountryOrigin? countryOrigin, int unitId, Unit? unit, string barcode, double price, int currencyId, Currency? currency)
+        public Product(int id, string name, int categoryId, Category? category, int manufacturerId, Manufacturer? manufacturer, int countryOriginId, 
+            CountryOrigin? countryOrigin, int unitId, Unit? unit, string barcode, double price, int currencyId, Currency? currency)
         {
             Id = id;
             Name = name;
@@ -57,5 +60,6 @@
             Currency = currency;
         }
         public bool HasMinimumLevel => MinimumLevel > 0;
+        public IList<DomainEvent> Events { get; set; } = new List<DomainEvent>();
     }
 }

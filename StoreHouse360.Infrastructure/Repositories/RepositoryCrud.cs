@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using StoreHouse360.Application.Exceptions;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
+using StoreHouse360.Domain.Events;
 using StoreHouse360.Infrastructure.Persistence.Database;
 using StoreHouse360.Infrastructure.Persistence.Database.Models;
 using StoreHouse360.Infrastructure.Persistence.Database.Models.Common;
@@ -119,8 +120,14 @@ namespace StoreHouse360.Infrastructure.Repositories
             try
             {
                 var modelFromDatabase = await GetModelById(entity.Id);
-                //return MapModelToEntity(modelFromDatabase);
-                _dbContext.Entry(modelFromDatabase).CurrentValues.SetValues(entity);
+                TModel model = mapper.Map<TEntity, TModel>(entity);
+                _dbContext.Entry(modelFromDatabase).CurrentValues.SetValues(model);
+                if (model is IHasDomainEvents)
+                {
+                    _dbContext.ChangeTracker.Entries<IHasDomainEvents>()
+                        .Last().Entity.Events = (model as IHasDomainEvents)!.Events;
+                }
+
                 return entity;
             }
             catch (InvalidOperationException ex)

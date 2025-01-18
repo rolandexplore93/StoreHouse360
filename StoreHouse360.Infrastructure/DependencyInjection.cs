@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Application.Repositories.Aggregates;
 using StoreHouse360.Application.Repositories.UnitOfWork;
+using StoreHouse360.Application.Services.Events;
 using StoreHouse360.Application.Services.Identity;
 using StoreHouse360.Application.Services.Settings;
 using StoreHouse360.Application.Settings;
@@ -31,13 +32,18 @@ namespace StoreHouse360.Infrastructure
             }
             else
             {
-                services.AddSqlServer<ApplicationDbContext>(configuration.GetValue<bool>("UseLocalDatabaseServer")
-                    ? configuration.GetConnectionString("LocalConnection")
-                    : configuration.GetConnectionString("DefaultConnection"),
-                    optionsAction: options =>
+                services.AddDbContext<ApplicationDbContext>(
+                    options =>
                     {
                         options.UseTriggers(trigOptions => trigOptions.AddTrigger<SoftDeleteTrigger>());
-                    });
+                        options.UseSqlServer(
+                            configuration.GetValue<bool>("UseLocalDatabaseServer")
+                                ? configuration.GetConnectionString("LocalConnection")
+                                : configuration.GetConnectionString("DefaultConnection")
+                        );
+                    },
+                    ServiceLifetime.Transient
+                );
             }
 
             services.AddUserIdentityServer();
@@ -85,6 +91,7 @@ namespace StoreHouse360.Infrastructure
         private static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IEventPublisherService, EventPublisherService>();
         }
 
         private static void AddAppSettings(this IServiceCollection services)

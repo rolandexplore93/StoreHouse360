@@ -2,11 +2,12 @@
 using StoreHouse360.Domain.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using StoreHouse360.Domain.Events;
 
 namespace StoreHouse360.Infrastructure.Persistence.Database.Models
 {
     [Table("Products")]
-    public class ProductDb : IMapFrom<Product>, IDatabaseModel
+    public class ProductDb : IMapFrom<Product>, IDatabaseModel, IHasDomainEvents
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -30,5 +31,6 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
         [ForeignKey("CurrencyId")]
         public CurrencyDb? Currency { get; set; }
         public int MinimumLevel { get; set; } = default;
+        [NotMapped] public IList<DomainEvent> Events { get; set; }
     }
 }

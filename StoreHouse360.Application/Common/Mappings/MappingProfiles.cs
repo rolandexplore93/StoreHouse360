@@ -42,8 +42,8 @@ namespace StoreHouse360.Application.Common.Mappings
                 var mappingMethod = mapFromType.GetMethod("Map") ?? mapFromType.GetInterface("IMapFrom`1")!.GetMethod("Map");
                 mappingMethod?.Invoke(instance, new object[] { this });
             }
+
+            assembly.GetExportedTypes().ToList().ForEach(type => CreateMap(type, type));
         }
-
-
     }
 }

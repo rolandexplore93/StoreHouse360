@@ -46,13 +46,22 @@ namespace StoreHouse360.Controllers.Api
             return await GetProduct(createdProductId);
         }
 
+        [HttpGet("inStoragePlace")]
+        public async Task<ActionResult<BaseResponse<PaginationVM<ProductJoinedVM>>>> GetAllProducts([FromQuery] GetProductsInStorageQueryParams request)
+        {
+            var productEntities = await Mediator.Send(request.AsQuery<GetAllProductsInStoragePlaceQuery>(_mapper));
+            return Ok(productEntities.ToViewModel<ProductJoinedVM>(_mapper));
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult<BaseResponse<ProductJoinedVM>>> UpdateProduct(UpdateProductRequestDTO request, int id)
         {
             var command = _mapper.Map<UpdateProductCommand>(request);
             command.Id = id;
             var resultId = await Mediator.Send(command);
-            return await GetProduct(resultId);
+            var query = new GetProductQuery { Id = id };
+            var productEntity = await Mediator.Send(query);
+            return Ok(productEntity.ToViewModel<ProductJoinedVM>(_mapper));
         }
 
         [HttpGet("{id}/checkQuantity")]
