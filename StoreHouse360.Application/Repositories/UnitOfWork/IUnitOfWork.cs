@@ -18,6 +18,7 @@ namespace StoreHouse360.Application.Repositories.UnitOfWork
         public IWarehouseRepository WarehouseRepository { get; }
         public IPaymentRepository PaymentRepository { get; }
         public IInvoicePaymentsRepository InvoicePaymentsRepository { get; }
+        public IJournalRepository JournalRepository { get; }
         public void Commit();
         public Task CommitAsync();
     }
