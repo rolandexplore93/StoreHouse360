@@ -74,8 +74,11 @@ namespace StoreHouse360.Infrastructure.Repositories
         {
             var list = dbSet
                 .Include(movement => movement.Product)
+                    .ThenInclude(product => product!.Manufacturer)
+                .Include(movement => movement.Product)
+                    .ThenInclude(product => product!.Unit)
                 .Include(movement => movement.Place)
-                .ThenInclude(storagePlace => storagePlace!.Warehouse)
+                    .ThenInclude(storagePlace => storagePlace!.Warehouse)
                 .Where(movement => movement.ProductId == productId || productId == default)
                 .Where(movement => movement.Place!.Warehouse!.Id == warehouseId || warehouseId == default)
                 .Where(movement => movement.Place!.Id == storagePlaceId || storagePlaceId == default)
