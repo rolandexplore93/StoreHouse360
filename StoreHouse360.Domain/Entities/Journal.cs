@@ -3,7 +3,9 @@
     public class Journal : BaseEntity<int>
     {
         public int SourceAccountId { get; set; }
+        public Account? SourceAccount { get; set; }
         public int AccountId { get; set; }
+        public Account? Account { get; set; }
         public double Debit { get; set; }
         public double Credit { get; set; }
         public int CurrencyId { get; set; }
