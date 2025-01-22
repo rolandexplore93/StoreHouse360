@@ -27,5 +27,13 @@ namespace StoreHouse360.Infrastructure.Repositories
                 return (MapModelToEntity(resultCredit.Entity), MapModelToEntity(resultDebit.Entity));
             };
         }
+
+        protected override IQueryable<JournalDb> GetIncludedDatabaseSet()
+        {
+            return base.GetIncludedDatabaseSet()
+                .Include(journal => journal.SourceAccount)
+                .Include(journal => journal.Account)
+                .Include(journal => journal.Currency);
+        }
     }
 }
