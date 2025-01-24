@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StoreHouse360.Infrastructure.Persistence.Database;
 
@@ -11,9 +12,11 @@ using StoreHouse360.Infrastructure.Persistence.Database;
 namespace StoreHouse360.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250118052708_AddAccountTypeToAccountDb")]
+    partial class AddAccountTypeToAccountDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -189,9 +192,12 @@ namespace StoreHouse360.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Accounts", (string)null);
+                    b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.AppSettingDb", b =>
@@ -206,7 +212,7 @@ namespace StoreHouse360.Infrastructure.Migrations
 
                     b.HasKey("Key");
 
-                    b.ToTable("Settings", (string)null);
+                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.ApplicationIdentityUser", b =>
@@ -291,7 +297,7 @@ namespace StoreHouse360.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.CountryOriginDb", b =>
@@ -308,7 +314,7 @@ namespace StoreHouse360.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CountryOrigins", (string)null);
+                    b.ToTable("CountryOrigins");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.CurrencyAmountDb", b =>
@@ -342,7 +348,7 @@ namespace StoreHouse360.Infrastructure.Migrations
 
                     b.HasIndex("ProductMovementDbId");
 
-                    b.ToTable("CurrencyAmounts", (string)null);
+                    b.ToTable("CurrencyAmounts");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.CurrencyDb", b =>
@@ -366,7 +372,7 @@ namespace StoreHouse360.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Currencies", (string)null);
+                    b.ToTable("Currencies");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.InvoiceDb", b =>
@@ -409,35 +415,7 @@ namespace StoreHouse360.Infrastructure.Migrations
 
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("Invoices", (string)null);
-                });
-
-            modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.JournalDb", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Credit")
-                        .HasColumnType("float");
-
-                    b.Property<int>("CurrencyId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Debit")
-                        .HasColumnType("float");
-
-                    b.Property<int>("SourceAccountId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Journals", (string)null);
+                    b.ToTable("Invoices");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.ManufacturerDb", b =>
@@ -457,7 +435,7 @@ namespace StoreHouse360.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Manufacturers", (string)null);
+                    b.ToTable("Manufacturers");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.NotificationDb", b =>
@@ -479,7 +457,7 @@ namespace StoreHouse360.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.PaymentDb", b =>
@@ -517,7 +495,7 @@ namespace StoreHouse360.Infrastructure.Migrations
 
                     b.HasIndex("InvoiceId");
 
-                    b.ToTable("Payments", (string)null);
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.ProductDb", b =>
@@ -569,7 +547,7 @@ namespace StoreHouse360.Infrastructure.Migrations
 
                     b.HasIndex("UnitId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.ProductMovementDb", b =>
@@ -620,7 +598,7 @@ namespace StoreHouse360.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductMovements", (string)null);
+                    b.ToTable("ProductMovements");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.StoragePlaceDb", b =>
@@ -650,7 +628,7 @@ namespace StoreHouse360.Infrastructure.Migrations
 
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("StoragePlaces", (string)null);
+                    b.ToTable("StoragePlaces");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.UnitDb", b =>
@@ -670,7 +648,7 @@ namespace StoreHouse360.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Units", (string)null);
+                    b.ToTable("Units");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.WarehouseDb", b =>
@@ -680,9 +658,6 @@ namespace StoreHouse360.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CashDrawerAccountId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Location")
                         .IsRequired()
@@ -694,7 +669,7 @@ namespace StoreHouse360.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Warehouses", (string)null);
+                    b.ToTable("Warehouses");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

@@ -25,11 +25,12 @@ namespace StoreHouse360.Infrastructure.Repositories.UnitOfWork
         private readonly Lazy<IWarehouseRepository> _warehouseRepository;
         private readonly Lazy<IPaymentRepository> _paymentRepository;
         private readonly Lazy<IInvoicePaymentsRepository> _invoicePaymentsRepository;
+        private readonly Lazy<IJournalRepository> _journalRepository;
 
         public UnitOfWork(ApplicationDbContext dbContext, Lazy<IAccountRepository> accountRepository, Lazy<ICategoryRepository> categoryRepository, Lazy<ICurrencyAmountRepository> currencyAmountRepository, 
             Lazy<ICurrencyRepository> currencyRepository, Lazy<IInvoiceRepository> invoiceRepository, Lazy<IManufacturerRepository> manufacturerRepository, Lazy<IProductMovementRepository> productMovementRepository, 
             Lazy<IProductRepository> productRepository, Lazy<IStoragePlaceRepository> storagePlaceRepository, Lazy<IUnitRepository> unitRepository, Lazy<IUserRepository> userRepository, 
-            Lazy<IWarehouseRepository> warehouseRepository, Lazy<IPaymentRepository> paymentRepository, Lazy<IInvoicePaymentsRepository> invoicePaymentsRepository)
+            Lazy<IWarehouseRepository> warehouseRepository, Lazy<IPaymentRepository> paymentRepository, Lazy<IInvoicePaymentsRepository> invoicePaymentsRepository, Lazy<IJournalRepository> journalRepository)
         {
             _dbContext = dbContext;
             _transaction =  _dbContext.Database.BeginTransaction();
@@ -47,6 +48,7 @@ namespace StoreHouse360.Infrastructure.Repositories.UnitOfWork
             _warehouseRepository = warehouseRepository;
             _paymentRepository = paymentRepository;
             _invoicePaymentsRepository = invoicePaymentsRepository;
+            _journalRepository = journalRepository;
         }
         public IAccountRepository AccountRepository => _accountRepository.Value;
         public ICategoryRepository CategoryRepository => _categoryRepository.Value;
@@ -62,6 +64,7 @@ namespace StoreHouse360.Infrastructure.Repositories.UnitOfWork
         public IWarehouseRepository WarehouseRepository => _warehouseRepository.Value;
         public IPaymentRepository PaymentRepository => _paymentRepository.Value;
         public IInvoicePaymentsRepository InvoicePaymentsRepository => _invoicePaymentsRepository.Value;
+        public IJournalRepository JournalRepository => _journalRepository.Value;
 
         public void Commit()
         {

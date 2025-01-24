@@ -18,13 +18,12 @@ namespace StoreHouse360.Application.Commands.Accounts
         public UpdateAccountCommandHandler(IAccountRepository repository) : base(repository)
         {
         }
-        protected override Account GetEntityToUpdate(UpdateAccountCommand request) => new()
-        {
-            Id = request.Id,
-            Name = request.Name,
-            Code = request.Code,
-            Phone = request.Phone,
-            City = request.City
-        };
+        protected override Account GetEntityToUpdate(UpdateAccountCommand request) => new(
+            id: default,
+            name: request.Name,
+            code: request.Code,
+            phone: request.Phone,
+            city: request.City
+        );
     }
 }

@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
+using StoreHouse360.Infrastructure.Persistence.Database.SeedData;
+using StoreHouse360.Application.Services.Settings;
 
 namespace StoreHouse360.Infrastructure.Persistence.Database
 {
@@ -20,6 +22,11 @@ namespace StoreHouse360.Infrastructure.Persistence.Database
                 var newBody = ReplacingExpressionVisitor.Replace(expresson.Parameters.Single(), newParameter, expresson.Body);
                 modelBuilder.Entity(entity).HasQueryFilter(Expression.Lambda(newBody, newParameter));
             }
+        }
+
+        public static void ProcessDataSeeding(this ApplicationDbContext dbContext, ISeedToDatabase seedToDatabase, IAppSettingsProvider settingsProvider)
+        {
+            seedToDatabase.Seed(dbContext, settingsProvider);
         }
     }
 }

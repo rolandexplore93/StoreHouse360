@@ -65,10 +65,10 @@ namespace StoreHouse360.Application.Commands.Invoicing
                 var saveInvoiceAction = await unitOfWork.InvoiceRepository.CreateAsync(invoice);
                 invoice = await saveInvoiceAction.Invoke();
 
+                await _mediator.Publish(new InvoiceCreatedNotification(invoice), cancellationToken);
+
                 await unitOfWork.CommitAsync();
             };
-
-            await _mediator.Publish(new InvoiceCreatedNotification(invoice), cancellationToken);
 
             return invoice.Id;
         }
