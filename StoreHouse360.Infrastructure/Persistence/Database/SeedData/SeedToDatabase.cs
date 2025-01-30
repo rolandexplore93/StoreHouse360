@@ -1,5 +1,6 @@
 ﻿using StoreHouse360.Application.Services.Settings;
 using StoreHouse360.Infrastructure.Persistence.Database.SeedData.Accounts;
+using StoreHouse360.Infrastructure.Persistence.Database.SeedData.Currencies;
 
 namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData
 {
@@ -14,7 +15,8 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData
         {
             _seedData = new List<ISeedData>
             {
-                new AccountsSeeding()
+                new AccountsSeeding(),
+                new CurrenciesSeeding()
             };
         }
         public void Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider)

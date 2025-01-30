@@ -8,7 +8,7 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData.Currencies
         public void Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider)
         {
             var settings = settingsProvider.Get();
-            var mainCurrency = dbContext.Currencies.FirstOrDefault(account => account.Id == settings.DefaultCurrencyId);
+            var mainCurrency = dbContext.Currencies.FirstOrDefault(currency => currency.Id == settings.DefaultCurrencyId);
 
             if (mainCurrency != null)
             {
