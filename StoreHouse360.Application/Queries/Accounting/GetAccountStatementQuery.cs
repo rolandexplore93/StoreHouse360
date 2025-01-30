@@ -46,25 +46,35 @@ namespace StoreHouse360.Application.Queries.Accounting
                     }
                 ).ToList();
 
-            var detailsAccounts1 = await _accountRepository.GetAllAsync();
+            var allAccounts = await _accountRepository.GetAllAsync();
 
             // Filter detailsAccounts based on detailEntries
-            var detailsAccounts = detailsAccounts1.Where(account => detailEntries.Select(d => d.AccountId).Contains(account.Id)).ToList();
+            var detailsAccounts = allAccounts.Where(account => detailEntries.Select(d => d.AccountId)
+                .Contains(account.Id))
+                .ToList();
 
             // Get currency details based on the first entry in detailEntries
             var currency = await _currencyRepository.FindByIdAsync(detailEntries.First().CurrencyId);
 
+            var details = detailEntries.Zip(detailsAccounts)
+            .Select(entry => new AggregateAccountStatementDetail(
+                entry.Second, // account
+                entry.First.Debit, // debit
+                entry.First.Credit, // credit
+                currency // currency
+             ))
+            .ToList();
 
+            var sourceAccount = await _accountRepository.FindByIdAsync(request.AccountId);
+            var statement = new AggregateAccountStatement(
+                sourceAccount,
+                details,
+                details.Sum(d => d.Debit),
+                details.Sum(d => d.Credit),
+                currency
+            );
 
-            //var sourceAccount = await _accountRepository.FindByIdAsync(request.AccountId);
-            //var statement = new AggregateAccountStatement(
-            //    sourceAccount,
-            //    details,
-            //    details.Sum(d => d.Debit),
-            //    details.Sum(d => d.Credit),
-            //    currency
-            //);
-            //return statement;
+            return statement;
         }
     }
 }
