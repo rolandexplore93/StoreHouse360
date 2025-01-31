@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using StoreHouse360.Application.Repositories;
+using StoreHouse360.Application.Settings;
 using StoreHouse360.Domain.Aggregations;
 
 namespace StoreHouse360.Application.Queries.Accounting
@@ -17,15 +18,16 @@ namespace StoreHouse360.Application.Queries.Accounting
         private readonly IJournalRepository _journalRepository;
         private readonly IAccountRepository _accountRepository;
         private readonly ICurrencyRepository _currencyRepository;
-        public GetAccountStatementQueryHandler(IJournalRepository journalRepository, IAccountRepository accountRepository,
-            ICurrencyRepository currencyRepository)
+        private readonly AppSettings _appSettings;
+
+        public GetAccountStatementQueryHandler(IJournalRepository journalRepository, IAccountRepository accountRepository, ICurrencyRepository currencyRepository, AppSettings appSettings)
         {
             _journalRepository = journalRepository;
             _accountRepository = accountRepository;
             _currencyRepository = currencyRepository;
+            _appSettings = appSettings;
         }
-        public async Task<AggregateAccountStatement> Handle(GetAccountStatementQuery request,
-            CancellationToken cancellationToken)
+        public async Task<AggregateAccountStatement> Handle(GetAccountStatementQuery request, CancellationToken cancellationToken)
         {
             var detailEntries = await _journalRepository.GetAllAsync();
             detailEntries.Where(journal => journal.SourceAccountId == request.AccountId)
@@ -54,7 +56,7 @@ namespace StoreHouse360.Application.Queries.Accounting
                 .ToList();
 
             // Get currency details based on the first entry in detailEntries
-            var currency = await _currencyRepository.FindByIdAsync(detailEntries.First().CurrencyId);
+            var currency = await _currencyRepository.FindByIdAsync(_appSettings.DefaultCurrencyId);
 
             var details = detailEntries.Zip(detailsAccounts)
             .Select(entry => new AggregateAccountStatementDetail(
