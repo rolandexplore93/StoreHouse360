@@ -1,21 +1,21 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Settings;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api
 {
+    [Authorize]
     public class SettingsController : ApiControllerBase
     {
-        private readonly AppSettings settings;
-        public SettingsController(IMediator mediator, IMapper mapper, AppSettings settings) : base(mediator, mapper)
+        public SettingsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
-            this.settings = settings;
         }
-
+        
         [HttpGet]
-        public ActionResult<BaseResponse<AppSettings>> Get()
+        public ActionResult<BaseResponse<AppSettings>> Get([FromServices] AppSettings settings)
         {
             return Ok(settings);
         }
