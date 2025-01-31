@@ -70,28 +70,48 @@ namespace StoreHouse360.Infrastructure.Repositories
             return aggregatesWithFullProduct.AsQueryable();
         }
 
-        public IQueryable<AggregateStoragePlaceQuantity> AggregateStoragePlacesQuantities(int productId, int warehouseId, int storagePlaceId)
+        public IQueryable<AggregateStoragePlaceQuantity> AggregateStoragePlacesQuantities(ProductMovementFiltersDTO? filters = default)
         {
-            var filteredMovements = dbSet
-               .Where(movement => movement.ProductId == productId || productId == default)
-               .Where(movement => movement.Place!.Id == storagePlaceId || storagePlaceId == default)
-                   .Where(movement => movement.Place!.Warehouse!.Id == warehouseId || warehouseId == default);
+            var selected = dbSet
+            .Include(movement => movement.Invoice)
+            .Include(movement => movement.Product)
+            .Select(movement => new
+            {
+                ProductId = movement.ProductId.GetValueOrDefault(),
+                movement.Product!.CategoryId,
+                movement.Product!.ManufacturerId,
+                movement.Product!.CountryOriginId,
+                movement.Quantity,
+                AccountId = movement.Invoice.AccountId.GetValueOrDefault(),
+                movement.Invoice.WarehouseId,
+                StoragePlaceId = movement.PlaceId.GetValueOrDefault(),
+                movement.Type,
+                movement.CreatedAt
+            });
+
+            if (filters != null)
+            {
+                selected = selected.WhereFilters(filters);
+            }
+
+
 
             var groupByResult =
-                from m in filteredMovements
-                group m by new { PlaceId = m.PlaceId.GetValueOrDefault(), m.ProductId }
+                from m in selected
+                group m by new { m.StoragePlaceId, m.ProductId }
                 into g
                 select new
                 {
-                    ProductId = g.Key.PlaceId,
+                    g.Key.ProductId,
                     Quantity = g.Sum(movement =>
                         movement.Type == ProductMovementType.In ? movement.Quantity : -movement.Quantity),
-                    StoragePlaceId = g.Key.PlaceId
+                    g.Key.StoragePlaceId
                 };
 
             var includedProducts = _dbContext.Products
                 .Include(p => p.Manufacturer)
-                .Include(p => p.Unit);
+                .Include(p => p.Unit)
+                .Include(p => p.CountryOrigin);
 
             var includedStoragePlaces = _dbContext.StoragePlaces
                 .Include(sp => sp.Warehouse);
