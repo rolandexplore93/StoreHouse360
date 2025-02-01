@@ -15,7 +15,7 @@ namespace StoreHouse360.Controllers.Api
         {
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<ActionResult<BaseResponse<PaginationVM<NotificationVM>>>> GetAll([FromQuery] GetNotificationsQueryParams request)
         {
             var query = _mapper.Map<GetAllNotificationsQuery>(request);

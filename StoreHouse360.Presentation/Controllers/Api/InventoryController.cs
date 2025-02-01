@@ -29,6 +29,7 @@ namespace StoreHouse360.Controllers.Api
             var productQuantities = await Mediator.Send(query);
             return Ok(productQuantities.ToViewModel<ProductQuantityVM>(_mapper));
         }
+
         [HttpGet("byProductAndStoragePlace")]
         public async Task<ActionResult<BaseResponse<PaginationVM<StoragePlaceQuantityVM>>>> Inventory(
             [FromQuery] PaginationRequestParams paginationParams,
