@@ -14,9 +14,9 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData.Accounts
                 new MainSalesSeeder()
             };
         }
-        public void Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider)
+        public Task Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider)
         {
-            _seedData.ForEach(seeder => seeder.Seed(dbContext, settingsProvider));
+            return Task.WhenAll(_seedData.Select(seeder => seeder.Seed(dbContext, settingsProvider)));
         }
     }
 }

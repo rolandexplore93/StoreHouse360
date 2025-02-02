@@ -13,9 +13,9 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData.Currencies
         };
         }
 
-        public void Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider)
+        public Task Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider)
         {
-            _seeders.ForEach(seeder => seeder.Seed(dbContext, settingsProvider));
+            return Task.WhenAll(_seeders.Select(seeder => seeder.Seed(dbContext, settingsProvider)));
         }
     }
 }

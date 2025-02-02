@@ -65,6 +65,7 @@ namespace StoreHouse360.Infrastructure
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
             })
+                .AddRoles<AppRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
         }

@@ -5,14 +5,14 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData.Currencies
 {
     public class MainCurrencySeeder : ISeedData
     {
-        public void Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider)
+        public Task Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider)
         {
             var settings = settingsProvider.Get();
             var mainCurrency = dbContext.Currencies.FirstOrDefault(currency => currency.Id == settings.DefaultCurrencyId);
 
             if (mainCurrency != null)
             {
-                return;
+                return Task.CompletedTask;
             }
 
             using (var transaction = dbContext.Database.BeginTransaction())
@@ -30,6 +30,8 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData.Currencies
 
                 transaction.Commit();
             }
+
+            return Task.CompletedTask;
         }
     }
 }

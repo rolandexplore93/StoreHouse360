@@ -8,7 +8,7 @@ using StoreHouse360.Infrastructure.Persistence.Database.Models.Common;
 
 namespace StoreHouse360.Infrastructure.Persistence.Database
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationIdentityUser, IdentityRole<int>, int>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationIdentityUser, AppRole, int>
     {
         private readonly IEventPublisherService _eventPublisher;
 

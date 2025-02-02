@@ -6,7 +6,7 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData.Accounts
 {
     public class MainSalesSeeder : ISeedData
     {
-        public void Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider)
+        public Task Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider)
         {
             var settings = settingsProvider.Get();
 
@@ -14,7 +14,7 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData.Accounts
 
             if (mainSales != null)
             {
-                return;
+                return Task.CompletedTask;
             }
 
             using (var transaction = dbContext.Database.BeginTransaction())
@@ -32,6 +32,8 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData.Accounts
                 settingsProvider.Configure(settings);
                 transaction.Commit();
             }
+
+            return Task.CompletedTask;
         }
     }
 }

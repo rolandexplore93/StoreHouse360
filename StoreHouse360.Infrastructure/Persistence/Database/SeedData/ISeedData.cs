@@ -4,6 +4,6 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData
 {
     public interface ISeedData
     {
-        public void Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider);
+        public Task Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider);
     }
 }
