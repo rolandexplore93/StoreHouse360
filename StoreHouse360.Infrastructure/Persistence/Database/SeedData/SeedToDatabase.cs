@@ -1,5 +1,9 @@
-﻿using StoreHouse360.Application.Services.Settings;
+﻿using Microsoft.AspNetCore.Identity;
+using StoreHouse360.Application.Services.Settings;
+using StoreHouse360.Infrastructure.Persistence.Database.Models;
 using StoreHouse360.Infrastructure.Persistence.Database.SeedData.Accounts;
+using StoreHouse360.Infrastructure.Persistence.Database.SeedData.Currencies;
+using StoreHouse360.Infrastructure.Persistence.Database.SeedData.UsersRoles;
 
 namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData
 {
@@ -9,18 +13,22 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData
 
     public class SeedToDatabase : ISeedToDatabase
     {
+        private readonly RoleManager<AppRole> _roleManager;
+        private readonly UserManager<ApplicationIdentityUser> _userManager;
         private readonly List<ISeedData> _seedData;
-        public SeedToDatabase()
+        public SeedToDatabase(RoleManager<AppRole> roleManager, UserManager<ApplicationIdentityUser> userManager)
         {
             _seedData = new List<ISeedData>
             {
-                new AccountsSeeding()
+                new AccountsSeeding(),
+                new CurrenciesSeeding(),
+                new UserRolesSeeding(roleManager, userManager)
             };
         }
-        public void Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider)
+        public Task Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider)
         {
-            _seedData.ForEach(seeder => seeder.Seed(dbContext, settingsProvider));
-            dbContext.SaveChanges();
+            return Task.WhenAll(_seedData.Select(seeder => seeder.Seed(dbContext, settingsProvider)));
+            //dbContext.SaveChanges();
         }
     }
 }

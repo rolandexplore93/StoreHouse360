@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StoreHouse360.Application.Exceptions;
+using StoreHouse360.Domain.Exceptions;
 
 namespace StoreHouse360.Controllers.Api
 {
@@ -7,31 +9,31 @@ namespace StoreHouse360.Controllers.Api
         [HttpGet("Error400")]
         public IActionResult Error400()
         {
-            return BadRequest();
+            throw new BaseException("Some validation exception", 400);
         }
 
         [HttpGet("Error401")]
         public IActionResult Error401()
         {
-            return Unauthorized();
+            throw new BaseException("Unauthorized", 401);
         }
 
         [HttpGet("Error403")]
         public IActionResult Error403()
         {
-            return StatusCode(403);
+            throw new BaseException("Forbidden", 401);
         }
 
         [HttpGet("Error404")]
         public IActionResult Error404()
         {
-            return NotFound();
+            throw new NotFoundException("Something", 1);
         }
 
         [HttpGet("Error500")]
         public IActionResult Error500()
         {
-            return StatusCode(500);
+            throw new BaseException();
         }
     }
 }

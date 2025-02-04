@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Common.DTO;
 using StoreHouse360.Application.Common.Models;
 using StoreHouse360.Application.Queries.Common;
 using StoreHouse360.Application.Repositories;
@@ -8,14 +9,10 @@ namespace StoreHouse360.Application.Queries.StoragePlaces
 {
     public class InventoryStoragePlaceQuery : GetPaginatedQuery<AggregateStoragePlaceQuantity>
     {
-        public int ProductId { get; }
-        public int WarehouseId { get; }
-        public int StoragePlaceId { get; }
-        public InventoryStoragePlaceQuery(int productId, int warehouseId, int storagePlaceId)
+        public ProductMovementFiltersDTO? Filters { get; set; }
+        public InventoryStoragePlaceQuery(ProductMovementFiltersDTO filters)
         {
-            ProductId = productId;
-            WarehouseId = warehouseId;
-            StoragePlaceId = storagePlaceId;
+            Filters = filters;
         }
     }
     public class GetStoragePlaceInventoryQueryHandler : IRequestHandler<InventoryStoragePlaceQuery, IPaginatedCollections<AggregateStoragePlaceQuantity>>
@@ -27,7 +24,7 @@ namespace StoreHouse360.Application.Queries.StoragePlaces
         }
         public async Task<IPaginatedCollections<AggregateStoragePlaceQuantity>> Handle(InventoryStoragePlaceQuery request, CancellationToken cancellationToken)
         {
-            var aggregates = _productMovementRepository.AggregateStoragePlacesQuantities(request.ProductId, request.WarehouseId, request.StoragePlaceId).AsPaginatedQuery(request.Page, request.PageSize);
+            var aggregates = _productMovementRepository.AggregateStoragePlacesQuantities(request.Filters).AsPaginatedQuery(request.Page, request.PageSize);
 
             return aggregates;
         }

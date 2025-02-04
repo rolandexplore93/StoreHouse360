@@ -8,6 +8,7 @@ namespace StoreHouse360.DTO.Products
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string FullName => $"{Name} {Unit.Name} {Manufacturer.Name}";
         public Category Category { get; set; }
         public Manufacturer Manufacturer { get; set; }
         public CountryOrigin CountryOrigin { get; set; }

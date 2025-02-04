@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.StoragePlaces;
+using StoreHouse360.Application.Common.DTO;
 using StoreHouse360.Application.Queries.StoragePlaces;
 using StoreHouse360.DTO.Common;
 using StoreHouse360.DTO.Pagination;
@@ -12,7 +13,7 @@ using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/warehouses/{warehouseId}/places")]
     public class StoragePlacesController : ApiControllerBase
     {
@@ -66,9 +67,14 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpGet("inventory")]
-        public async Task<ActionResult<BaseResponse<PaginationVM<StoragePlaceQuantityVM>>>> Inventory([FromQuery] PaginationRequestParams paginationParams, [FromQuery] int productId, [FromQuery] int storagePlaceId, int warehouseId)
+        public async Task<ActionResult<BaseResponse<PaginationVM<StoragePlaceQuantityVM>>>> Inventory([FromQuery] PaginationRequestParams paginationParams, [FromQuery] int? productId, [FromQuery] int? storagePlaceId, int warehouseId)
         {
-            var query = paginationParams.AsQuery(new InventoryStoragePlaceQuery(productId, storagePlaceId, warehouseId));
+            var query = paginationParams.AsQuery(new InventoryStoragePlaceQuery(new ProductMovementFiltersDTO()
+            {
+                ProductIds = productId != null ? new List<int> { productId.GetValueOrDefault() } : null,
+                WarehouseId = warehouseId == 0 ? null : warehouseId,
+                StoragePlaceId = storagePlaceId
+            }));
             var storagePlaceQuantities = await Mediator.Send(query);
             return Ok(storagePlaceQuantities.ToViewModel<StoragePlaceQuantityVM>(_mapper));
         }

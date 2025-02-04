@@ -19,7 +19,9 @@ namespace StoreHouse360.Application.Queries.Invoicing
         }
         protected override async Task<IQueryable<Invoice>> GetQuery(GetAllInvoicesQuery request, CancellationToken cancellationToken)
         {
-            return _applyFilters(await _invoiceRepository.GetAllAsync(new GetAllOptions<Invoice> { IncludeRelations = true }), request);
+            var invoices = await _invoiceRepository.GetAllAsync(new GetAllOptions<Invoice> { IncludeRelations = true });
+            var sortInvoice = invoices.OrderByDescending(invoice  => invoice.CreatedAt);
+            return _applyFilters(sortInvoice, request);
         }
 
         private IQueryable<Invoice> _applyFilters(IQueryable<Invoice> query, GetAllInvoicesQuery request)

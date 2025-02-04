@@ -7,6 +7,6 @@ namespace StoreHouse360.Application.Repositories
     public interface IProductMovementRepository : IRepositoryCrud<ProductMovement, int>
     {
         IQueryable<AggregateProductQuantity> AggregateProductsQuantities(ProductMovementFiltersDTO? filters = default);
-        IQueryable<AggregateStoragePlaceQuantity> AggregateStoragePlacesQuantities(int productId, int warehouseId, int storagePlaceId);
+        IQueryable<AggregateStoragePlaceQuantity> AggregateStoragePlacesQuantities(ProductMovementFiltersDTO? filters = default);
     }
 }
