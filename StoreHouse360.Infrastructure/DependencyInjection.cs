@@ -105,7 +105,7 @@ namespace StoreHouse360.Infrastructure
             services.AddScoped<AppSettings>(setting => setting.GetService<IAppSettingsProvider>()!.Get());
         }
 
-        public static void ApplyMigrationToDatabase(this WebApplication app)
+        public static async Task ApplyMigrationToDatabase(this WebApplication app)
         {
             using (var scope = app.Services.CreateScope())
             {
@@ -115,9 +115,13 @@ namespace StoreHouse360.Infrastructure
 
                 using (var dbContext = services.GetRequiredService<ApplicationDbContext>())
                 {
-                    dbContext.Database.Migrate(); // Apply pending migrations to the database and create the database if it does not exist   
-                    dbContext.Database.EnsureCreated(); // Create database or tables if they do not exist
-                    dbContext.ProcessDataSeeding(dbSeeder, settingsProvider); // seed data into db
+                    await dbContext.Database.MigrateAsync(); // Apply pending migrations to the database and create the database if it does not exist   
+                    await dbContext.Database.EnsureCreatedAsync(); // Create database or tables if they do not exist
+
+                    if (!app.Environment.IsDevelopment())
+                    {
+                        dbContext.ProcessDataSeeding(dbSeeder, settingsProvider); // seed data into db
+                    }
                 }
             }
         }
