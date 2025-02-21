@@ -1,11 +1,13 @@
 ﻿using MediatR;
 using StoreHouse360.Application.Common.QueryFilters;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Queries.Common;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Queries.Users
 {
+    [Authorize(Resource = Resource.Users, Method = Method.Read)]
     public class GetAllUsersQuery : GetPaginatedQuery<User>
     {
         [QueryFilter(QueryFilterCompareType.StringContains)]

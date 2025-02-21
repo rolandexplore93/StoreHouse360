@@ -15,6 +15,7 @@ namespace StoreHouse360.Application
                 .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
                 .AddMediatR(config => config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()))
                 .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>))
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>))
                 .AddLazyDi();
             return services;
         }
