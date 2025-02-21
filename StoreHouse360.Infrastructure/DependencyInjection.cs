@@ -67,7 +67,11 @@ namespace StoreHouse360.Infrastructure
             })
                 .AddRoles<AppRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
+                // For Asp.Net Authorization
+                .AddClaimsPrincipalFactory<ApplicationUserClaimsPrincipalFactory>()
                 .AddDefaultTokenProviders();
+
+            services.AddScoped<ApplicationUserClaimsPrincipalFactory>();
         }
 
         private static void AddRepositories (this IServiceCollection services)
