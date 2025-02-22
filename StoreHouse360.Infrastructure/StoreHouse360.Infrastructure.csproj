@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StoreHouse360.Application\StoreHouse360.Application.csproj" />
+    <ProjectReference Include="..\StoreHouse360.Authorization\StoreHouse360.Authorization.csproj" />
     <ProjectReference Include="..\StoreHouse360.Domain\StoreHouse360.Domain.csproj" />
   </ItemGroup>
 

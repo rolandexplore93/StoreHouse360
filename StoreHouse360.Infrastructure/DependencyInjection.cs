@@ -124,7 +124,7 @@ namespace StoreHouse360.Infrastructure
 
                     if (!app.Environment.IsDevelopment())
                     {
-                        dbContext.ProcessDataSeeding(dbSeeder, settingsProvider); // seed data into db
+                       await dbContext.ProcessDataSeeding(dbSeeder, settingsProvider); // seed data into db
                     }
                 }
             }
