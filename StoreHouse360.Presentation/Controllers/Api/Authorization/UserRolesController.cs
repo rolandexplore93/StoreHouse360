@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using StoreHouse360.Application.Commands.UserRoles;
-using StoreHouse360.Application.Queries.UserRoles;
+using StoreHouse360.Application.Commands.Authorization.UserRoles;
+using StoreHouse360.Application.Queries.Authorization.UserRoles;
 using StoreHouse360.DTO.Authorization.Roles;
 using StoreHouse360.DTO.Authorization.UserRoles;
 using StoreHouse360.DTO.Common;

@@ -4,7 +4,7 @@ using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Application.Repositories.Aggregates;
 
-namespace StoreHouse360.Application.Commands.UserRoles
+namespace StoreHouse360.Application.Commands.Authorization.UserRoles
 {
     public class UpdateUserRolesCommand : IRequest
     {
