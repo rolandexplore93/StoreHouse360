@@ -38,7 +38,10 @@ namespace StoreHouse360.Application.Common.Models
             return new PaginatedCollections<TModel> { data = query.Skip(skip).Take(pageSize), CurrentPage = currentPage, PagesCount = pagesCount, PageSize = pageSize, RowsCount = rowsCount };
         }
 
-
+        public static PaginatedCollections<TModel> Create<TModel>(IQueryable<TModel> query) where TModel : class
+        {
+            return new PaginatedCollections<TModel>{ data = query, CurrentPage = 1, PagesCount = 1, PageSize = query.Count(), RowsCount = query.Count() };
+        }
     }
 
     public static class QueryableExtensions
@@ -46,6 +49,11 @@ namespace StoreHouse360.Application.Common.Models
         public static IPaginatedCollections<T> AsPaginatedQuery<T>(this IQueryable<T> query, int currentPage, int pageSize) where T : class
         {
             return PaginatedCollections<T>.Create<T>(query, currentPage, pageSize);
+        }
+
+        public static IPaginatedCollections<T> AsPaginatedQuery<T>(this IQueryable<T> query) where T : class
+        {
+            return PaginatedCollections<T>.Create(query);
         }
     }
 }

@@ -67,7 +67,11 @@ namespace StoreHouse360.Infrastructure
             })
                 .AddRoles<AppRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
+                // For Asp.Net Authorization
+                .AddClaimsPrincipalFactory<ApplicationUserClaimsPrincipalFactory>()
                 .AddDefaultTokenProviders();
+
+            services.AddScoped<ApplicationUserClaimsPrincipalFactory>();
         }
 
         private static void AddRepositories (this IServiceCollection services)
@@ -89,6 +93,8 @@ namespace StoreHouse360.Infrastructure
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<ICountryOriginRepository, CountryOriginRepository>();
             services.AddScoped<IJournalRepository, JournalRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IUserRolesRepository, UserRolesRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
 
@@ -120,7 +126,7 @@ namespace StoreHouse360.Infrastructure
 
                     if (!app.Environment.IsDevelopment())
                     {
-                        dbContext.ProcessDataSeeding(dbSeeder, settingsProvider); // seed data into db
+                       await dbContext.ProcessDataSeeding(dbSeeder, settingsProvider); // seed data into db
                     }
                 }
             }

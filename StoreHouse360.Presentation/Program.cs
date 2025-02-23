@@ -1,6 +1,7 @@
 using StoreHouse360;
 using StoreHouse360.Application;
 using StoreHouse360.Authentication;
+using StoreHouse360.Authorization;
 using StoreHouse360.Infrastructure;
 using System.Reflection;
 
@@ -18,16 +19,18 @@ builder.Services
     });
 
 builder.Services.AddAppAuthentication(builder.Configuration);
+builder.Services.AddAppAuthorization();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services
     .AddApplicationControllers()
+    .AddCurrentUserService()
     .AddSwaggerDocumentation();
 
 var app = builder.Build();
 
-app.ApplyMigrationToDatabase();
+await app.ApplyMigrationToDatabase();
 
 // Configure the HTTP request pipeline.
 app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());

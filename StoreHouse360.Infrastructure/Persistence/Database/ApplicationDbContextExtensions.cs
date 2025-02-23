@@ -24,9 +24,9 @@ namespace StoreHouse360.Infrastructure.Persistence.Database
             }
         }
 
-        public static void ProcessDataSeeding(this ApplicationDbContext dbContext, ISeedToDatabase seedToDatabase, IAppSettingsProvider settingsProvider)
+        public static Task ProcessDataSeeding(this ApplicationDbContext dbContext, ISeedToDatabase seedToDatabase, IAppSettingsProvider settingsProvider)
         {
-            seedToDatabase.Seed(dbContext, settingsProvider);
+            return seedToDatabase.Seed(dbContext, settingsProvider);
         }
     }
 }

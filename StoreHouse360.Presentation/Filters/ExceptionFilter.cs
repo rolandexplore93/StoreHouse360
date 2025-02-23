@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using StoreHouse360.Application.Exceptions;
 using StoreHouse360.Domain.Exceptions;
 using StoreHouse360.Presentation.DTO.Common.Responses;
 using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
@@ -22,7 +23,8 @@ namespace StoreHouse360.Filters
             {
                 // {typeof(NotFoundException), HandleNotFoundException}
                 {typeof(ProductMinimumLevelExceededException), HandleProductMinimumLevelExceededException},
-                {typeof(ValidationException), HandleValidationException}
+                {typeof(ValidationException), HandleValidationException},
+                {typeof(ForbiddenAccessException), HandleForbiddenAccessException}
             };
         }
 
@@ -77,6 +79,17 @@ namespace StoreHouse360.Filters
             var exception = (ValidationException) context.Exception;
             var responseBody = new NoDataResponse(string.Join("\n", exception.Errors.Select(e => e.ErrorMessage)));
             context.Result = new ObjectResult(responseBody) { StatusCode = StatusCodes.Status400BadRequest };
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleForbiddenAccessException(ExceptionContext context)
+        {
+            var exception = (ForbiddenAccessException)context.Exception;
+
+            var responseBody = new NoDataResponse(exception.Message);
+
+            context.Result = new ObjectResult(responseBody) { StatusCode = StatusCodes.Status403Forbidden };
+
             context.ExceptionHandled = true;
         }
     }

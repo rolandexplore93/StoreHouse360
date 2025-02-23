@@ -17,7 +17,7 @@ namespace StoreHouse360.Application.Queries.Common
     }
 
     public abstract class PaginatedQueryHandler<TRequest, TEntity> : IRequestHandler<TRequest, IPaginatedCollections<TEntity>>
-        where TEntity : class, IEntity
+        where TEntity : class
         where TRequest : GetPaginatedQuery<TEntity>
     {
         public async Task<IPaginatedCollections<TEntity>> Handle(TRequest request, CancellationToken cancellationToken)
