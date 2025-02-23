@@ -1,6 +1,8 @@
 ﻿using Microsoft.OpenApi.Models;
+using StoreHouse360.Application.Services.Identity;
 using StoreHouse360.DTO.Common.Responses.Validation;
 using StoreHouse360.Filters;
+using StoreHouse360.Services;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Text.Json.Serialization;
 
@@ -64,6 +66,11 @@ namespace StoreHouse360
                     c.RoutePrefix = "swagger";
                 });
             }
+        }
+
+        public static IServiceCollection AddCurrentUserService(this IServiceCollection services)
+        {
+            return services.AddScoped<ICurrentUserService, ApiCurrentUserService>();
         }
     }
 }

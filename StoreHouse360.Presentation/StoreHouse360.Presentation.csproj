@@ -25,7 +25,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.1" />
+
+
+	  <PackageReference Include="IdentityModel" Version="7.0.0" />
+
+
   </ItemGroup>
 
   <ItemGroup>

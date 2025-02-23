@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using StoreHouse360.Application.Common.Security;
+using StoreHouse360.Authorization;
 using StoreHouse360.Infrastructure.Persistence.Database.Models;
 using System.Security.Claims;
 
