@@ -6,5 +6,6 @@ namespace StoreHouse360.Application.Repositories.Aggregates
     {
         Task<UserRoles> FindByUserId(int userId);
         Task<UserRoles> Update(UserRoles userRoles);
+        IQueryable<UserRoles> GetAll();
     }
 }

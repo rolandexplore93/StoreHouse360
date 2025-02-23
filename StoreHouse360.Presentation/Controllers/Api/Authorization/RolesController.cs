@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using StoreHouse360.Application.Commands.Roles;
-using StoreHouse360.Application.Queries.Roles;
-using StoreHouse360.Controllers.Api;
+using StoreHouse360.Application.Commands.Authorization.Roles;
+using StoreHouse360.Application.Queries.Authorization.Roles;
 using StoreHouse360.DTO.Authorization.Roles;
 using StoreHouse360.DTO.Common;
 using StoreHouse360.DTO.Pagination;
@@ -36,6 +35,19 @@ namespace StoreHouse360.Controllers.Api.Authorization
             var roles = await Mediator.Send(new GetAllRolesQuery());
 
             return Ok(roles.ToViewModel<RoleVM>(_mapper));
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<BaseResponse<RoleVM>>> Create(int id, UpdateRoleRequestDTO request)
+        {
+            var command = _mapper.Map<UpdateRoleRequestDTO, UpdateRoleCommand>(request);
+            command.Id = id;
+
+            var roleId = await Mediator.Send(command);
+
+            var role = await Mediator.Send(new GetRoleQuery { Id = roleId });
+
+            return Ok(role.ToViewModel<RoleVM>(_mapper));
         }
 
         [HttpDelete("{id}")]

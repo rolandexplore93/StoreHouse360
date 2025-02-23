@@ -2,7 +2,7 @@
 using StoreHouse360.Application.Queries.Common;
 using StoreHouse360.Application.Repositories;
 
-namespace StoreHouse360.Application.Queries.Roles
+namespace StoreHouse360.Application.Queries.Authorization.Roles
 {
     public class GetAllRolesQuery : GetPaginatedQuery<Role>
     {

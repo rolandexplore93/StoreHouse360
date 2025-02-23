@@ -2,7 +2,7 @@
 using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 
-namespace StoreHouse360.Application.Queries.Roles
+namespace StoreHouse360.Application.Queries.Authorization.Roles
 {
     public class GetRoleQuery : IRequest<Role>
     {
