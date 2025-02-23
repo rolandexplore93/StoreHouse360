@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Authorization.UserRoles;
+using StoreHouse360.Application.Common.Models;
 using StoreHouse360.Application.Queries.Authorization.UserRoles;
 using StoreHouse360.DTO.Authorization.Roles;
 using StoreHouse360.DTO.Authorization.UserRoles;
@@ -24,6 +25,14 @@ namespace StoreHouse360.Controllers.Api.Authorization
             var roles = await Mediator.Send(new GetUserRolesQuery { UserId = userId });
 
             return Ok(roles.ToViewModel<RoleVM>(_mapper));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<BaseResponse<IPaginatedCollections<UserRolesVM>>>> GetUsersRoles()
+        {
+            var usersRoles = await Mediator.Send(new GetAllUsersRolesQuery());
+
+            return Ok(usersRoles.ToViewModel<UserRolesVM>(_mapper));
         }
 
         [HttpPut("{userId}")]
