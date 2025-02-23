@@ -93,6 +93,8 @@ namespace StoreHouse360.Infrastructure
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<ICountryOriginRepository, CountryOriginRepository>();
             services.AddScoped<IJournalRepository, JournalRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IUserRolesRepository, UserRolesRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
 
