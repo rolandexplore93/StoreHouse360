@@ -91,7 +91,7 @@ namespace StoreHouse360.Application.EventNotifications.Products.ProductMinLevelU
             var getAllNotificationQuery = new GetAllNotificationsQuery
             {
                 ObjectIds = new List<int> { productId },
-                IsValid = true,
+                ValidOnly = true,
                 NotificationType = NotificationType.MinLevelExceeded,
                 Page = 1,
                 PageSize = int.MaxValue

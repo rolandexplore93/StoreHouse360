@@ -53,7 +53,7 @@ namespace StoreHouse360.Application.EventNotifications.Invoices.InvoiceCreated
                 PageSize = int.MaxValue,
                 ObjectIds = productsWithNewMinLevelResolves.Select(product => product.Id),
                 NotificationType = NotificationType.MinLevelExceeded,
-                IsValid = true
+                ValidOnly = true
             };
             var notificationsPage = await _mediator.Send(notificationQuery);
             var notifications = notificationsPage.ToList();
