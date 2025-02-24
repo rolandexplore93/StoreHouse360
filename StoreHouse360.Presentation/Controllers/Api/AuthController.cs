@@ -22,7 +22,7 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<BaseResponse<string>>> Login(LoginRequestDTO requestDTO)
+        public async Task<ActionResult<BaseResponse<LoginResponseDTO>>> Login(LoginRequestDTO requestDTO)
         {
             var result = await _authenticationService.JwtLogin(_mapper.Map<JwtLoginRequest>(requestDTO));
 

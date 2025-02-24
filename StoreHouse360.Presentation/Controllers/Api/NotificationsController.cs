@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using StoreHouse360.Application.Common.Models;
 using StoreHouse360.Application.Queries.Notifications;
 using StoreHouse360.Application.Queries.Products;
-using StoreHouse360.DTO.Common;
 using StoreHouse360.DTO.Notifications;
 using StoreHouse360.DTO.Pagination;
 using StoreHouse360.DTO.Products;
