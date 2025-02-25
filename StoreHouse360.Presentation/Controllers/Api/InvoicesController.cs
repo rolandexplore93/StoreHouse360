@@ -26,7 +26,9 @@ namespace StoreHouse360.Controllers.Api
         [ProducesResponseType(typeof(ActionResult<BaseResponse<IList<int>>>), StatusCodes.ProductMinimumLevelExceededExceptionCode)]
         public async Task<ActionResult<BaseResponse<InvoiceVM>>> Create(CreateInvoiceRequestDTO request)
         {
-            var invoiceId = await Mediator.Send(_mapper.Map<CreateInvoiceCommand>(request));
+            var createInvoiceCommand = _mapper.Map<CreateInvoiceCommand>(request);
+            createInvoiceCommand.AccountType = InvoiceAccountType.PurchasesOrSales;
+            var invoiceId = await Mediator.Send(createInvoiceCommand);
             var invoice = await Mediator.Send(new GetInvoiceQuery { Id = invoiceId });
             return Ok(invoice.ToViewModel<InvoiceVM>(_mapper));
         }
