@@ -13,7 +13,7 @@ using StatusCodes = StoreHouse360.Domain.Exceptions.StatusCodes;
 
 namespace StoreHouse360.Controllers.Api
 {
-    //[Authorize]
+    [Authorize]
     public class InvoicesController : ApiControllerBase
     {
         public InvoicesController(IMediator mediator, IMapper mapper) : base(mediator, mapper)

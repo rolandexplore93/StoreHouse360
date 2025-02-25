@@ -18,12 +18,12 @@ namespace StoreHouse360.Application.EventNotifications.Invoices.InvoiceCreated
         public async Task Handle(InvoiceCreatedNotification notification, CancellationToken cancellationToken)
         {
             var invoice = notification.Invoice;
-            if (invoice.Type == InvoiceType.Out)
+            if (invoice.Type == InvoiceType.Out && invoice.AccountType == InvoiceAccountType.PurchasesOrSales)
             {
                 await _handleFromCashDrawerToCustomer(invoice, cancellationToken);
                 await _handleFromSalesToCashDrawer(invoice, cancellationToken);
             }
-            else if (invoice.Type == InvoiceType.In)
+            else if (invoice.Type == InvoiceType.In && invoice.AccountType == InvoiceAccountType.PurchasesOrSales)
             {
                 await _handleFromCustomerToCashDrawer(invoice, cancellationToken);
                 await _handleFromCashDrawerToPurchases(invoice, cancellationToken);

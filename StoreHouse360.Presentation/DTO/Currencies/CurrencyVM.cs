@@ -7,11 +7,8 @@ namespace StoreHouse360.DTO.Currencies
     public class CurrencyVM : IMapFrom<Currency>, IViewModel
     {
         public int Id { get; set; }
-
         public string Name { get; set; }
-
         public string Symbol { get; set; }
-
         public float Factor { get; set; }
     }
 }

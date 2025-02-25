@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Queries.Notifications;
 using StoreHouse360.Application.Queries.Products;
@@ -10,6 +11,7 @@ using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api
 {
+    [Authorize]
     public class NotificationsController : ApiControllerBase
     {
         public NotificationsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)

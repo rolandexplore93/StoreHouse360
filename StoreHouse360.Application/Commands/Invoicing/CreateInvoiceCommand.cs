@@ -15,6 +15,7 @@ namespace StoreHouse360.Application.Commands.Invoicing
         public int CurrencyId { get; set; }
         public string? Note { get; set; }
         public InvoiceType Type { get; set; }
+        public InvoiceAccountType AccountType { get; set; }
         public IEnumerable<InvoiceItemDTO> Items { get; set; }
         public bool IgnoreMinLevelWarnings { get; set; }
     }
@@ -52,6 +53,7 @@ namespace StoreHouse360.Application.Commands.Invoicing
                 note: request.Note,
                 createdAt: DateTime.Now,
                 type: request.Type,
+                accountType: request.AccountType,
                 items: request.Items.Select(dto => _buildItem(dto, request.Type)).ToList()
             );
 

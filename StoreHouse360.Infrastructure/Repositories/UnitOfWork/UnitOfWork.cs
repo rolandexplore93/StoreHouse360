@@ -29,12 +29,13 @@ namespace StoreHouse360.Infrastructure.Repositories.UnitOfWork
         private readonly Lazy<IJournalRepository> _journalRepository;
         private readonly Lazy<IRoleRepository> _rolesRepository;
         private readonly Lazy<IUserRolesRepository> _userRolesRepository;
+        private readonly Lazy<IConversionRepository> _conversionRepository;
 
         public UnitOfWork(ApplicationDbContext dbContext, Lazy<IAccountRepository> accountRepository, Lazy<ICategoryRepository> categoryRepository, Lazy<ICurrencyAmountRepository> currencyAmountRepository, 
             Lazy<ICurrencyRepository> currencyRepository, Lazy<IInvoiceRepository> invoiceRepository, Lazy<IManufacturerRepository> manufacturerRepository, Lazy<IProductMovementRepository> productMovementRepository, 
             Lazy<IProductRepository> productRepository, Lazy<IStoragePlaceRepository> storagePlaceRepository, Lazy<IUnitRepository> unitRepository, Lazy<IUserRepository> userRepository, 
             Lazy<IWarehouseRepository> warehouseRepository, Lazy<IPaymentRepository> paymentRepository, Lazy<IInvoicePaymentsRepository> invoicePaymentsRepository, Lazy<IJournalRepository> journalRepository,
-            Lazy<IRoleRepository> rolesRepository, Lazy<IUserRolesRepository> userRolesRepository)
+            Lazy<IRoleRepository> rolesRepository, Lazy<IUserRolesRepository> userRolesRepository, Lazy<IConversionRepository> conversionRepository)
         {
             _dbContext = dbContext;
             _transaction =  _dbContext.Database.BeginTransaction();
@@ -55,6 +56,7 @@ namespace StoreHouse360.Infrastructure.Repositories.UnitOfWork
             _journalRepository = journalRepository;
             _rolesRepository = rolesRepository;
             _userRolesRepository = userRolesRepository;
+            _conversionRepository = conversionRepository;
         }
         public IAccountRepository AccountRepository => _accountRepository.Value;
         public ICategoryRepository CategoryRepository => _categoryRepository.Value;
@@ -73,6 +75,7 @@ namespace StoreHouse360.Infrastructure.Repositories.UnitOfWork
         public IJournalRepository JournalRepository => _journalRepository.Value;
         public IRoleRepository RoleRepository => _rolesRepository.Value;
         public IUserRolesRepository UserRolesRepository => _userRolesRepository.Value;
+        public IConversionRepository ConversionRepository => _conversionRepository.Value;
 
         public void Commit()
         {

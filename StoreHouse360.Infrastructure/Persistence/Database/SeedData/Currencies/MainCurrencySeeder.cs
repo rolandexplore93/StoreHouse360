@@ -19,8 +19,8 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData.Currencies
             {
                 var entry = dbContext.Currencies.Add(new CurrencyDb()
                 {
-                    Name = "Main Sales",
-                    Symbol = "SYP",
+                    Name = "Pound Sterling",
+                    Symbol = "GBP",
                     Factor = 1
                 });
                 dbContext.SaveChanges();

@@ -30,5 +30,6 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
         public InvoiceStatus Status { get; set; }
 
         public InvoiceType Type { get; set; }
+        public InvoiceAccountType AccountType { get; set; }
     }
 }

@@ -5,8 +5,7 @@ namespace StoreHouse360.DTO.Common.Responses.Validation
 {
     public class BadRequestObjectResult : ObjectResult
     {
-        public BadRequestObjectResult(ModelStateDictionary modelState)
-            : base(new BadRequestResponse(modelState))
+        public BadRequestObjectResult(ModelStateDictionary modelState) : base(new BadRequestResponse(modelState))
         {
             StatusCode = StatusCodes.Status422UnprocessableEntity;
         }
