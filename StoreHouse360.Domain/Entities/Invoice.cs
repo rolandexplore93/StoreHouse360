@@ -85,6 +85,30 @@ namespace StoreHouse360.Domain.Entities
 
     public enum InvoiceAccountType
     {
-        ImportOrExport, PurchasesOrSales
+        ImportOrExport, 
+        PurchasesOrSales,
+        Returns
+    }
+
+    public static class InvoiceAccountTypeExtensions
+    {
+        public static bool DealsWithPurchasesSales(this InvoiceAccountType invoiceAccountType)
+        {
+            return invoiceAccountType switch
+            {
+                InvoiceAccountType.PurchasesOrSales => true,
+                InvoiceAccountType.Returns => true,
+                _ => false
+            };
+        }
+
+        public static bool DealsWithReturns(this InvoiceAccountType invoiceAccountType)
+        {
+            return invoiceAccountType switch
+            {
+                InvoiceAccountType.Returns => true,
+                _ => false
+            };
+        }
     }
 }

@@ -15,6 +15,8 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData.Accounts
                 new MainImportsSeeder(),
                 new MainExportsSeeder(),
                 new ConversionsSeeder(),
+                new MainSalesReturnsSeeder(),
+                new MainPurchasesReturnsSeeder()
             };
         }
         public Task Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider)

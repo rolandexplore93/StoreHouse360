@@ -9,5 +9,7 @@
         public int DefaultMainImportsAccountId { get; set; } = default;
         public int DefaultMainExportsAccountId { get; set; } = default;
         public int DefaultConversionsAccountId { get; set; } = default;
+        public int DefaultSalesReturnsAccountId { get; set; } = default;
+        public int DefaultPurchasesReturnsAccountId { get; set; } = default;
     }
 }
