@@ -1,9 +1,11 @@
-﻿using StoreHouse360.Application.Queries.Common;
+﻿using StoreHouse360.Application.Common.Security;
+using StoreHouse360.Application.Queries.Common;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Queries.Payments
 {
+    [Authorize(Method = Method.Read, Resource = Resource.Invoices)]
     public class GetAllPaymentsQuery : GetPaginatedQuery<Payment>
     {
         public int InvoiceId { get; set; } = 0;

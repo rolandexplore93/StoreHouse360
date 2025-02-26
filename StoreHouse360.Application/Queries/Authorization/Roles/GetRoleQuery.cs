@@ -4,6 +4,7 @@ using StoreHouse360.Application.Repositories;
 
 namespace StoreHouse360.Application.Queries.Authorization.Roles
 {
+    [Authorize(Method = Method.Read, Resource = Resource.Roles)]
     public class GetRoleQuery : IRequest<Role>
     {
         public int Id { get; set; }

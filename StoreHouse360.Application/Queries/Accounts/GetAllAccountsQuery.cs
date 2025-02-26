@@ -7,7 +7,7 @@ using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Queries.Accounts
 {
-    [Authorize(Resource = Resource.Accounts, Method = Method.Read)]
+    [Authorize(Method = Method.Read, Resource = Resource.Accounts)]
     public class GetAllAccountsQuery : GetPaginatedQuery<Account>
     {
         [QueryFilter(QueryFilterCompareType.StringContains)]

@@ -1,10 +1,12 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 using Unit = StoreHouse360.Domain.Entities.Unit;
 
 namespace StoreHouse360.Application.Queries.Units
 {
+    [Authorize(Method = Method.Read, Resource = Resource.Units)]
     public class GetUnitQuery : IRequest<Unit>
     {
         public int Id { get; init; }

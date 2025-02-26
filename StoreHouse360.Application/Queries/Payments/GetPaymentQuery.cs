@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Queries.Payments
 {
+    [Authorize(Method = Method.Read, Resource = Resource.Invoices)]
     public class GetPaymentQuery : IRequest<Payment>
     {
         public int Id { get; set; }

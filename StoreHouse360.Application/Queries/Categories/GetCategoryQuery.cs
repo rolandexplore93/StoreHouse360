@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Queries.Categories
 {
+    [Authorize(Method = Method.Read, Resource = Resource.Categories)]
     public class GetCategoryQuery : IRequest<Category>
     {
         public int Id { get; init; }

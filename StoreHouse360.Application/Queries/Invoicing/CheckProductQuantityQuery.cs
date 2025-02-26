@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using StoreHouse360.Application.Common.DTO;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Queries.Invoicing.DTO;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Aggregations;
@@ -7,6 +8,7 @@ using StoreHouse360.Domain.Exceptions;
 
 namespace StoreHouse360.Application.Queries.Invoicing
 {
+    [Authorize(Method = Method.Read, Resource = Resource.Invoices)]
     public class CheckProductQuantityQuery : IRequest<Unit>
     {
         public IEnumerable<CheckProductQuantityDTO> ProductQuantities { get; init; } = null!;
