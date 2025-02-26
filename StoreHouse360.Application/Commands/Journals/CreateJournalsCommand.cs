@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Factories;
 
 namespace StoreHouse360.Application.Commands.Journals
 {
+    [Authorize(Method = Method.Write, Resource = Resource.Journals)]
     public class CreateJournalsCommand : IRequest<(int DebitId, int CreditId)>
     {
         public int SourceAccountId { get; }

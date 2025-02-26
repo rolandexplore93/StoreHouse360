@@ -1,8 +1,10 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 
 namespace StoreHouse360.Application.Commands.Categories
 {
+    [Authorize(Method = Method.Delete, Resource = Resource.Categories)]
     public class DeleteCategoryCommand : IRequest
     {
         public int Id { get; init; }

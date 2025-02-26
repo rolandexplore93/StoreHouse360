@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using StoreHouse360.Application.Commands.Invoicing.DTO;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.EventNotifications.Invoices.InvoiceCreated;
 using StoreHouse360.Application.Queries.Invoicing;
 using StoreHouse360.Application.Queries.Invoicing.DTO;
@@ -8,6 +9,7 @@ using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Commands.Invoicing
 {
+    [Authorize(Method = Method.Write, Resource = Resource.Invoices)]
     public class CreateInvoiceCommand : IRequest<int>
     {
         public int AccountId { get; set; }

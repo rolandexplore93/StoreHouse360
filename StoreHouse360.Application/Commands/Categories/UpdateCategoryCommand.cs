@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Commands.Categories
 {
+    [Authorize(Method = Method.Update, Resource = Resource.Categories)]
     public partial class UpdateCategoryCommand : IRequest<int>
     {
         public int Id { get; set; }

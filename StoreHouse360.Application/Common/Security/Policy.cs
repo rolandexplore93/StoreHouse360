@@ -22,7 +22,18 @@
 
     public enum Resource
     {
-        Users, Accounts  
+        Users, 
+        Accounts,
+        Categories,
+        Countries,
+        Manufacturers,
+        Units,
+        Products,
+        Warehouses,
+        Currencies,
+        Roles,
+        Invoices,
+        Journals,
     }
 
     public enum Method

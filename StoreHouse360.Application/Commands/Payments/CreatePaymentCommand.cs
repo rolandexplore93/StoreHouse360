@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using StoreHouse360.Application.Common.DTO;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.EventNotifications.Payments.PaymentCreated;
 using StoreHouse360.Application.Repositories.UnitOfWork;
 using StoreHouse360.Domain.Aggregations;
@@ -7,6 +8,7 @@ using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Commands.Payments
 {
+    [Authorize(Method = Method.Write, Resource = Resource.Invoices)]
     public class CreatePaymentCommand : IRequest<int>
     {
         public int InvoiceId { get; set; }

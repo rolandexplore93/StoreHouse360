@@ -1,10 +1,12 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 using Unit = StoreHouse360.Domain.Entities.Unit;
 
 namespace StoreHouse360.Application.Commands.Units
 {
+    [Authorize(Method = Method.Update, Resource = Resource.Units)]
     public class UpdateUnitCommand : IRequest<int>
     {
         public int Id { get; set; }

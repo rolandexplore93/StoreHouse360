@@ -1,8 +1,10 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 
 namespace StoreHouse360.Application.Commands.Authorization.Roles
 {
+    [Authorize(Method = Method.Delete, Resource = Resource.Roles)]
     public class DeleteRoleCommand : IRequest
     {
         public int Id;

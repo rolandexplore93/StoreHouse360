@@ -7,6 +7,7 @@ using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Commands.Users
 {
+    [Authorize(Method = Method.Write, Resource = Resource.Users)]
     public class CreateUserCommand : IRequest<int>
     {
         public string Username { get; set; }
