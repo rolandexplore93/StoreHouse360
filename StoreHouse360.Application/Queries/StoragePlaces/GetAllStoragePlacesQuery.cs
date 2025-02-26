@@ -37,6 +37,9 @@ namespace StoreHouse360.Application.Queries.StoragePlaces
         {
             var filterResult = base.ApplyFilters(query, request);
             if (request.IsParent != null) filterResult = filterResult.Where(sp => (bool)request.IsParent ? sp.ContainerId == null : sp.ContainerId != null);
+
+            filterResult = filterResult.Where(storagePlace => storagePlace.WarehouseId == request.WarehouseId || request.WarehouseId == 0);
+
             return filterResult;
         }
     }
