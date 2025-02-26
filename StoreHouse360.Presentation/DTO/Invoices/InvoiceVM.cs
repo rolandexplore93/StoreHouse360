@@ -18,5 +18,6 @@ namespace StoreHouse360.DTO.Invoices
         public DateTime CreatedAt { get; set; }
         public InvoiceStatus Status { get; set; }
         public InvoiceType Type { get; set; }
+        public InvoiceAccountType AccountType { get; set; }
     }
 }

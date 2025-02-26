@@ -15,9 +15,9 @@ namespace StoreHouse360.DTO.Conversions
 
         public WarehouseVM ToWarehouse { get; set; }
 
-        public ProductVM FromProduct { get; set; }
+        public ProductJoinedVM FromProduct { get; set; }
 
-        public ProductVM ToProduct { get; set; }
+        public ProductJoinedVM ToProduct { get; set; }
 
         public StoragePlaceVM FromPlace { get; set; }
 
