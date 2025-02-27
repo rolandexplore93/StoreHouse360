@@ -34,6 +34,8 @@ namespace StoreHouse360.Infrastructure.Repositories.Aggregates
 
                 Invoice updatedInvoice = await _invoiceRepository.UpdateAsync(invoicePayments.Invoice);
 
+                await _invoiceRepository.SaveChanges();
+
                 return new InvoicePayments { Invoice = updatedInvoice, Payments = invoicePayments.Payments.Concat(savedPayments) };
             };
         }

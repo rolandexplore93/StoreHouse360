@@ -69,6 +69,21 @@ namespace StoreHouse360.Controllers.Api
 
             return Ok(invoice.ToViewModel<InvoiceVM>(_mapper));
         }
+
+        [HttpPost("import-or-export")]
+        [ProducesResponseType(typeof(ActionResult<BaseResponse<InvoiceVM>>), 200)]
+        [ProducesResponseType(typeof(ActionResult<BaseResponse<IList<int>>>), StatusCodes.ProductMinimumLevelExceededExceptionCode)]
+        public async Task<ActionResult<BaseResponse<InvoiceVM>>> CreateImport(CreateInvoiceRequestDTO request)
+        {
+            var createInvoiceCommand = _mapper.Map<CreateInvoiceCommand>(request);
+            createInvoiceCommand.AccountType = InvoiceAccountType.ImportOrExport;
+
+            var invoiceId = await Mediator.Send(createInvoiceCommand);
+
+            var invoice = await Mediator.Send(new GetInvoiceQuery { Id = invoiceId });
+
+            return Ok(invoice.ToViewModel<InvoiceVM>(_mapper));
+        }
     }
 }
 
