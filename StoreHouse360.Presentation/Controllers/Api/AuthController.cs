@@ -12,7 +12,6 @@ namespace StoreHouse360.Controllers.Api
 {
     public class AuthController : ApiControllerBase
     {
-        //private readonly IMapper _mapper;
         private readonly IAuthenticationService _authenticationService;
 
         public AuthController(IMediator mediator, IMapper mapper, IAuthenticationService authenticationService) : base(mediator, mapper)
@@ -30,7 +29,7 @@ namespace StoreHouse360.Controllers.Api
             {
                 User = result.User.ToViewModel<UserVM>(_mapper),
                 Token = result.Token
-            });
+            }, "Login request successful...");
         }
     }
 }

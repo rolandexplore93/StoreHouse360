@@ -18,18 +18,18 @@ namespace StoreHouse360.Controllers.Api
             _mapper = mapper;
         }
 
-        [NonAction]
-        public override OkObjectResult Ok(object? value)
-        {
-            return Ok(value, "message");
-        }
+        //[NonAction]
+        //public override OkObjectResult Ok(object? value, string v)
+        //{
+        //    return Okay(value, "message");
+        //}
 
         [NonAction]
         public OkObjectResult Ok(object? value, string message)
         {
             if (value == null)
             {
-                return base.Ok(new NoDataResponse());
+                return base.Ok(new NoDataResponse(message));
             }
             else
             {
