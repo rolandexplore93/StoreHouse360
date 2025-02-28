@@ -9,9 +9,7 @@ namespace StoreHouse360.Application.Queries.Products
     public class GetAllProductsInStoragePlaceQuery : GetPaginatedQuery<Product>
     {
         public int Page { get; set; }
-
         public int PageSize { get; set; }
-
         public int StoragePlaceId { get; set; }
         public bool? IncludeStoragePlaceChildren { get; set; } = true;
     }

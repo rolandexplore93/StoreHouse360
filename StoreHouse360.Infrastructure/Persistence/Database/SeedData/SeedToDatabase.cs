@@ -28,7 +28,6 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData
         public Task Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider)
         {
             return Task.WhenAll(_seedData.Select(seeder => seeder.Seed(dbContext, settingsProvider)));
-            //dbContext.SaveChanges();
         }
     }
 }

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StoreHouse360.Infrastructure.Persistence.Database.Models
 {
+    [Table("Invoices")]
     public class InvoiceDb : IMapFrom<Invoice>, IDatabaseModel
     {
         [Key]

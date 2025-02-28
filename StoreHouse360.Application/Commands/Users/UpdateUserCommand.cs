@@ -9,8 +9,8 @@ namespace StoreHouse360.Application.Commands.Users
     public class UpdateUserCommand : IRequest
     {
         public int Id { get; set; }
-
         public string UserName { get; init; }
+        public string? Password { get; init; }
     }
     public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand>
     {
@@ -23,6 +23,10 @@ namespace StoreHouse360.Application.Commands.Users
         {
             var user = await _userRepository.FindByIdAsync(request.Id);
             user.UserName = request.UserName;
+
+            if (!string.IsNullOrEmpty(request.Password))
+                user.PasswordHash = request.Password; // plain password
+
             await _userRepository.UpdateAsync(user);
             await _userRepository.SaveChanges();
         }

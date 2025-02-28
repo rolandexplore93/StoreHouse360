@@ -15,6 +15,7 @@ namespace StoreHouse360.Application.EventNotifications.Payments.PaymentCreated
             _mediator = mediator;
             _appSettings = appSettings;
         }
+
         public async Task Handle(PaymentCreatedNotification notification, CancellationToken cancellationToken)
         {
             var payment = notification.Payment;

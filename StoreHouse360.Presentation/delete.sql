@@ -79,6 +79,9 @@ GO
 DELETE FROM [dbo].[Manufacturers]
 GO
 
+DELETE FROM [dbo].[Conversions]
+GO
+
 -- SELECT ALL
 SELECT * from Accounts;
 SELECT * from AspNetRoleClaims;

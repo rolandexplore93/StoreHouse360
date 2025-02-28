@@ -15,12 +15,4 @@
             City = city;
         }
     }
-
-    //public enum AccountType
-    //{
-    //    Other,
-    //    MainCashDrawer,
-    //    MainSales,
-    //    MainPurchases
-    //}
 }

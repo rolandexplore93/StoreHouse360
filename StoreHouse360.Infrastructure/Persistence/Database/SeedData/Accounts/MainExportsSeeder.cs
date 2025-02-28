@@ -17,7 +17,7 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData.Accounts
             {
                 var entry = dbContext.Accounts.Add(new AccountDb
                 {
-                    Name = "RolandProwess",
+                    Name = "Main Exports",
                     Code = "MEx",
                     City = "",
                     Phone = ""

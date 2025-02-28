@@ -16,8 +16,8 @@ namespace StoreHouse360.Services
         {
             get
             {
-                //var id = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var id = _httpContextAccessor.HttpContext?.User.FindFirstValue(JwtClaimTypes.Id);
+                //var id = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier); // (JwtClaimTypes.Id)
+                var id = _httpContextAccessor.HttpContext?.User.FindFirstValue("Id");
                 return id == null ? null : int.Parse(id);
             }
         }

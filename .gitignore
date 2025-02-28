@@ -365,3 +365,4 @@ FodyWeavers.xsd
 /StoreHouse360.Presentation/appsettings.json
 /StoreHouse360.Presentation/appsettings.Development.json
 /StoreHouse360.Presentation/appsettings.local.json
+/StoreHouse360.Presentation/delete.sql

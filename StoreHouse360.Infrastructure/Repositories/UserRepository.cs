@@ -64,12 +64,17 @@ namespace StoreHouse360.Infrastructure.Repositories
                 throw new NotFoundException("user", user.Id);
 
             model.UserName = user.UserName;
+
+            if (!string.IsNullOrEmpty(user.PasswordHash))
+                model.PasswordHash = _userManager.PasswordHasher.HashPassword(model, user.PasswordHash);
+
             var result = await _userManager.UpdateAsync(model);
 
             if (!result.Succeeded)
             {
                 throw new Exception(result.GetErrorsAsString());
             }
+
             return _mapper.Map<User>(model);
         }
 

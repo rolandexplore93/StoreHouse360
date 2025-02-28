@@ -62,18 +62,6 @@ namespace StoreHouse360.Application.Commands.Payments
 
             await _mediator.Publish(new PaymentCreatedNotification(addedPayment), cancellationToken);
 
-            //var currencyAmounts = request.CurrencyAmounts
-            //    .Select(c => new CurrencyAmount
-            //    {
-            //        //ObjectId = addedPayment.Id,
-            //        Key = CurrencyAmountKey.Payment,
-            //        Amount = c.Value,
-            //        CurrencyId = c.CurrencyId
-            //    });
-
-            //var saveCurrencyAmountsAction = await unitOfWork.CurrencyAmountRepository.CreateAllAsync(currencyAmounts);
-            //var result = await saveCurrencyAmountsAction();
-
             await unitOfWork.CommitAsync();
             
             return addedPayment.Id;

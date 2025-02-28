@@ -31,8 +31,8 @@ namespace StoreHouse360.Application.Queries.Invoicing
         {
             // Sort product quantities
             IList<CheckProductQuantityDTO> productQuantities = request.ProductQuantities
-            .OrderBy(i => i.ProductId)
-            .ToList();
+                .OrderBy(i => i.ProductId)
+                .ToList();
 
             var productIds = productQuantities.Select(i => i.ProductId).ToList();
 
@@ -58,8 +58,6 @@ namespace StoreHouse360.Application.Queries.Invoicing
 
             if (request.IgnoreMinLevelWarnings)
                 return Unit.Value;
-
-            
 
             IEnumerable<int> productIdsExceedsMinLevel = aggregatesAndProductQuantities
                 .Where(entry => _exceedsProductMinimumLevel(entry.First, entry.Second))
