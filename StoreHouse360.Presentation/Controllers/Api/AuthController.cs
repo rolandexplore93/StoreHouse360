@@ -29,7 +29,7 @@ namespace StoreHouse360.Controllers.Api
             {
                 User = result.User.ToViewModel<UserVM>(_mapper),
                 Token = result.Token
-            }, "Login request successful...");
+            }, "Login successful...");
         }
     }
 }

@@ -29,7 +29,6 @@ namespace StoreHouse360.Controllers.Api
 
             var user = await Mediator.Send(new GetUserQuery { Id = userId });
 
-            //return Ok(user);
             return Ok(user.ToViewModel<UserVM>(_mapper));
         }
 
