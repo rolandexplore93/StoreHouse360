@@ -32,6 +32,7 @@ namespace StoreHouse360.Infrastructure.Persistence.Database
         public DbSet<NotificationDb> Notifications { get; set; }
         public DbSet<CountryOriginDb> CountryOrigins { get; set; } = null!;
         public DbSet<JournalDb> Journals { get; set; }
+        public DbSet<ConversionDb> Conversions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

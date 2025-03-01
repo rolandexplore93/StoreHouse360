@@ -3,6 +3,7 @@ using StoreHouse360.Domain.Entities;
 using StoreHouse360.DTO.Common;
 using StoreHouse360.DTO.CurrencyAmounts;
 using StoreHouse360.DTO.Products;
+using StoreHouse360.DTO.StoragePlaces;
 
 namespace StoreHouse360.DTO.Invoices
 {
@@ -11,7 +12,7 @@ namespace StoreHouse360.DTO.Invoices
         public int Id { get; set; }
         public int InvoiceId { get; set; }
         public ProductJoinedVM? Product { get; set; }
-        public int PlaceId { get; set; }
+        public StoragePlaceVM Place { get; set; }
         public int Quantity { get; set; }
         public double UnitPrice { get; set; }
         public double TotalPrice { get; set; }

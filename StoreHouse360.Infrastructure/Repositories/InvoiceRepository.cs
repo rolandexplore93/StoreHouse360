@@ -17,9 +17,9 @@ namespace StoreHouse360.Infrastructure.Repositories
         protected override IQueryable<InvoiceDb> GetIncludedDatabaseSet()
         {
             return base.GetIncludedDatabaseSet()
-            .Include(invoice => invoice.Account)
-            .Include(invoice => invoice.Currency)
-            .Include(invoice => invoice.Warehouse);
+                .Include(invoice => invoice.Account)
+                .Include(invoice => invoice.Currency)
+                .Include(invoice => invoice.Warehouse);
         }
     }
 }

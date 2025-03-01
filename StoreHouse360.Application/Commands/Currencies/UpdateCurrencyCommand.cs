@@ -1,9 +1,11 @@
 ﻿using StoreHouse360.Application.Commands.Common;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Commands.Currencies
 {
+    [Authorize(Method = Method.Update, Resource = Resource.Currencies)]
     public class UpdateCurrencyCommand : IUpdateEntityCommand<int>
     {
         public int Id { get; set; }

@@ -12,7 +12,6 @@ namespace StoreHouse360.Controllers.Api
 {
     public class AuthController : ApiControllerBase
     {
-        //private readonly IMapper _mapper;
         private readonly IAuthenticationService _authenticationService;
 
         public AuthController(IMediator mediator, IMapper mapper, IAuthenticationService authenticationService) : base(mediator, mapper)
@@ -22,7 +21,7 @@ namespace StoreHouse360.Controllers.Api
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<BaseResponse<string>>> Login(LoginRequestDTO requestDTO)
+        public async Task<ActionResult<BaseResponse<LoginResponseDTO>>> Login(LoginRequestDTO requestDTO)
         {
             var result = await _authenticationService.JwtLogin(_mapper.Map<JwtLoginRequest>(requestDTO));
 
@@ -30,7 +29,7 @@ namespace StoreHouse360.Controllers.Api
             {
                 User = result.User.ToViewModel<UserVM>(_mapper),
                 Token = result.Token
-            });
+            }, "Login successful...");
         }
     }
 }

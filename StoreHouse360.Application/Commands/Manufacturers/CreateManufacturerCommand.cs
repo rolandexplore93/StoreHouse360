@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Commands.Manufacturers
 {
+    [Authorize(Method = Method.Write, Resource = Resource.Manufacturers)]
     public class CreateManufacturerCommand : IRequest<int>
     {
         public string Name { get; set; }

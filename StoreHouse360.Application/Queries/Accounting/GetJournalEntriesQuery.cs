@@ -1,9 +1,12 @@
-﻿using StoreHouse360.Application.Queries.Common;
+﻿using StoreHouse360.Application.Common.Security;
+using StoreHouse360.Application.Queries.Common;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Queries.Accounting
 {
+
+    [Authorize(Method = Method.Read, Resource = Resource.Journals)]
     public class GetJournalEntriesQuery : GetPaginatedQuery<Journal>
     {
         public int FromAccountId { get; set; }

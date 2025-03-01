@@ -11,7 +11,7 @@ using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api
 {
-    //[Authorize]
+    [Authorize]
     public class CategoriesController : ApiControllerBase
     {
         public CategoriesController(IMediator mediator, IMapper mapper) : base(mediator, mapper)

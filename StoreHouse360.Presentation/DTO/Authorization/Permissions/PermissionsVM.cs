@@ -8,7 +8,6 @@ namespace StoreHouse360.DTO.Authorization.Permissions
     {
         public bool AllPermissions { get; set; }
         public bool None { get; set; }
-
         public IList<PolicyVM> Policies { get; set; }
     }
 }

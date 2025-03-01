@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 using Unit = StoreHouse360.Domain.Entities.Unit;
 
 namespace StoreHouse360.Application.Commands.Units
 {
+    [Authorize(Method = Method.Write, Resource = Resource.Units)]
     public class CreateUnitCommand : IRequest<int>
     {
         public string Name { get; init; }

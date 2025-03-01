@@ -26,11 +26,13 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData.UsersRoles
         }
         public async Task Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider)
         {
+            // Create admin user
             await _userManager.CreateAsync(
                 new ApplicationIdentityUser
                 {
                     UserName = AdminUsername
-                }    
+                },
+                AdminPassword
             );
 
             await _roleManager.CreateAsync(

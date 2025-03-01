@@ -6,6 +6,7 @@ using StoreHouse360.Application.Repositories.Aggregates;
 
 namespace StoreHouse360.Application.Commands.Authorization.UserRoles
 {
+    [Authorize(Method = Method.Update, Resource = Resource.Roles)]
     public class UpdateUserRolesCommand : IRequest
     {
         public int UserId { get; set; }

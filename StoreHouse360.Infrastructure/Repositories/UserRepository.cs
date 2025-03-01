@@ -28,7 +28,10 @@ namespace StoreHouse360.Infrastructure.Repositories
         {
             var identityUser = _mapper.Map<User, ApplicationIdentityUser>(user);
             var result = await _userManager.CreateAsync(identityUser, user.PasswordHash);
-            if (result.Succeeded) return () => Task.FromResult(_mapper.Map<ApplicationIdentityUser, User>(identityUser));
+
+            if (result.Succeeded) 
+                return () => Task.FromResult(_mapper.Map<ApplicationIdentityUser, User>(identityUser));
+
             throw new Exception(result.GetErrorsAsString());
         }
         public async Task<IQueryable<User>> GetAllAsync(GetAllOptions<User>? options = default)
@@ -39,7 +42,8 @@ namespace StoreHouse360.Infrastructure.Repositories
         public async Task<User> FindByIdAsync(int id, FindOptions? options = default)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
-            if (user == null) throw new NotFoundException("user", id);
+            if (user == null) 
+                throw new NotFoundException("user", id);
             return _mapper.Map<User>(user);
         }
 
@@ -56,21 +60,29 @@ namespace StoreHouse360.Infrastructure.Repositories
         public async Task<User> UpdateAsync(User user)
         {
             var model = await _userManager.FindByIdAsync(user.Id.ToString());
-            if (model == null) throw new NotFoundException("user", user.Id);
+            if (model == null) 
+                throw new NotFoundException("user", user.Id);
 
             model.UserName = user.UserName;
+
+            if (!string.IsNullOrEmpty(user.PasswordHash))
+                model.PasswordHash = _userManager.PasswordHasher.HashPassword(model, user.PasswordHash);
+
             var result = await _userManager.UpdateAsync(model);
+
             if (!result.Succeeded)
             {
                 throw new Exception(result.GetErrorsAsString());
             }
+
             return _mapper.Map<User>(model);
         }
 
         public async Task DeleteAsync(int id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
-            if (user == null) throw new NotFoundException();
+            if (user == null) 
+                throw new NotFoundException();
             await _userManager.DeleteAsync(user);
         }
 

@@ -21,6 +21,7 @@ namespace StoreHouse360.Application.Repositories.UnitOfWork
         public IJournalRepository JournalRepository { get; }
         public IRoleRepository RoleRepository { get; }
         public IUserRolesRepository UserRolesRepository { get; }
+        public IConversionRepository ConversionRepository { get; }
         public void Commit();
         public Task CommitAsync();
     }

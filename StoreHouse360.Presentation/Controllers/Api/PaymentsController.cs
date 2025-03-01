@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Payments;
 using StoreHouse360.Application.Queries.Payments;
@@ -11,6 +12,7 @@ using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api
 {
+    [Authorize]
     public class PaymentsController : ApiControllerBase
     {
         public PaymentsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)

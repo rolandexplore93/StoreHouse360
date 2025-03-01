@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Queries.Manufacturers
 {
+    [Authorize(Method = Method.Read, Resource = Resource.Manufacturers)]
     public class GetManufacturerQuery : IRequest<Manufacturer>
     {
         public int Id { get; set; }

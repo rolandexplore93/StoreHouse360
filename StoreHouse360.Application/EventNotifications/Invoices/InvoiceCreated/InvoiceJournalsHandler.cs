@@ -20,13 +20,35 @@ namespace StoreHouse360.Application.EventNotifications.Invoices.InvoiceCreated
             var invoice = notification.Invoice;
             if (invoice.Type == InvoiceType.Out)
             {
-                await _handleFromCashDrawerToCustomer(invoice, cancellationToken);
-                await _handleFromSalesToCashDrawer(invoice, cancellationToken);
+                //await _handleFromCashDrawerToCustomer(invoice, cancellationToken);
+                //await _handleFromSalesToCashDrawer(invoice, cancellationToken);
+
+                if (invoice.AccountType.DealsWithPurchasesSales())
+                {
+                    await _handleFromCashDrawerToCustomer(invoice, cancellationToken);
+                    await _handleFromSalesToCashDrawer(invoice, cancellationToken);
+                }
+
+                if (invoice.AccountType.DealsWithReturns())
+                {
+                    await _handleFromSalesReturnsToCustomer(invoice, cancellationToken);
+                }
             }
             else if (invoice.Type == InvoiceType.In)
             {
-                await _handleFromCustomerToCashDrawer(invoice, cancellationToken);
-                await _handleFromCashDrawerToPurchases(invoice, cancellationToken);
+                //await _handleFromCustomerToCashDrawer(invoice, cancellationToken);
+                //await _handleFromCashDrawerToPurchases(invoice, cancellationToken);
+
+                if (invoice.AccountType.DealsWithPurchasesSales())
+                {
+                    await _handleFromCustomerToCashDrawer(invoice, cancellationToken);
+                    await _handleFromCashDrawerToPurchases(invoice, cancellationToken);
+                }
+
+                if (invoice.AccountType.DealsWithReturns())
+                {
+                    await _handleFromCustomerToPurchasesReturns(invoice, cancellationToken);
+                }
             }
         }
 
@@ -41,6 +63,7 @@ namespace StoreHouse360.Application.EventNotifications.Invoices.InvoiceCreated
                     invoice.TotalPrice,
                     invoice.CurrencyId.GetValueOrDefault(defaultCurrencyId)
                 );
+
             await _mediator.Send(createJournalsCommand, cancellationToken);
         }
         private async Task _handleFromSalesToCashDrawer(Invoice invoice, CancellationToken cancellationToken)
@@ -55,6 +78,7 @@ namespace StoreHouse360.Application.EventNotifications.Invoices.InvoiceCreated
                     invoice.TotalPrice,
                     invoice.CurrencyId.GetValueOrDefault(defaultCurrencyId)
                 );
+
             await _mediator.Send(createJournalsCommand, cancellationToken);
         }
         private async Task _handleFromCustomerToCashDrawer(Invoice invoice, CancellationToken cancellationToken)
@@ -68,6 +92,7 @@ namespace StoreHouse360.Application.EventNotifications.Invoices.InvoiceCreated
                     invoice.TotalPrice,
                     invoice.CurrencyId.GetValueOrDefault(defaultCurrencyId)
                 );
+
             await _mediator.Send(createJournalsCommand, cancellationToken);
         }
         private async Task _handleFromCashDrawerToPurchases(Invoice invoice, CancellationToken cancellationToken)
@@ -82,6 +107,33 @@ namespace StoreHouse360.Application.EventNotifications.Invoices.InvoiceCreated
                     invoice.TotalPrice,
                     invoice.CurrencyId.GetValueOrDefault(defaultCurrencyId)
                 );
+
+            await _mediator.Send(createJournalsCommand, cancellationToken);
+        }
+
+        private async Task _handleFromSalesReturnsToCustomer(Invoice invoice, CancellationToken cancellationToken)
+        {
+            var createJournalsCommand =
+                new CreateJournalsCommand(
+                    _appSettings.DefaultSalesReturnsAccountId,
+                    invoice.AccountId.GetValueOrDefault(),
+                    invoice.TotalPrice,
+                    invoice.CurrencyId.GetValueOrDefault(_appSettings.DefaultCurrencyId)
+                );
+
+            await _mediator.Send(createJournalsCommand, cancellationToken);
+        }
+
+        private async Task _handleFromCustomerToPurchasesReturns(Invoice invoice, CancellationToken cancellationToken)
+        {
+            var createJournalsCommand =
+                new CreateJournalsCommand(
+                    invoice.AccountId.GetValueOrDefault(),
+                    _appSettings.DefaultPurchasesReturnsAccountId,
+                    invoice.TotalPrice,
+                    invoice.CurrencyId.GetValueOrDefault(_appSettings.DefaultCurrencyId)
+                );
+
             await _mediator.Send(createJournalsCommand, cancellationToken);
         }
     }

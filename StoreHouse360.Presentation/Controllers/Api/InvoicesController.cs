@@ -13,7 +13,7 @@ using StatusCodes = StoreHouse360.Domain.Exceptions.StatusCodes;
 
 namespace StoreHouse360.Controllers.Api
 {
-    //[Authorize]
+    [Authorize]
     public class InvoicesController : ApiControllerBase
     {
         public InvoicesController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
@@ -26,7 +26,9 @@ namespace StoreHouse360.Controllers.Api
         [ProducesResponseType(typeof(ActionResult<BaseResponse<IList<int>>>), StatusCodes.ProductMinimumLevelExceededExceptionCode)]
         public async Task<ActionResult<BaseResponse<InvoiceVM>>> Create(CreateInvoiceRequestDTO request)
         {
-            var invoiceId = await Mediator.Send(_mapper.Map<CreateInvoiceCommand>(request));
+            var createInvoiceCommand = _mapper.Map<CreateInvoiceCommand>(request);
+            createInvoiceCommand.AccountType = InvoiceAccountType.PurchasesOrSales;
+            var invoiceId = await Mediator.Send(createInvoiceCommand);
             var invoice = await Mediator.Send(new GetInvoiceQuery { Id = invoiceId });
             return Ok(invoice.ToViewModel<InvoiceVM>(_mapper));
         }
@@ -51,6 +53,36 @@ namespace StoreHouse360.Controllers.Api
         {
             var items = await Mediator.Send(new GetProductMovementsQuery { InvoiceId = id });
             return Ok(items.ToViewModels<ProductMovementVM>(_mapper));
+        }
+
+        [HttpPost("returns")]
+        [ProducesResponseType(typeof(ActionResult<BaseResponse<InvoiceVM>>), 200)]
+        [ProducesResponseType(typeof(ActionResult<BaseResponse<IList<int>>>), StatusCodes.ProductMinimumLevelExceededExceptionCode)]
+        public async Task<ActionResult<BaseResponse<InvoiceVM>>> CreateReturns(CreateInvoiceRequestDTO request)
+        {
+            var createInvoiceCommand = _mapper.Map<CreateInvoiceCommand>(request);
+            createInvoiceCommand.AccountType = InvoiceAccountType.Returns;
+
+            var invoiceId = await Mediator.Send(createInvoiceCommand);
+
+            var invoice = await Mediator.Send(new GetInvoiceQuery { Id = invoiceId });
+
+            return Ok(invoice.ToViewModel<InvoiceVM>(_mapper));
+        }
+
+        [HttpPost("import-or-export")]
+        [ProducesResponseType(typeof(ActionResult<BaseResponse<InvoiceVM>>), 200)]
+        [ProducesResponseType(typeof(ActionResult<BaseResponse<IList<int>>>), StatusCodes.ProductMinimumLevelExceededExceptionCode)]
+        public async Task<ActionResult<BaseResponse<InvoiceVM>>> CreateImport(CreateInvoiceRequestDTO request)
+        {
+            var createInvoiceCommand = _mapper.Map<CreateInvoiceCommand>(request);
+            createInvoiceCommand.AccountType = InvoiceAccountType.ImportOrExport;
+
+            var invoiceId = await Mediator.Send(createInvoiceCommand);
+
+            var invoice = await Mediator.Send(new GetInvoiceQuery { Id = invoiceId });
+
+            return Ok(invoice.ToViewModel<InvoiceVM>(_mapper));
         }
     }
 }

@@ -16,20 +16,18 @@ namespace StoreHouse360.Infrastructure.Services
         protected override async Task<ClaimsIdentity> GenerateClaimsAsync(ApplicationIdentityUser user)
         {
             var identity = await base.GenerateClaimsAsync(user);
-
             var userRoleNames = await UserManager.GetRolesAsync(user);
-            var userRoles = await RoleManager.Roles.Where(r =>
-                userRoleNames.Contains(r.Name)).ToListAsync();
+            var userRoles = await RoleManager.Roles.Where(r => userRoleNames.Contains(r.Name)).ToListAsync();
             var userPermissions = new Permissions();
 
             foreach (var role in userRoles)
             {
                 userPermissions.Merge(Permissions.From(role.Permissions));
             }
+
             var permissionsString = userPermissions.ToString();
 
-            identity.AddClaim(
-                new Claim(AuthorizationClaimTypes.Permissions, permissionsString));
+            identity.AddClaim(new Claim(AuthorizationClaimTypes.Permissions, permissionsString));
 
             return identity;
         }

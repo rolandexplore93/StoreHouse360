@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using StoreHouse360.Application.Commands.Invoicing.DTO;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.EventNotifications.Invoices.InvoiceCreated;
 using StoreHouse360.Application.Queries.Invoicing;
 using StoreHouse360.Application.Queries.Invoicing.DTO;
@@ -8,6 +9,7 @@ using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Commands.Invoicing
 {
+    [Authorize(Method = Method.Write, Resource = Resource.Invoices)]
     public class CreateInvoiceCommand : IRequest<int>
     {
         public int AccountId { get; set; }
@@ -15,6 +17,7 @@ namespace StoreHouse360.Application.Commands.Invoicing
         public int CurrencyId { get; set; }
         public string? Note { get; set; }
         public InvoiceType Type { get; set; }
+        public InvoiceAccountType AccountType { get; set; }
         public IEnumerable<InvoiceItemDTO> Items { get; set; }
         public bool IgnoreMinLevelWarnings { get; set; }
     }
@@ -52,6 +55,7 @@ namespace StoreHouse360.Application.Commands.Invoicing
                 note: request.Note,
                 createdAt: DateTime.Now,
                 type: request.Type,
+                accountType: request.AccountType,
                 items: request.Items.Select(dto => _buildItem(dto, request.Type)).ToList()
             );
 

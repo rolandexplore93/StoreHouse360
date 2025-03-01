@@ -1,10 +1,12 @@
 ﻿using MediatR;
 using StoreHouse360.Application.Commands.Common;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Commands.Products
 {
+    [Authorize(Method = Method.Update, Resource = Resource.Products)]
     public class UpdateProductCommand : IUpdateEntityCommand<int>
     {
         public int Id { get; set; }

@@ -298,6 +298,68 @@ namespace StoreHouse360.Infrastructure.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.ConversionDb", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ExportInvoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FromPlaceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FromProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FromQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FromWarehouseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ImportInvoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ToPlaceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ToProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ToQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ToWarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExportInvoiceId");
+
+                    b.HasIndex("FromPlaceId");
+
+                    b.HasIndex("FromProductId");
+
+                    b.HasIndex("FromWarehouseId");
+
+                    b.HasIndex("ImportInvoiceId");
+
+                    b.HasIndex("ToPlaceId");
+
+                    b.HasIndex("ToProductId");
+
+                    b.HasIndex("ToWarehouseId");
+
+                    b.ToTable("Conversions");
+                });
+
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.CountryOriginDb", b =>
                 {
                     b.Property<int>("Id")
@@ -382,6 +444,9 @@ namespace StoreHouse360.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AccountType")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -756,6 +821,73 @@ namespace StoreHouse360.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.ConversionDb", b =>
+                {
+                    b.HasOne("StoreHouse360.Infrastructure.Persistence.Database.Models.InvoiceDb", "ExportInvoice")
+                        .WithMany()
+                        .HasForeignKey("ExportInvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StoreHouse360.Infrastructure.Persistence.Database.Models.StoragePlaceDb", "FromPlace")
+                        .WithMany()
+                        .HasForeignKey("FromPlaceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StoreHouse360.Infrastructure.Persistence.Database.Models.ProductDb", "FromProduct")
+                        .WithMany()
+                        .HasForeignKey("FromProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StoreHouse360.Infrastructure.Persistence.Database.Models.WarehouseDb", "FromWarehouse")
+                        .WithMany()
+                        .HasForeignKey("FromWarehouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StoreHouse360.Infrastructure.Persistence.Database.Models.InvoiceDb", "ImportInvoice")
+                        .WithMany()
+                        .HasForeignKey("ImportInvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StoreHouse360.Infrastructure.Persistence.Database.Models.StoragePlaceDb", "ToPlace")
+                        .WithMany()
+                        .HasForeignKey("ToPlaceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StoreHouse360.Infrastructure.Persistence.Database.Models.ProductDb", "ToProduct")
+                        .WithMany()
+                        .HasForeignKey("ToProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StoreHouse360.Infrastructure.Persistence.Database.Models.WarehouseDb", "ToWarehouse")
+                        .WithMany()
+                        .HasForeignKey("ToWarehouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExportInvoice");
+
+                    b.Navigation("FromPlace");
+
+                    b.Navigation("FromProduct");
+
+                    b.Navigation("FromWarehouse");
+
+                    b.Navigation("ImportInvoice");
+
+                    b.Navigation("ToPlace");
+
+                    b.Navigation("ToProduct");
+
+                    b.Navigation("ToWarehouse");
                 });
 
             modelBuilder.Entity("StoreHouse360.Infrastructure.Persistence.Database.Models.CurrencyAmountDb", b =>

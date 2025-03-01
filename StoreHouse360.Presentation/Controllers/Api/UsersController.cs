@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoreHouse360.Application.Commands.Users;
 using StoreHouse360.Application.Queries.Users;
+using StoreHouse360.Application.Services.Identity;
 using StoreHouse360.DTO.Common;
 using StoreHouse360.DTO.Pagination;
 using StoreHouse360.DTO.Users;
@@ -11,6 +12,7 @@ using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api
 {
+    [Authorize]
     public class UsersController : ApiControllerBase
     {
         private ILogger<UsersController> _logger;
@@ -27,12 +29,10 @@ namespace StoreHouse360.Controllers.Api
 
             var user = await Mediator.Send(new GetUserQuery { Id = userId });
 
-            //return Ok(user);
             return Ok(user.ToViewModel<UserVM>(_mapper));
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<BaseResponse<PaginationVM<UserVM>>>> GetUsers([FromQuery] UsersQueryParams request)
         {
             var result = await Mediator.Send(request.AsQuery<GetAllUsersQuery>(_mapper));
@@ -44,6 +44,13 @@ namespace StoreHouse360.Controllers.Api
         {
             var user = await Mediator.Send(new GetUserQuery { Id = id });
             return Ok(user.ToViewModel<UserVM>(_mapper));
+        }
+
+        [HttpGet("userInfo")]
+        public Task<ActionResult<BaseResponse<UserVM>>> GetUser([FromServices] ICurrentUserService currentUserService)
+        {
+            var id = currentUserService.UserId;
+            return GetUser(id ?? 0);
         }
 
         [HttpDelete("{id}")]

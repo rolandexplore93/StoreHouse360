@@ -13,7 +13,7 @@ using StoreHouse360.Presentation.DTO.Common.Responses;
 
 namespace StoreHouse360.Controllers.Api
 {
-    //[Authorize]
+    [Authorize]
     public class WarehousesController : ApiControllerBase
     {
         public WarehousesController(IMediator mediator, IMapper mapper) : base(mediator, mapper)

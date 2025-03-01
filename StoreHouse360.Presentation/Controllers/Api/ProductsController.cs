@@ -15,7 +15,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StoreHouse360.Controllers.Api
 {
-    //[Authorize]
+    [Authorize]
     public class ProductsController : ApiControllerBase
     {
         public ProductsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)

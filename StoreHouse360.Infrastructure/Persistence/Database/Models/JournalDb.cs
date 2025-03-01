@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StoreHouse360.Infrastructure.Persistence.Database.Models
 {
+    [Table("Journals")]
     public class JournalDb : IMapFrom<Journal>, IDatabaseModel
     {
         [Key]

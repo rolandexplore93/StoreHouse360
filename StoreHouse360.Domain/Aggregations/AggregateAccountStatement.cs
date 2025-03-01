@@ -28,6 +28,7 @@ namespace StoreHouse360.Domain.Aggregations
         public Account Account { get; set; }
         public double Debit { get; set; }
         public double Credit { get; set; }
+        public double Result => Debit - Credit;
         public Currency Currency { get; set; }
         public AggregateAccountStatementDetail(Account account, double debit, double credit, Currency currency)
         {

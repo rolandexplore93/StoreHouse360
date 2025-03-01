@@ -4,6 +4,7 @@ using StoreHouse360.Application.Repositories;
 
 namespace StoreHouse360.Application.Commands.Authorization.Roles
 {
+    [Authorize(Method = Method.Update, Resource = Resource.Roles)]
     public class UpdateRoleCommand : IRequest<int>
     {
         public int Id { get; set; }

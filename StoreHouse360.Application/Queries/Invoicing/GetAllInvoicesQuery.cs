@@ -1,14 +1,17 @@
-﻿using StoreHouse360.Application.Queries.Common;
+﻿using StoreHouse360.Application.Common.Security;
+using StoreHouse360.Application.Queries.Common;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Queries.Invoicing
 {
+    [Authorize(Method = Method.Read, Resource = Resource.Invoices)]
     public class GetAllInvoicesQuery : GetPaginatedQuery<Invoice>
     {
         public int? AccountId { get; set; } = default;
         public int? WarehouseId { get; set; } = default;
         public InvoiceType? Type { get; set; }
+        public InvoiceAccountType? AccountType { get; set; }
     }
     public class GetAllInvoicesQueryHandler : PaginatedQueryHandler<GetAllInvoicesQuery, Invoice>
     {
@@ -28,6 +31,8 @@ namespace StoreHouse360.Application.Queries.Invoicing
         {
             if (request.Type is not null)
                 query = query.Where(invoice => invoice.Type == request.Type);
+            if (request.AccountType is not null)
+                query = query.Where(invoice => invoice.AccountType == request.AccountType);
             if (request.WarehouseId is not null)
                 query = query.Where(invoice => invoice.WarehouseId == request.WarehouseId);
             if (request.AccountId is not null)

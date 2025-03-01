@@ -1,11 +1,13 @@
 ﻿using MediatR;
 using StoreHouse360.Application.Common.QueryFilters;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Queries.Common;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Queries.StoragePlaces
 {
+    [Authorize(Method = Method.Read, Resource = Resource.Warehouses)]
     public class GetAllStoragePlacesQuery : GetPaginatedQuery<StoragePlace>
     {
         [QueryFilter(QueryFilterCompareType.StringContains)]
@@ -37,6 +39,9 @@ namespace StoreHouse360.Application.Queries.StoragePlaces
         {
             var filterResult = base.ApplyFilters(query, request);
             if (request.IsParent != null) filterResult = filterResult.Where(sp => (bool)request.IsParent ? sp.ContainerId == null : sp.ContainerId != null);
+
+            filterResult = filterResult.Where(storagePlace => storagePlace.WarehouseId == request.WarehouseId || request.WarehouseId == 0);
+
             return filterResult;
         }
     }

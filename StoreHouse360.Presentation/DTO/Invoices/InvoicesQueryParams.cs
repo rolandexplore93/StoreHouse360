@@ -12,6 +12,9 @@ namespace StoreHouse360.DTO.Invoices
         [FromQuery(Name = "type")]
         public InvoiceType? Type { get; set; } = default;
 
+        [FromQuery(Name = "account_type")]
+        public InvoiceAccountType? AccountType { get; set; } = InvoiceAccountType.PurchasesOrSales;
+
         [Range(0, int.MaxValue)]
         [FromQuery(Name = "account_id")]
         public int? AccountId { get; set; } = default;

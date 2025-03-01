@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Application.Repositories.Aggregates;
 using StoreHouse360.Application.Repositories.UnitOfWork;
@@ -16,7 +15,6 @@ using StoreHouse360.Infrastructure.Repositories;
 using StoreHouse360.Infrastructure.Repositories.Aggregates;
 using StoreHouse360.Infrastructure.Repositories.UnitOfWork;
 using StoreHouse360.Infrastructure.Services;
-using System.Configuration;
 using System.Reflection;
 
 namespace StoreHouse360.Infrastructure
@@ -89,10 +87,13 @@ namespace StoreHouse360.Infrastructure
             services.AddScoped<IInvoiceRepository, InvoiceRepository>();
             services.AddScoped<IProductMovementRepository, ProductMovementRepository>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
-            services.AddScoped<IInvoicePaymentsRepository, InvoicePaymentsRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<ICountryOriginRepository, CountryOriginRepository>();
             services.AddScoped<IJournalRepository, JournalRepository>();
+            services.AddScoped<IConversionRepository, ConversionRepository>();
+
+            services.AddScoped<IInvoicePaymentsRepository, InvoicePaymentsRepository>();
+
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRolesRepository, UserRolesRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -124,7 +125,9 @@ namespace StoreHouse360.Infrastructure
                     await dbContext.Database.MigrateAsync(); // Apply pending migrations to the database and create the database if it does not exist   
                     await dbContext.Database.EnsureCreatedAsync(); // Create database or tables if they do not exist
 
-                    if (!app.Environment.IsDevelopment())
+                    // Seed data on startup
+                    //if !(app.Environment.IsDevelopment())
+                    if (app.Configuration.GetValue<bool>("SeedDatabaseAtStartup"))
                     {
                        await dbContext.ProcessDataSeeding(dbSeeder, settingsProvider); // seed data into db
                     }

@@ -62,6 +62,7 @@ namespace StoreHouse360.Infrastructure.Repositories
                 .AsQueryable()
                 .ProjectTo<Product>(mapper.ConfigurationProvider);
         }
+
         public IQueryable<Product> GetAllWithNewMinLevelResolved(int invoiceId)
         {
             var invoiceMovements = _dbContext.ProductMovements
@@ -147,18 +148,17 @@ namespace StoreHouse360.Infrastructure.Repositories
                 .Where(product => groupBy.Any(a => a.ProductId == product.Id));
             return products.AsQueryable().ProjectTo<Product>(mapper.ConfigurationProvider);
         }
-        private IList<StoragePlaceDb> _getDescendantStoragePlaces(
-            List<StoragePlaceDb> searchIn,
-            List<StoragePlaceDb> parents
-        )
+        private IList<StoragePlaceDb> _getDescendantStoragePlaces(List<StoragePlaceDb> searchIn, List<StoragePlaceDb> parents)
         {
             var includes = searchIn.Where(storagePlace => parents.Any(parent => storagePlace.ContainerId == parent.Id))
                 .ToList();
+
             if (includes.Any())
             {
                 searchIn.RemoveAll(storagePlace => includes.Any(include => include.Id == storagePlace.Id));
                 return _getDescendantStoragePlaces(searchIn, parents.Concat(includes).ToList());
             }
+
             return parents.Concat(includes).ToList();
         }
 

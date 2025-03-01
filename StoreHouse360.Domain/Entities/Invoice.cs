@@ -21,10 +21,10 @@ namespace StoreHouse360.Domain.Entities
         // Invoice is closed until a product is added
         public InvoiceStatus Status { get; set; }
         public InvoiceType Type { get; set; }
-
+        public InvoiceAccountType AccountType { get; set; }
         public IList<ProductMovement> Items { get; set; }
 
-        public Invoice(int? accountId, int warehouseId, int? currencyId, string? note, DateTime createdAt, InvoiceType type, IList<ProductMovement> items)
+        public Invoice(int? accountId, int warehouseId, int? currencyId, string? note, DateTime createdAt, InvoiceType type, InvoiceAccountType accountType, IList<ProductMovement> items)
         {
             AccountId = accountId;
             WarehouseId = warehouseId;
@@ -34,6 +34,7 @@ namespace StoreHouse360.Domain.Entities
             CreatedAt = createdAt;
             Status = InvoiceStatus.Closed;
             Type = type;
+            AccountType = accountType;
             Items = new List<ProductMovement>();
             items.ToList().ForEach(item => AddItem(item));
         }
@@ -80,5 +81,34 @@ namespace StoreHouse360.Domain.Entities
     public enum InvoiceType
     {
         In, Out
+    }
+
+    public enum InvoiceAccountType
+    {
+        ImportOrExport, 
+        PurchasesOrSales,
+        Returns
+    }
+
+    public static class InvoiceAccountTypeExtensions
+    {
+        public static bool DealsWithPurchasesSales(this InvoiceAccountType invoiceAccountType)
+        {
+            return invoiceAccountType switch
+            {
+                InvoiceAccountType.PurchasesOrSales => true,
+                InvoiceAccountType.Returns => true,
+                _ => false
+            };
+        }
+
+        public static bool DealsWithReturns(this InvoiceAccountType invoiceAccountType)
+        {
+            return invoiceAccountType switch
+            {
+                InvoiceAccountType.Returns => true,
+                _ => false
+            };
+        }
     }
 }

@@ -32,6 +32,7 @@ namespace StoreHouse360.Authentication
                     ValidAudience = jwtOptions.ValidAudience,
                 };
             });
+
             services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
     }

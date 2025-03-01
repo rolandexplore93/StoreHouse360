@@ -64,6 +64,7 @@ namespace StoreHouse360.Infrastructure.Repositories
             .Where(product => productIds.Any(id => product.Id == id))
             .ProjectTo<Product>(mapper.ConfigurationProvider)
             .ToList();
+
             var aggregatesWithFullProduct = aggregates
                 .Zip(products)
                 .Select(entry => entry.First.AddProduct(entry.Second));

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StoreHouse360.Infrastructure.Persistence.Database.Models
 {
+    [Table("StoragePlaces")]
     public class StoragePlaceDb : IMapFrom<StoragePlace>, IDatabaseModel
     {
         [Key]

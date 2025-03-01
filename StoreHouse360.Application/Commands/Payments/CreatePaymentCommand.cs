@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using StoreHouse360.Application.Common.DTO;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.EventNotifications.Payments.PaymentCreated;
 using StoreHouse360.Application.Repositories.UnitOfWork;
 using StoreHouse360.Domain.Aggregations;
@@ -7,6 +8,7 @@ using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Commands.Payments
 {
+    [Authorize(Method = Method.Write, Resource = Resource.Invoices)]
     public class CreatePaymentCommand : IRequest<int>
     {
         public int InvoiceId { get; set; }
@@ -59,18 +61,6 @@ namespace StoreHouse360.Application.Commands.Payments
             var addedPayment = addedPayments.First();
 
             await _mediator.Publish(new PaymentCreatedNotification(addedPayment), cancellationToken);
-
-            //var currencyAmounts = request.CurrencyAmounts
-            //    .Select(c => new CurrencyAmount
-            //    {
-            //        //ObjectId = addedPayment.Id,
-            //        Key = CurrencyAmountKey.Payment,
-            //        Amount = c.Value,
-            //        CurrencyId = c.CurrencyId
-            //    });
-
-            //var saveCurrencyAmountsAction = await unitOfWork.CurrencyAmountRepository.CreateAllAsync(currencyAmounts);
-            //var result = await saveCurrencyAmountsAction();
 
             await unitOfWork.CommitAsync();
             

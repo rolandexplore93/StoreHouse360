@@ -8,9 +8,9 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.SeedData.Currencies
         public CurrenciesSeeding()
         {
             _seeders = new List<ISeedData>
-        {
-            new MainCurrencySeeder()
-        };
+            {
+                new MainCurrencySeeder()
+            };
         }
 
         public Task Seed(ApplicationDbContext dbContext, IAppSettingsProvider settingsProvider)

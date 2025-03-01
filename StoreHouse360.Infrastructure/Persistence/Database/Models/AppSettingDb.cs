@@ -9,7 +9,6 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Key { get; set; }
-
         public string Value { get; set; }
     }
 }

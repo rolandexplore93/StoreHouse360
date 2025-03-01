@@ -22,6 +22,7 @@ namespace StoreHouse360.DTO.Accounting
         public AccountVM Account { get; set; }
         public double Debit { get; set; }
         public double Credit { get; set; }
+        public double Result { get; set; }
         public CurrencyVM Currency { get; set; }
     }
 }

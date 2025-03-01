@@ -1,10 +1,13 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Application.Settings;
 using StoreHouse360.Domain.Aggregations;
 
 namespace StoreHouse360.Application.Queries.Accounting
 {
+    [Authorize(Method = Method.Read, Resource = Resource.Journals)]
+    [Authorize(Method = Method.Read, Resource = Resource.Accounts)]
     public class GetAccountStatementQuery : IRequest<AggregateAccountStatement>
     {
         public int AccountId { get; }

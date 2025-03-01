@@ -1,9 +1,11 @@
 ﻿using MediatR;
 using StoreHouse360.Application.Common.Models;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories.Aggregates;
 
 namespace StoreHouse360.Application.Queries.Authorization.UserRoles
 {
+    [Authorize(Method = Method.Read, Resource = Resource.Roles)]
     public class GetAllUsersRolesQuery : IRequest<IPaginatedCollections<Application.Common.Security.UserRoles>>
     {
 

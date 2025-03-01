@@ -121,10 +121,12 @@ namespace StoreHouse360.Infrastructure.Repositories
             {
                 var modelFromDatabase = await GetModelById(entity.Id);
                 TModel model = mapper.Map<TEntity, TModel>(entity);
+
                 _dbContext.Entry(modelFromDatabase).CurrentValues.SetValues(model);
                 if (model is IHasDomainEvents)
                 {
-                    _dbContext.ChangeTracker.Entries<IHasDomainEvents>()
+                    _dbContext.ChangeTracker
+                        .Entries<IHasDomainEvents>()
                         .Last().Entity.Events = (model as IHasDomainEvents)!.Events;
                 }
 

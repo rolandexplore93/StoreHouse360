@@ -51,6 +51,7 @@ namespace StoreHouse360.Domain.Aggregations
 
             return payment.Amount + paymentsSum > Invoice.TotalPrice;
         }
+
         private bool AddedPaymentWouldCloseInvoice(Payment payment)
         {
             double paymentsSum = Payments.Sum(p => p.Amount);

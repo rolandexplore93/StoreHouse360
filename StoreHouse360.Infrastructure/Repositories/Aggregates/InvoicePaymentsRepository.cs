@@ -28,11 +28,14 @@ namespace StoreHouse360.Infrastructure.Repositories.Aggregates
         public async Task<SaveAction<Task<InvoicePayments>>> Save(InvoicePayments invoicePayments)
         {
             var saveAction = await _paymentRepository.CreateAllAsync(invoicePayments.PendingPayments);
+
             return async () =>
             {
                 var savedPayments = await saveAction();
 
                 Invoice updatedInvoice = await _invoiceRepository.UpdateAsync(invoicePayments.Invoice);
+
+                await _invoiceRepository.SaveChanges();
 
                 return new InvoicePayments { Invoice = updatedInvoice, Payments = invoicePayments.Payments.Concat(savedPayments) };
             };

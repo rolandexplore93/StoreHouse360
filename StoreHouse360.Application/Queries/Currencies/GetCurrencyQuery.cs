@@ -1,10 +1,11 @@
 ﻿using MediatR;
+using StoreHouse360.Application.Common.Security;
 using StoreHouse360.Application.Repositories;
 using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Queries.Currencies
 {
-
+    [Authorize(Method = Method.Read, Resource = Resource.Currencies)]
     public class GetCurrencyQuery : IRequest<Currency>
     {
         public int Id { get; set; }
