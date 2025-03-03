@@ -10,8 +10,6 @@ namespace StoreHouse360.Application.Queries.Accounts
     [Authorize(Method = Method.Read, Resource = Resource.Accounts)]
     public class GetAllAccountsQuery : GetPaginatedQuery<Account>
     {
-        [QueryFilter(QueryFilterCompareType.StringContains)]
-        public string? Name { get; set; }
     }
     public class GetAllAccountsQueryHandler : PaginatedQueryHandler<GetAllAccountsQuery, Account>
     {
