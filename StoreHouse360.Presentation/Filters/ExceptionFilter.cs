@@ -21,7 +21,6 @@ namespace StoreHouse360.Filters
 
             _exceptionMap = new Dictionary<Type, Action<ExceptionContext>>
             {
-                // {typeof(NotFoundException), HandleNotFoundException}
                 {typeof(ProductMinimumLevelExceededException), HandleProductMinimumLevelExceededException},
                 {typeof(ValidationException), HandleValidationException},
                 {typeof(ForbiddenAccessException), HandleForbiddenAccessException}

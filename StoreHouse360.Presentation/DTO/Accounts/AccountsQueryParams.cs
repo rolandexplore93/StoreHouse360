@@ -7,7 +7,5 @@ namespace StoreHouse360.DTO.Accounts
 {
     public class AccountsQueryParams : PaginationRequestParams, IMapFrom<GetAllAccountsQuery>
     {
-        [FromQuery(Name = "name")]
-        public string? Name { get; set; }
     }
 }
