@@ -18,37 +18,29 @@ namespace StoreHouse360.Application.Common.Behaviour
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
-            var authorizeAttributes = request?.GetType().GetCustomAttributes<AuthorizeAttribute>();
+            var authorizeAttributes = request?.GetType().GetCustomAttributes<AuthorizeAttribute>(); // Get the attribute (Method & resource) of the requested endpoint
 
             if (authorizeAttributes != null)
             {
                 authorizeAttributes = authorizeAttributes.ToList();
 
-                if (authorizeAttributes.Any())
-                {
-                    // Must be authenticated user
-                    if (_currentUserService.UserId == null)
-                    {
-                        throw new UnauthorizedAccessException();
-                    }
+                // User must be authenticated
+                int? userId = _currentUserService.UserId;
+                if (userId == null) 
+                    throw new UnauthorizedAccessException();
 
-                    var authorizeAttributesWithPolicies = authorizeAttributes;
-                    authorizeAttributesWithPolicies = authorizeAttributesWithPolicies.ToList();
+                var authorizeAttributesWithPolicies = authorizeAttributes;
 
-                    if (authorizeAttributesWithPolicies.Any())
-                    {
-                        var policies = authorizeAttributesWithPolicies.Select(a => new Policy(a.Resource, a.Method))
-                            .Distinct()
-                            .ToList();
+                // Create instance of Policy
+                var policies = authorizeAttributesWithPolicies.Select(a => new Policy(a.Resource, a.Method))
+                    .Distinct()
+                    .ToList();
+                    
+                // User must be authorized
+                var authorized = await _identityService.AuthorizeAsync((int)userId!, policies);
 
-                        var authorized = await _identityService.AuthorizeAsync((int)_currentUserService.UserId!, policies);
-
-                        if (!authorized)
-                        {
-                            throw new ForbiddenAccessException();
-                        }
-                    }
-                }
+                if (!authorized) 
+                    throw new ForbiddenAccessException();
             }
 
             return await next();
