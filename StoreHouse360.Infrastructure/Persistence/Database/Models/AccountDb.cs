@@ -16,7 +16,6 @@ namespace StoreHouse360.Infrastructure.Persistence.Database.Models
         public string Code { get; set; }
         public string Phone { get; set; }
         public string City { get; set; }
-        //public AccountType Type { get; set; }
         public bool IsDeleted { get; set; } = false;
         public DateTime? DeletedAt { get; set; }
     }

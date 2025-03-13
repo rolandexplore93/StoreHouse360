@@ -37,17 +37,20 @@ namespace StoreHouse360
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "Enter the token in this format: 'Bearer YOUR_TOKEN_HERE'. Example: 'Bearer abc123xyz'. \n JWT Authorization header using the Bearer scheme."
+                    Description = "JWT Authorization header using the Bearer scheme.\n Enter the token in this format: 'YOUR_TOKEN_HERE'. \n Example: 'XVCJ9.eyJBDU123S.y88kSXyz' (Do not add 'Bearer' keyword to it)."
                 });
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement 
+                {
                     {
-                        new OpenApiSecurityScheme {
-                            Reference = new OpenApiReference {
+                        new OpenApiSecurityScheme 
+                        {
+                            Reference = new OpenApiReference 
+                            {
                                 Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
                             }
                         },
-                        new string[] { }
+                        new string[]{}
                     }
                 });
             });

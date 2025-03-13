@@ -125,11 +125,10 @@ namespace StoreHouse360.Infrastructure
                     await dbContext.Database.MigrateAsync(); // Apply pending migrations to the database and create the database if it does not exist   
                     await dbContext.Database.EnsureCreatedAsync(); // Create database or tables if they do not exist
 
-                    // Seed data on startup
                     //if !(app.Environment.IsDevelopment())
                     if (app.Configuration.GetValue<bool>("SeedDatabaseAtStartup"))
                     {
-                       await dbContext.ProcessDataSeeding(dbSeeder, settingsProvider); // seed data into db
+                       await dbContext.ProcessDataSeeding(dbSeeder, settingsProvider); // seed data into db on startup
                     }
                 }
             }
