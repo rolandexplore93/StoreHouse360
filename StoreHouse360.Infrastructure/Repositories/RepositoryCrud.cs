@@ -8,8 +8,6 @@ using StoreHouse360.Domain.Entities;
 using StoreHouse360.Domain.Events;
 using StoreHouse360.Infrastructure.Persistence.Database;
 using StoreHouse360.Infrastructure.Persistence.Database.Models;
-using StoreHouse360.Infrastructure.Persistence.Database.Models.Common;
-using System.Collections.Generic;
 
 namespace StoreHouse360.Infrastructure.Repositories
 {

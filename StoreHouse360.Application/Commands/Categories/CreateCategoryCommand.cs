@@ -6,19 +6,19 @@ using StoreHouse360.Domain.Entities;
 namespace StoreHouse360.Application.Commands.Categories
 {
     [Authorize(Method = Method.Write, Resource = Resource.Categories)]
-    public class CreateCategoryCommand : IRequest<int>
+    public class CreateCategoryCommand : IRequest<string>
     {
         public string Name { get; set; }
     }
 
-    public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, int>
+    public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, string>
     {
         private readonly ICategoryRepository _categoryRepository;
         public CreateCategoryCommandHandler(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }
-        public async Task<int> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
             var category = new Category
             {
@@ -27,7 +27,8 @@ namespace StoreHouse360.Application.Commands.Categories
 
             var saveAction = await _categoryRepository.CreateAsync(category);
             var createdCategory = await saveAction();
-            return createdCategory.Id;
+            return createdCategory != null ? $"{createdCategory.Name} category created successfully." : "operation failed...";
+            //return createdCategory.Id;
         }
     }
 }

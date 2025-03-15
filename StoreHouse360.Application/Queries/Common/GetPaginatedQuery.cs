@@ -1,8 +1,6 @@
 ﻿using MediatR;
 using StoreHouse360.Application.Common.Models;
 using StoreHouse360.Application.Common.QueryFilters;
-using StoreHouse360.Domain.Entities;
-
 namespace StoreHouse360.Application.Queries.Common
 {
     public interface IGetPaginatedQuery

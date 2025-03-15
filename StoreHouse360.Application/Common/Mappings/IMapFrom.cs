@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using StoreHouse360.Domain.Entities;
 
 namespace StoreHouse360.Application.Common.Mappings
 {

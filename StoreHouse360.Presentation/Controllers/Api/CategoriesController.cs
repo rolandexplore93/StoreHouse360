@@ -22,10 +22,14 @@ namespace StoreHouse360.Controllers.Api
         public async Task<ActionResult<BaseResponse<CategoryVM>>> CreateCategory(CreateCategoryRequestDTO requestDTO)
         {
             var command = _mapper.Map<CreateCategoryCommand>(requestDTO);
-            var categoryId = await Mediator.Send(command);
-            var query = new GetCategoryQuery { Id = categoryId };
-            var categoryEntity = await Mediator.Send(query);
-            return Ok(categoryEntity.ToViewModel<CategoryVM>(_mapper));
+            var result = await Mediator.Send(command);
+            return Ok(result);
+
+            //var categoryId = await Mediator.Send(command);
+            //var query = new GetCategoryQuery { Id = categoryId };
+            //var categoryEntity = await Mediator.Send(query);
+            //return Ok(categoryEntity.ToViewModel<CategoryVM>(_mapper));
+            //return Ok(accountEntity.ToViewModel<AccountVM>(_mapper), "mytest");
         }
 
         [HttpGet("{id}")]
