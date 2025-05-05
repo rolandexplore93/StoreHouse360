@@ -8,6 +8,8 @@ using StoreHouse360.Domain.Entities;
 using StoreHouse360.Domain.Events;
 using StoreHouse360.Infrastructure.Persistence.Database;
 using StoreHouse360.Infrastructure.Persistence.Database.Models;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace StoreHouse360.Infrastructure.Repositories
 {
@@ -42,10 +44,8 @@ namespace StoreHouse360.Infrastructure.Repositories
             {
                 await SaveChanges();
                 return MapModelToEntity(result.Entity);
-
             };
         }
-
 
         public async Task<SaveAction<Task<IEnumerable<TEntity>>>> CreateAllAsync(IEnumerable<TEntity> entities)
         {
@@ -112,7 +112,6 @@ namespace StoreHouse360.Infrastructure.Repositories
             return dbSet.AnyAsync(model => model.Id.Equals(id));
         }
 
-
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
             try
@@ -150,5 +149,6 @@ namespace StoreHouse360.Infrastructure.Repositories
                 throw new NotFoundException();
             }
         }
+
     }
 }

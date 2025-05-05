@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreHouse360.Authorization
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreHouse360.Application.UnitTests", "StoreHouse360.Application.UnitTests\StoreHouse360.Application.UnitTests.csproj", "{32712EAF-4D0B-4AD7-BE23-3B4B03747EDB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{43E10A01-2828-4D02-A27B-59579F10C616}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{32712EAF-4D0B-4AD7-BE23-3B4B03747EDB} = {43E10A01-2828-4D02-A27B-59579F10C616}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BDD6C59C-F06A-42E8-9955-80D4DCE19E61}

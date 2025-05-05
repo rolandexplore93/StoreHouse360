@@ -23,13 +23,12 @@ namespace StoreHouse360.Controllers.Api
         {
             var command = _mapper.Map<CreateCategoryCommand>(requestDTO);
             var result = await Mediator.Send(command);
-            return Ok(result);
+            return Ok(result.ToViewModel<CategoryVM>);
 
             //var categoryId = await Mediator.Send(command);
             //var query = new GetCategoryQuery { Id = categoryId };
             //var categoryEntity = await Mediator.Send(query);
             //return Ok(categoryEntity.ToViewModel<CategoryVM>(_mapper));
-            //return Ok(accountEntity.ToViewModel<AccountVM>(_mapper), "mytest");
         }
 
         [HttpGet("{id}")]
